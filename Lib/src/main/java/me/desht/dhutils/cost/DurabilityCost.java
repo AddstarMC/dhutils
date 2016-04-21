@@ -52,7 +52,8 @@ public class DurabilityCost extends Cost {
 
 			if (newDurability >= maxDurability) {
 				// break the item - reduce inventory count by 1
-				player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
+				//FIXME: No item break sound anymore
+				//player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
 				int newAmount = entry.getValue().getAmount() - 1;
 				if (newAmount == 0) {
 					player.getInventory().setItem(entry.getKey(), new ItemStack(Material.AIR));
