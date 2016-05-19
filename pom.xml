@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.desht</groupId>
     <artifactId>dhutils-parent</artifactId>
     <packaging>pom</packaging>
-    <version>2.19.1-${build.number}</version>
+    <version>2.19.1-SNAPSHOT</version>
     <name>DH Utils</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,8 +12,8 @@
     <description>Collection of useful classes I use in my plugins</description>
 
     <scm>
-        <connection>scm:git:git://github.com/desht/dhutils.git</connection>
-        <developerConnection>scm:git:git@github.com:desht/desht.git</developerConnection>
+        <connection>scm:git:https://github.com/AddstarMC/dhutils.git</connection>
+        <developerConnection>scm:git:https://github.com/AddstarMC/dhutils.git</developerConnection>
         <url>https://github.com/desht/dhutils</url>
     </scm>
 
@@ -84,6 +83,16 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.1</version>
             </plugin>
         </plugins>
     </build>
