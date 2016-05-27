@@ -1,24 +1,30 @@
 package me.desht.dhutils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.util.io.Closer;
+import com.sk89q.worldedit.world.registry.WorldData;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-
+import com.sk89q.worldedit.entity.Player;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.EmptyClipboardException;
-import com.sk89q.worldedit.FilenameException;
-import com.sk89q.worldedit.LocalPlayer;
+import com.sk89q.worldedit.util.io.file.FilenameException;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.data.DataException;
+import com.sk89q.worldedit.world.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 
 /**
@@ -33,7 +39,7 @@ public class TerrainManager {
 	private final WorldEdit we;
 	private final LocalSession localSession;
 	private final EditSession editSession;
-	private final LocalPlayer localPlayer;
+	private final Player wePlayer;
 
 	/**
 	 * Constructor
@@ -41,11 +47,11 @@ public class TerrainManager {
 	 * @param wep	the WorldEdit plugin instance
 	 * @param player	the player to work with
 	 */
-	public TerrainManager(WorldEditPlugin wep, Player player) {
+	public TerrainManager(WorldEditPlugin wep, org.bukkit.entity.Player player) {
 		we = wep.getWorldEdit();
-		localPlayer = wep.wrapPlayer(player);
-		localSession = we.getSession(localPlayer);
-		editSession = localSession.createEditSession(localPlayer);		
+		wePlayer = wep.wrapPlayer(player);
+		localSession = we.getSessionManager().get(wePlayer);
+		editSession = localSession.createEditSession(wePlayer);
 	}
 
 	/**
@@ -56,9 +62,9 @@ public class TerrainManager {
 	 */
 	public TerrainManager(WorldEditPlugin wep, World world) {
 		we = wep.getWorldEdit();
-		localPlayer = null;
+		wePlayer = null;
 		localSession = new LocalSession(we.getConfiguration());
-		editSession = new EditSession(new BukkitWorld(world), we.getConfiguration().maxChangeLimit);
+		editSession = we.getEditSessionFactory().getEditSession((com.sk89q.worldedit.world.World) new BukkitWorld(world), we.getConfiguration().maxChangeLimit);
 	}
 
 	/**
@@ -75,9 +81,9 @@ public class TerrainManager {
 		Vector min = getMin(l1, l2);
 		Vector max = getMax(l1, l2);
 
-		saveFile = we.getSafeSaveFile(localPlayer,
-		                              saveFile.getParentFile(), saveFile.getName(),
-		                              EXTENSION, new String[] { EXTENSION });
+		saveFile = we.getSafeSaveFile(wePlayer,
+				saveFile.getParentFile(), saveFile.getName(),
+				EXTENSION, EXTENSION);
 
 		editSession.enableQueue();
 		CuboidClipboard clipboard = new CuboidClipboard(max.subtract(min).add(new Vector(1, 1, 1)), min);
@@ -99,15 +105,27 @@ public class TerrainManager {
 	 * @throws EmptyClipboardException
 	 */
 	public void loadSchematic(File saveFile, Location loc) throws FilenameException, DataException, IOException, MaxChangedBlocksException, EmptyClipboardException {
-		saveFile = we.getSafeSaveFile(localPlayer,
-		                              saveFile.getParentFile(), saveFile.getName(),
-		                              EXTENSION, new String[] { EXTENSION });
+		saveFile = we.getSafeOpenFile(wePlayer,
+				saveFile.getParentFile(), saveFile.getName(),
+				EXTENSION, EXTENSION);
 
 		editSession.enableQueue();
-		localSession.setClipboard(SchematicFormat.MCEDIT.load(saveFile));
-		localSession.getClipboard().place(editSession, getPastePosition(loc), false);
-		editSession.flushQueue();
-		we.flushBlockBag(localPlayer, editSession);
+		ClipboardFormat format = ClipboardFormat.findByAlias("schematic");
+		Closer closer = Closer.create();
+		WorldData worldData = wePlayer.getWorld().getWorldData();
+		try {
+			FileInputStream fis = closer.register(new FileInputStream(saveFile));
+			BufferedInputStream bis = closer.register(new BufferedInputStream(fis));
+			ClipboardReader reader = format.getReader(bis);
+			Clipboard board = reader.read(worldData);
+			ClipboardHolder holder = new ClipboardHolder(board, worldData);
+			localSession.setClipboard(holder);
+			localSession.getClipboard().createPaste(editSession, editSession.getWorld().getWorldData()).to(getPastePosition(loc)).ignoreAirBlocks(false).build();
+			editSession.flushQueue();
+			we.flushBlockBag(wePlayer, editSession);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -125,8 +143,8 @@ public class TerrainManager {
 	}
 
 	private Vector getPastePosition(Location loc) throws EmptyClipboardException {
-		if (loc == null) 
-			return localSession.getClipboard().getOrigin();
+		if (loc == null)
+			return localSession.getClipboard().getClipboard().getOrigin();
 		else 
 			return new Vector(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}

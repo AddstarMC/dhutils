@@ -18,16 +18,47 @@
     <repositories>
         <repository>
             <id>sk89q-maven</id>
-            <url>http://maven.sk89q.com/repo</url>
+            <url>http://maven.sk89q.com/repo/</url>
         </repository>
         <repository>
             <id>vault-repo</id>
             <url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
         </repository>
         <repository>
-            <id>comphenix-rep</id>
-            <name>Comphenix Repository</name>
-            <url>http://repo.comphenix.net/content/groups/public</url>
+            <id>dmulloy2-releases</id>
+            <url>http://repo.dmulloy2.net/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>http://repo.dmulloy2.net/content/groups/public/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>ext-release</id>
+            <name>addstar-release-ext</name>
+            <url>http://maven.addstar.com.au/artifactory/ext-release-local</url>
+        </repository>
+        <repository>
+            <snapshots/>
+            <id>ext-snapshots</id>
+            <name>addstar-snapshot-ext</name>
+            <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>addstar-release</id>
+            <name>libs-release</name>
+            <url>http://maven.addstar.com.au/artifactory/libs-release</url>
+        </repository>
+        <repository>
+            <snapshots/>
+            <id>addstar-snapshots</id>
+            <name>libs-snapshot</name>
+            <url>http://maven.addstar.com.au/artifactory/libs-snapshot</url>
         </repository>
     </repositories>
 
@@ -39,21 +70,21 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldedit</artifactId>
-            <version>5.5.8</version>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>6.1.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.4</version>
+            <version>1.6</version>
             <scope>provided</scope>
         </dependency>
        <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>2.4.7</version>
+           <version>4.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -140,6 +171,30 @@
                 </execution>
             </executions>
         </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.9</version>
+            </plugin>
         </plugins>
     </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.2</version>
+                <reportSets>
+                    <reportSet>
+                        <id>reports</id>
+                        <reports>
+                            <report>dependency-updates-report</report>
+                            <report>plugin-updates-report</report>
+                            <report>property-updates-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
