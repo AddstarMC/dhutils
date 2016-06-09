@@ -162,9 +162,8 @@ public class MiscUtil {
     }
 
     /**
-     * Split the given string, but ensure single & double quoted sections of the string are
+     * Split the given string, but ensure single and double quoted sections of the string are
      * kept together.
-     * <p>
      * E.g. the String 'one "two three" four' will be split into [ "one", "two three", "four" ]
      *
      * @param s the String to split
@@ -195,7 +194,7 @@ public class MiscUtil {
 
     /**
      * Return the given collection (of Comparable items) as a sorted list.
-     *
+     * @param <T> a class that extends {@link Comparable}
      * @param c	the collection to sort
      * @return a list of the sorted items in the collection
      */
@@ -208,7 +207,7 @@ public class MiscUtil {
 
     /**
      * Randomly split the given list into a number of smaller lists.
-     *
+     * @param <T> the Class to List
      * @param list the list to split
      * @param nLists the number of smaller lists
      * @return an array of lists
@@ -232,7 +231,7 @@ public class MiscUtil {
      * @param path	the path within the JAR file to search
      * @param ext	desired extension, may be null
      * @return	an array of path names to the found resources
-     * @throws IOException
+     * @throws IOException if the file cant be found
      */
     public static String[] listFilesinJAR(@NotNull File jarFile, @NotNull String path, @Nullable String ext) throws IOException {
         ZipInputStream zip = new ZipInputStream(new FileInputStream(jarFile));
@@ -255,8 +254,8 @@ public class MiscUtil {
      *
      * @param file the file to load
      * @return the YAML configuration from that file
-     * @throws InvalidConfigurationException
-     * @throws IOException
+     * @throws InvalidConfigurationException  if the file cant be parsed
+     * @throws IOException if the file isnt found
      */
     @NotNull
     public static YamlConfiguration loadYamlUTF8(@NotNull File file) throws InvalidConfigurationException, IOException {

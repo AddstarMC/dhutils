@@ -52,7 +52,7 @@ public class FireworkEffectPlayer {
      * @param world bukkit world
      * @param loc the location
      * @param fe The firework effect
-     * @throws Exception
+     * @throws Exception if unable to run
      */
     public void playFirework(@NotNull World world, Location loc, FireworkEffect fe) throws Exception {
         // Bukkity load (CraftFirework)

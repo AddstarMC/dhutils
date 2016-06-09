@@ -341,7 +341,7 @@ public abstract class AbstractCommand implements Comparable<AbstractCommand> {
 	/**
 	 * Return a list of possible completions for the command for the given arguments.
 	 * Override this in subclasses.
-	 *
+	 * @param plugin  the plugin
 	 * @param sender the player doing the tab completion
 	 * @param args the argument list
 	 * @return a list of possible completions

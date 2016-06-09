@@ -69,8 +69,10 @@
         <module>PreRefactor</module>
 		<module>v1_9_R1</module>
         <module>v1_9_R2</module>
+        <module>v1_10_R1</module>
         <module>Fallback</module>
         <module>Lib</module>
+
     </modules>
 
     <!-- Define the repo here since multiple modules will be using it -->
@@ -120,6 +122,13 @@
                 <version>3.1</version>
                 <configuration>
                     <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+                <configuration>
                 </configuration>
             </plugin>
         </plugins>

@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author desht
  *
- * A wrapper class for the WorldEdit terrain loading & saving API to make things a little
+ * A wrapper class for the WorldEdit terrain loading and saving API to make things a little
  * simple for other plugins to use.
  */
 public class TerrainManager {
@@ -77,8 +77,10 @@ public class TerrainManager {
 	 * @param saveFile	a File representing the schematic file to create
 	 * @param l1	one corner of the region to save
 	 * @param l2	the corner of the region to save, opposite to l1
-	 * @throws DataException
-	 * @throws IOException
+	 * @throws DataException if Data is not on correct form
+	 * @throws IOException if File not found
+	 * @throws FilenameException if File name not formatted correctly
+
 	 */
 	public void saveTerrain(File saveFile, @NotNull Location l1, @NotNull Location l2) throws FilenameException, DataException, IOException {
 		Vector min = getMin(l1, l2);
@@ -101,11 +103,11 @@ public class TerrainManager {
 	 * 
 	 * @param saveFile	a File representing the schematic file to load
 	 * @param loc		the location to paste the clipboard at (may be null)
-	 * @throws FilenameException
-	 * @throws DataException
-	 * @throws IOException
-	 * @throws MaxChangedBlocksException
-	 * @throws EmptyClipboardException
+	 * @throws FilenameException if File name not formatted correctly
+	 * @throws DataException if Data is not on correct form
+	 * @throws IOException if File not found
+	 * @throws MaxChangedBlocksException if maxblocks changed is exceeded
+	 * @throws EmptyClipboardException If clipboard isnt empty.
 	 */
 	public void loadSchematic(File saveFile, Location loc) throws FilenameException, DataException, IOException, MaxChangedBlocksException, EmptyClipboardException {
 		saveFile = we.getSafeOpenFile(wePlayer,
@@ -135,11 +137,11 @@ public class TerrainManager {
 	 * Load the data from the given schematic file and paste it at the saved clipboard's origin.
 	 *
 	 * @param saveFile the File to load the schematic from
-	 * @throws FilenameException
-	 * @throws DataException
-	 * @throws IOException
-	 * @throws MaxChangedBlocksException
-	 * @throws EmptyClipboardException
+	 * @throws FilenameException if File name not formatted correctly
+	 * @throws DataException if Data is not on correct form
+	 * @throws IOException if File not found
+	 * @throws MaxChangedBlocksException if maxblocks changed is exceeded
+	 * @throws EmptyClipboardException If clipboard isnt empty.
 	 */
 	public void loadSchematic(File saveFile) throws FilenameException, DataException, IOException, MaxChangedBlocksException, EmptyClipboardException {
 		loadSchematic(saveFile, null);

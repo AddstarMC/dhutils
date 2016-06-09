@@ -155,7 +155,7 @@ public class MinecraftChatStr {
 	}
 
 	/**
-	 * pads str on the left & right with pad (center-align)
+	 * The string is padded left and right same as a centre alignment
 	 * @param str string to format
 	 * @param len spaces to pad
 	 * @param pad character to use when padding

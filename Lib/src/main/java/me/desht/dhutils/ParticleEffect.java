@@ -69,6 +69,13 @@ public enum ParticleEffect {
 
 	/**
 	 * Plays a particle effect at a location which is only shown to a specific player.
+	 * @param p the Player
+	 * @param loc the location
+	 * @param offsetX  the x offset to start the animation
+	 * @param offsetY the y offset as above
+	 * @param offsetZ the z offset as above
+	 * @param amount  the amount of effects.
+	 * @param speed speed of effect
 	 */
 	public void play(Player p, @NotNull Location loc, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
 		 sendPacket(p, createNormalPacket(this, loc, offsetX, offsetY, offsetZ, speed, amount));
@@ -76,6 +83,12 @@ public enum ParticleEffect {
 
 	 /**
 	  * Plays a particle effect at a location which is shown to all players in the current world.
+	  * @param loc the location
+	  * @param offsetX  the x offset to start the animation
+	  * @param offsetY the y offset as above
+	  * @param offsetZ the z offset as above
+	  * @param amount  the amount of effects.
+	  * @param speed speed of effect
 	  */
 	 public void play(@NotNull Location loc, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
 		 PacketContainer packet = createNormalPacket(this, loc, offsetX, offsetY, offsetZ, speed, amount);
@@ -86,6 +99,13 @@ public enum ParticleEffect {
 
 	 /**
 	  * Plays a particle effect at a location which is shown to all players within a certain range in the current world.
+	  * @param loc the location
+	  * @param range the range to show the animation
+	  * @param offsetX  the x offset to start the animation
+	  * @param offsetY the y offset as above
+	  * @param offsetZ the z offset as above
+	  * @param amount  the amount of effects.
+	  * @param speed speed of effect
 	  */
 	 public void play(@NotNull Location loc, double range, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
 		 PacketContainer packet = createNormalPacket(this, loc, offsetX, offsetY, offsetZ, speed, amount);
@@ -99,6 +119,14 @@ public enum ParticleEffect {
 
 	 /**
 	  * Plays a tilecrack effect at a location which is only shown to a specific player.
+	  * @param p the Player
+	  * @param loc the location
+	  * @param mat Material to crack
+	  * @param data byte
+	  * @param offsetX  the x offset to start the animation
+	  * @param offsetY the y offset as above
+	  * @param offsetZ the z offset as above
+	  * @param amount  the amount of effects.
 	  */
 	 public static void playTileCrack(Player p, @NotNull Location loc, @NotNull Material mat, byte data, float offsetX, float offsetY, float offsetZ, int amount) {
 		 sendPacket(p, createTileCrackPacket(mat, data, loc, offsetX, offsetY, offsetZ, amount));
@@ -106,6 +134,13 @@ public enum ParticleEffect {
 
 	 /**
 	  * Plays a tilecrack effect at a location which is shown to all players in the current world.
+	  * @param loc the location
+	  * @param mat Material to crack
+	  * @param data byte
+	  * @param offsetX  the x offset to start the animation
+	  * @param offsetY the y offset as above
+	  * @param offsetZ the z offset as above
+	  * @param amount  the amount of effects.
 	  */
 	 public static void playTileCrack(@NotNull Location loc, @NotNull Material mat, byte data, float offsetX, float offsetY, float offsetZ, int amount) {
 		 PacketContainer packet = createTileCrackPacket(mat, data, loc, offsetX, offsetY, offsetZ, amount);
@@ -115,7 +150,15 @@ public enum ParticleEffect {
 	 }
 
 	 /**
-	  * Plays a tilecrack effect at a location which is shown to all players within a certain range in the current world.
+	  * Plays a tilecrack effect at a location which is shown to all players within a certain range in the current world
+	  * @param loc the location
+	  * @param range the range to show the effect
+	  * @param mat Material to crack
+	  * @param data byte
+	  * @param offsetX  the x offset to start the animation
+	  * @param offsetY the y offset as above
+	  * @param offsetZ the z offset as above
+	  * @param amount  the amount of effects.
 	  */
 	 public static void playTileCrack(@NotNull Location loc, double range, @NotNull Material mat, byte data, float offsetX, float offsetY, float offsetZ, int amount) {
 		 PacketContainer packet = createTileCrackPacket(mat, data, loc, offsetX, offsetY, offsetZ, amount);
@@ -129,6 +172,13 @@ public enum ParticleEffect {
 
 	 /**
 	  * Plays an iconcrack effect at a location which is only shown to a specific player.
+	  * @param p the Player
+	  * @param mat the material
+	  * @param loc the location
+	  * @param offsetX  the x offset to start the animation
+	  * @param offsetY the y offset as above
+	  * @param offsetZ the z offset as above
+	  * @param amount  the amount of effects.
 	  */
 	 public static void playIconCrack(Player p, @NotNull Location loc, @NotNull Material mat, float offsetX, float offsetY, float offsetZ, int amount) {
 		 sendPacket(p, createIconCrackPacket(mat, loc, offsetX, offsetY, offsetZ, amount));
@@ -136,6 +186,12 @@ public enum ParticleEffect {
 
 	 /**
 	  * Plays an iconcrack effect at a location which is shown to all players in the current world.
+	  * @param mat the material
+	  * @param loc the location
+	  * @param offsetX  the x offset to start the animation
+	  * @param offsetY the y offset as above
+	  * @param offsetZ the z offset as above
+	  * @param amount  the amount of effects.
 	  */
 	 public static void playIconCrack(@NotNull Location loc, @NotNull Material mat, float offsetX, float offsetY, float offsetZ, int amount) {
 		 PacketContainer packet = createIconCrackPacket(mat, loc, offsetX, offsetY, offsetZ, amount);
@@ -146,6 +202,13 @@ public enum ParticleEffect {
 
 	 /**
 	  * Plays an iconcrack effect at a location which is shown to all players within a certain range in the current world.
+	  * @param mat the material
+	  * @param range the range
+	  * @param loc the location
+	  * @param offsetX  the x offset to start the animation
+	  * @param offsetY the y offset as above
+	  * @param offsetZ the z offset as above
+	  * @param amount  the amount of effects.
 	  */
 	 public static void playIconCrack(@NotNull Location loc, double range, @NotNull Material mat, float offsetX, float offsetY, float offsetZ, int amount) {
 		 PacketContainer packet = createIconCrackPacket(mat, loc, offsetX, offsetY, offsetZ, amount);

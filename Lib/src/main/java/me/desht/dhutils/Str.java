@@ -213,7 +213,7 @@ public class Str extends OutputStream {
 	}
 
 	/**
-	 * pads str on the left & right (space-padded) (center-align)
+	 * pads str on the left and right (space-padded) (center-align)
 	 * @param str the String to pad
 	 * @param len the length to pad too
 	 * @return center-aligned string
@@ -226,7 +226,7 @@ public class Str extends OutputStream {
 	}
 
 	/**
-	 * pads str on the left & right with pad (center-align)
+	 * pads str on the left and right with pad (center-align)
 	 * @param str the String to pad
 	 * @param len the length to pad too
 	 * @param pad the character to use for padding

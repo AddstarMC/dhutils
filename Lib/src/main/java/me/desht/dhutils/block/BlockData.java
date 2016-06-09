@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class BlockData {
     /**
-     * Rotate a block's data value 90 degrees (north->east->south->west->north);
+     *Rotate a block's data value 90 degrees (north east south west north);
      *
      * @param type An int showing the block type compared to a {@link BlockID enum}
      * @param data an int showing the data
@@ -219,7 +219,7 @@ public final class BlockData {
     }
 
     /**
-     * Rotate a block's data value -90 degrees (north<-east<-south<-west<-north);
+     * Rotate a block's data value -90 degrees (north -  east -  south -  west -  north);
      *
      * @param type The BlockType as an Int
      * @param data the current block rotation

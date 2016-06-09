@@ -17,7 +17,7 @@ public class PluginVersionChecker {
 
 	/**
 	 * Get the internal version number for the given string version, which is
-	 * <major> * 1,000,000 + <minor> * 1,000 + <release>.  This assumes minor and
+	 * (major) * 1,000,000 + (minor)* 1,000 + (release).  This assumes minor and
 	 * release each won't go above 999, hopefully a safe assumption!
 	 *
 	 * @param ver the version string as returned by {@link org.bukkit.plugin.PluginDescriptionFile#getVersion()}

@@ -253,6 +253,7 @@ public class FlightController {
 
 	/**
 	 * Retrieve whether or not the player is permitted to fly.
+	 * @param player The player to check
 	 * @return TRUE if it is, FALSE otherwise.
 	 */
 	public boolean getFlight(@NotNull Player player) {

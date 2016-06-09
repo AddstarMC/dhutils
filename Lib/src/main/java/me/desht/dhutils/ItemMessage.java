@@ -80,7 +80,7 @@ public class ItemMessage {
 	/**
 	 * Send a popup message to the player, with a default duration of 2 seconds and default
 	 * priority level of 0.
-	 *
+	 * @param player  the player to send the message too
 	 * @param message the message to send
 	 * @throws IllegalStateException if the player is unavailable (e.g. went offline)
 	 */
@@ -91,7 +91,7 @@ public class ItemMessage {
 	/**
 	 * Send a popup message to the player, for the given duration and default priority level
 	 * of 0.
-	 *
+	 * @param player  the player to send the message too
 	 * @param message the message to send
 	 * @param duration the duration, in seconds, for which the message will be displayed
 	 * @throws IllegalStateException if the player is unavailable (e.g. went offline)
@@ -102,7 +102,7 @@ public class ItemMessage {
 
 	/**
 	 * Send a popup message to the player, for the given duration and priority level.
-	 *
+	 * @param player  the player to send the message too
 	 * @param message the message to send
 	 * @param duration the duration, in seconds, for which the message will be displayed
 	 * @param priority priority of this message

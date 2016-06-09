@@ -14,6 +14,7 @@ public class Duration {
 	 * @param h Hours
 	 * @param m Minutes
 	 * @param s Seconds
+	 * @param ms milliseconds
 	 */
 	public Duration(long d, long h, long m, long s, long ms) {
 		this(ms + (s + m * 60 + h * 3600 + d * 86400) * 1000);
