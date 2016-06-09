@@ -3,8 +3,6 @@ package me.desht.dhutils;
 import java.util.Map;
 import java.util.logging.Level;
 
-import javax.annotation.Nullable;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -21,6 +19,8 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.MapMaker;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 // Not thread safe
 
@@ -37,7 +37,7 @@ public class FlightController {
 		 * @param player - the player.
 		 * @param controller - the new controller plugin.
 		 */
-		public void onChanged(Player player, Plugin controller);
+		void onChanged(Player player, Plugin controller);
 	}
 
 	// How a change is encoded as a string
@@ -67,7 +67,9 @@ public class FlightController {
 	private final Plugin plugin;
 
 	// Controller listener
+	@Nullable
 	private Function<Object[], Object> serviceHook;
+	@Nullable
 	private OnControllerChanged controllerListener;
 	private Map<Player, Plugin> controllers = new MapMaker().weakKeys().weakValues().makeMap();
 
@@ -90,7 +92,7 @@ public class FlightController {
 	 * @param permitted - TRUE if the player is to be allowed to fly, FALSE otherwise.
 	 * @return TRUE if we succeeded in changing the value, FALSE otherwise.
 	 */
-	public boolean changeFlight(Player player, boolean permitted) {
+	public boolean changeFlight(@NotNull Player player, boolean permitted) {
 		return changeFlight(player, permitted, Priority.NORMAL);
 	}
 
@@ -106,7 +108,7 @@ public class FlightController {
 	 * @param priority - the priority of our change request.
 	 * @return TRUE if we succeeded in changing the value, FALSE otherwise.
 	 */
-	public boolean changeFlight(Player player, boolean permitted, Priority priority) {
+	public boolean changeFlight(@NotNull Player player, boolean permitted, Priority priority) {
 		int changeNumber = getChangeNumber(player) + 1;
 
 		// Save metadata
@@ -120,7 +122,8 @@ public class FlightController {
 	 * @param player - the player to update.
 	 * @return The plugin whose value we set, or NULL if the value was not updated.
 	 */
-	private Plugin updateFlight(Player player) {
+	@Nullable
+	private Plugin updateFlight(@NotNull Player player) {
 		Boolean state = null;
 		Plugin bestPlugin = null;
 		Priority bestPriority = Priority.LOW;
@@ -166,7 +169,8 @@ public class FlightController {
 	 * @param player - the player.
 	 * @return The controller plugin.
 	 */
-	public Plugin getController(Player player) {
+	@Nullable
+	public Plugin getController(@NotNull Player player) {
 		Plugin plugin = controllers.get(player);
 
 		if (plugin == null)
@@ -178,7 +182,7 @@ public class FlightController {
 	 * Set the listener that is informed whenever the plugin controller switches for a player.
 	 * @param controllerListener - the new controller listener, or NULL to disable.
 	 */
-	public void setControllerListener(OnControllerChanged controllerListener) {
+	public void setControllerListener(@Nullable OnControllerChanged controllerListener) {
 		this.controllerListener = controllerListener;
 
 		// Note that we appropriate Function for our purpose here,
@@ -186,12 +190,12 @@ public class FlightController {
 		if (controllerListener != null) {
 			if (serviceHook == null) {
 				// Prepare a "service" that intercepts the changed value
-				serviceHook = new Function<Object[], Object>() {
-					@Override
-					public Object apply(@Nullable Object[] args) {
+				serviceHook = args -> {
+					try {
 						invokeControllerChanged((Player) args[0], (Plugin) args[1]);
-						return null;
+					} catch (NullPointerException e) {//Supress NPE
 					}
+					return null;
 				};
 
 				Bukkit.getServicesManager().register(Function.class, serviceHook,
@@ -218,7 +222,7 @@ public class FlightController {
 	 * @param player - the player.
 	 * @param controller - the new controller.
 	 */
-	private void invokeControllerChanged(Player player, Plugin controller) {
+	private void invokeControllerChanged(Player player, @Nullable Plugin controller) {
 		if (controllerListener != null) {
 			Plugin lastController = controller != null ?
 					controllers.put(player, controller) :
@@ -238,7 +242,7 @@ public class FlightController {
 	 * @param player - the player we no longer wishes to modify.
 	 * @param fallbackValue - flight value to set if there are no other change requests.
 	 */
-	public void yieldControl(Player player, boolean fallbackValue) {
+	public void yieldControl(@NotNull Player player, boolean fallbackValue) {
 		player.removeMetadata(METADATA_CHANGE, plugin);
 
 		if (updateFlight(player) == null) {
@@ -251,7 +255,7 @@ public class FlightController {
 	 * Retrieve whether or not the player is permitted to fly.
 	 * @return TRUE if it is, FALSE otherwise.
 	 */
-	public boolean getFlight(Player player) {
+	public boolean getFlight(@NotNull Player player) {
 		return player.getAllowFlight();
 	}
 
@@ -261,7 +265,7 @@ public class FlightController {
 	 * @param key - the metadata key.
 	 * @param value - the new metadata value.
 	 */
-	private void setMetadata(Metadatable target, String key, Object value) {
+	private void setMetadata(@NotNull Metadatable target, String key, Object value) {
 		target.setMetadata(key, new FixedMetadataValue(plugin, value));
 	}
 
@@ -270,7 +274,7 @@ public class FlightController {
 	 * @param player - the player.
 	 * @return The latest change, or -1 if not found.
 	 */
-	private int getChangeNumber(Player player) {
+	private int getChangeNumber(@NotNull Player player) {
 		int latest = -1;
 
 		for (MetadataValue value : player.getMetadata(METADATA_CHANGE_NUMBER)) {

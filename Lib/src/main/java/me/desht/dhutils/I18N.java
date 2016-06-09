@@ -12,6 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class I18N {
 	private static final String LOCALE_NAME = "==NAME";
@@ -19,19 +21,22 @@ public class I18N {
 	public static final String FALLBACK_LOCALE = "en_US";
 	public static final String DEFAULT_LANG_DIR = "lang";
 
+	@Nullable
 	private static I18N instance = null;
 
 	private String defaultLocale = FALLBACK_LOCALE;
-	private final Map<String, Configuration> catalogs = new HashMap<String, Configuration>();
-	private final Map<String, Configuration> playerLocales = new HashMap<String, Configuration>();
+	private final Map<String, Configuration> catalogs = new HashMap<>();
+	private final Map<String, Configuration> playerLocales = new HashMap<>();
+	@NotNull
 	private final File languageDirectory;
 
-	private I18N(Plugin plugin, String defaultLocale, String langDir) {
+	private I18N(@NotNull Plugin plugin, @Nullable String defaultLocale, @Nullable String langDir) {
 		this.defaultLocale = defaultLocale == null ? FALLBACK_LOCALE : defaultLocale;
 		loadCatalog(defaultLocale);
 		this.languageDirectory = new File(plugin.getDataFolder(), langDir == null ? DEFAULT_LANG_DIR : langDir);
 	}
 
+	@NotNull
 	@SuppressWarnings("CloneDoesntCallSuperClone")
 	@Override
 	public I18N clone() throws CloneNotSupportedException {
@@ -44,7 +49,8 @@ public class I18N {
 	 * @param plugin the plugin instance
 	 * @return the singleton I18N object
 	 */
-	public static synchronized I18N init(Plugin plugin) {
+	@Nullable
+	public static synchronized I18N init(@NotNull Plugin plugin) {
 		return init(plugin, null, null);
 	}
 
@@ -56,7 +62,8 @@ public class I18N {
 	 * @param langDir the language directory (or null to use the default)
 	 * @return the singleton I18N object
 	 */
-	public static synchronized I18N init(Plugin plugin, String defaultLocale, String langDir) {
+	@Nullable
+	public static synchronized I18N init(@NotNull Plugin plugin, String defaultLocale, String langDir) {
 		instance = new I18N(plugin, defaultLocale, langDir);
 		return instance;
 	}
@@ -66,6 +73,7 @@ public class I18N {
 	 *
 	 * @return the singleton I18N object
 	 */
+	@Nullable
 	public static synchronized I18N getInstance() {
 		return instance;
 	}
@@ -76,7 +84,7 @@ public class I18N {
 	 * @param sender the command sender to check for
 	 * @return the current locale for the command sender
 	 */
-	public String getLocale(CommandSender sender) {
+	public String getLocale(@NotNull CommandSender sender) {
 		return playerLocales.containsKey(sender.getName()) ? playerLocales.get(sender.getName()).getString(LOCALE_NAME) : defaultLocale;
 	}
 
@@ -106,7 +114,7 @@ public class I18N {
 	 * @param sender the command sender
 	 * @param locale the new locale
 	 */
-	public void setLocale(CommandSender sender, String locale) {
+	public void setLocale(@NotNull CommandSender sender, String locale) {
 		Configuration c = getMessageCatalog(locale);
 		if (c != null) {
 			playerLocales.put(sender.getName(), c);
@@ -142,7 +150,7 @@ public class I18N {
 		}
 	}
 
-	private Configuration getMessageCatalog(CommandSender sender) {
+	private Configuration getMessageCatalog(@Nullable CommandSender sender) {
 		return sender == null ? playerLocales.get(defaultLocale) : playerLocales.get(sender.getName());
 	}
 
@@ -173,7 +181,7 @@ public class I18N {
 		// ensure that the config we're loading has all of the messages that the fallback has,
 		// and make a note of any missing translations
 		if (fallbackMessages != null && conf.getKeys(true).size() != fallbackMessages.getKeys(true).size()) {
-			List<String> missingKeys = new ArrayList<String>();
+			List<String> missingKeys = new ArrayList<>();
 			for (String key : fallbackMessages.getKeys(true)) {
 				if (!conf.contains(key) && !fallbackMessages.isConfigurationSection(key)) {
 					conf.set(key, fallbackMessages.get(key));
@@ -191,7 +199,8 @@ public class I18N {
 		return conf;
 	}
 
-	private File locateMessageFile(File wanted) {
+	@Nullable
+	private File locateMessageFile(@Nullable File wanted) {
 		if (wanted == null) {
 			return null;
 		}

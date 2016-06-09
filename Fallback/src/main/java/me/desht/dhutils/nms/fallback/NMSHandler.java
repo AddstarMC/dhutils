@@ -6,11 +6,12 @@ import org.bukkit.entity.Player;
 
 import me.desht.dhutils.nms.api.NMSAbstraction;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class NMSHandler implements NMSAbstraction {
 
 	@Override
-	public boolean setBlockFast(World world, int x, int y, int z, int blockId, byte data) {
+	public boolean setBlockFast(@NotNull World world, int x, int y, int z, int blockId, byte data) {
 		return world.getBlockAt(x, y, z).setTypeIdAndData(blockId, data, false);
 	}
 
@@ -30,12 +31,13 @@ public class NMSHandler implements NMSAbstraction {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void queueChunkForUpdate(Player player, int cx, int cz) {
+	public void queueChunkForUpdate(@NotNull Player player, int cx, int cz) {
 		player.getWorld().refreshChunk(cx, cz);
 	}
 
+	@NotNull
 	@Override
-	public Vector[] getBlockHitbox(Block block) {
+	public Vector[] getBlockHitbox(@NotNull Block block) {
 		return new Vector[] {
 				new Vector(block.getX(), block.getY(), block.getZ()),
 				new Vector(block.getX() + 1, block.getY() + 1, block.getZ() + 1),

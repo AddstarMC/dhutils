@@ -1,11 +1,15 @@
 package me.desht.dhutils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 
 public class MapUtil {
+	@NotNull
 	private static final IndexColorModel mapColorModel;
+	@NotNull
 	private static final Color[] mapColors;
 
 	private static final byte[] chatColorToMapPalette = new byte[] {
@@ -89,6 +93,7 @@ public class MapUtil {
 		mapColorModel = new IndexColorModel(8, mapColors.length, r, g, b, a);
 	}
 
+	@NotNull
 	public static BufferedImage createMapBuffer() {
 		return new BufferedImage(128, 128, BufferedImage.TYPE_BYTE_INDEXED, mapColorModel);
 	}

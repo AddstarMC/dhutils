@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import org.jetbrains.annotations.NotNull;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -42,6 +43,7 @@ public class ItemMessage {
 	private static final String METADATA_ID_KEY = "item-message:id";
 	private final Plugin plugin;
 
+	@org.jetbrains.annotations.NotNull
 	private String[] formats = new String[] { DEF_FORMAT_1, DEF_FORMAT_2 };
 	private Material emptyHandReplacement = Material.SNOW;
 
@@ -67,10 +69,10 @@ public class ItemMessage {
 	/**
 	 * Set which item the player should held if he receives a message
 	 * without having something in his hand. Default is a snow layer
-	 * @param material
+	 * @param material the Material to check
 	 * @throws IllegalArgumentException if material is null
 	 */
-	public void setEmptyHandReplacement(Material material){
+	public void setEmptyHandReplacement(Material material) throws IllegalArgumentException {
 		Validate.notNull(material,"There must be a replacement for an empty hand!");
 		this.emptyHandReplacement = material;
 	}
@@ -82,7 +84,7 @@ public class ItemMessage {
 	 * @param message the message to send
 	 * @throws IllegalStateException if the player is unavailable (e.g. went offline)
 	 */
-	public void sendMessage(Player player, String message) {
+	public void sendMessage(@NotNull Player player, String message) throws IllegalStateException {
 		sendMessage(player, message, DEFAULT_DURATION, DEFAULT_PRIORITY);
 	}
 
@@ -94,7 +96,7 @@ public class ItemMessage {
 	 * @param duration the duration, in seconds, for which the message will be displayed
 	 * @throws IllegalStateException if the player is unavailable (e.g. went offline)
 	 */
-	public void sendMessage(Player player, String message, int duration) {
+	public void sendMessage(@NotNull Player player, String message, int duration) throws IllegalStateException {
 		sendMessage(player, message, duration, DEFAULT_PRIORITY);
 	}
 
@@ -106,7 +108,7 @@ public class ItemMessage {
 	 * @param priority priority of this message
 	 * @throws IllegalStateException if the player is unavailable (e.g. went offline)
 	 */
-	public void sendMessage(Player player, String message, int duration, int priority) {
+	public void sendMessage(@NotNull Player player, String message, int duration, int priority) throws IllegalStateException {
 		if (player.getGameMode() == GameMode.CREATIVE) {
 			// TODO: this doesn't work properly in creative mode.  Need to investigate further
 			// if it can be made to work, but for now, just send an old-fashioned chat message.
@@ -130,7 +132,7 @@ public class ItemMessage {
 	 * @param formats the format strings
 	 * @throws IllegalArgumentException if the strings are the same, or do not contain a %s
 	 */
-	public void setFormats(String... formats){
+	public void setFormats(@NotNull String... formats) throws IllegalArgumentException {
 		Validate.isTrue(formats.length > 1, "Two formats are minimum!");
 		for(String format : formats){
 			Validate.isTrue(format.contains("%s"), "format string \"" + format + "\" must contain a %s");
@@ -138,7 +140,7 @@ public class ItemMessage {
 		this.formats = formats;
 	}
 
-	private long getNextId(Player player) {
+	private long getNextId(@NotNull Player player) {
 		long id;
 		if (player.hasMetadata(METADATA_ID_KEY)) {
 			List<MetadataValue> l = player.getMetadata(METADATA_ID_KEY);
@@ -151,7 +153,7 @@ public class ItemMessage {
 	}
 
 	@SuppressWarnings("unchecked")
-	private PriorityQueue<MessageRecord> getMessageQueue(Player player) {
+	private PriorityQueue<MessageRecord> getMessageQueue(@NotNull Player player) {
 		if (!player.hasMetadata(METADATA_Q_KEY)) {
 			player.setMetadata(METADATA_Q_KEY, new FixedMetadataValue(plugin, new PriorityQueue<MessageRecord>()));
 		}
@@ -163,7 +165,7 @@ public class ItemMessage {
 		return null;
 	}
 
-	private void notifyDone(Player player) {
+	private void notifyDone(@NotNull Player player) {
 		PriorityQueue<MessageRecord> msgQueue = getMessageQueue(player);
 		msgQueue.poll();
 		if (!msgQueue.isEmpty()) {
@@ -206,13 +208,14 @@ public class ItemMessage {
 	}
 
 	private class NamerTask extends BukkitRunnable implements Listener	{
+		@org.jetbrains.annotations.NotNull
 		private final WeakReference<Player> playerRef;
 		private final String message;
 		private int slot;
 		private int iterations;
 
-		public NamerTask(Player player, MessageRecord rec) {
-			this.playerRef = new WeakReference<Player>(player);
+		public NamerTask(@NotNull Player player, @org.jetbrains.annotations.NotNull MessageRecord rec) {
+			this.playerRef = new WeakReference<>(player);
 			this.iterations = Math.max(1, (rec.getDuration() * 20) / interval);
 			this.slot = player.getInventory().getHeldItemSlot();
 			this.message = rec.getMessage();
@@ -220,7 +223,7 @@ public class ItemMessage {
 		}
 
 		@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-		public void onItemHeldChange(PlayerItemHeldEvent event) {
+		public void onItemHeldChange(@NotNull PlayerItemHeldEvent event) {
 			Player player = event.getPlayer();
 			if (player.equals(playerRef.get())) {
 				sendItemSlotChange(player, event.getPreviousSlot(), player.getInventory().getItem(event.getPreviousSlot()));
@@ -230,7 +233,7 @@ public class ItemMessage {
 		}
 
 		@EventHandler
-		public void onPluginDisable(PluginDisableEvent event) {
+		public void onPluginDisable(@NotNull PluginDisableEvent event) {
 			Player player = playerRef.get();
 			if (event.getPlugin() == plugin && player != null) {
 				getMessageQueue(player).clear();
@@ -255,11 +258,11 @@ public class ItemMessage {
 			}
 		}
 
-		private void refresh(Player player) {
+		private void refresh(@NotNull Player player) {
 			sendItemSlotChange(player, slot, makeStack(player));
 		}
 
-		private void finish(Player player) {
+		private void finish(@NotNull Player player) {
 			sendItemSlotChange(player, slot, player.getInventory().getItem(slot));
 			notifyDone(player);
 			cleanup();
@@ -270,7 +273,7 @@ public class ItemMessage {
 			HandlerList.unregisterAll(this);
 		}
 
-		private ItemStack makeStack(Player player) {
+		private ItemStack makeStack(@NotNull Player player) {
 			ItemStack stack0 = player.getInventory().getItem(slot);
 			ItemStack stack;
 			if (stack0 == null || stack0.getType() == Material.AIR) {
@@ -331,7 +334,7 @@ public class ItemMessage {
 		}
 
 		@Override
-		public int compareTo(Object other) {
+		public int compareTo(@NotNull Object other) {
 			MessageRecord rec = importOtherMessageRecord(other);
 			if (rec != null) {
 				if (this.priority == rec.getPriority()) {

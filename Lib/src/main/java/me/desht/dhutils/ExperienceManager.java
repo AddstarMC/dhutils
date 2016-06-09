@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author desht
@@ -24,6 +26,7 @@ public class ExperienceManager {
 
 	private static int xpTotalToReachLevel[];
 
+	@NotNull
 	private final WeakReference<Player> player;
 	private final String playerName;
 
@@ -39,9 +42,9 @@ public class ExperienceManager {
 	 * @param player the player for this ExperienceManager object
 	 * @throws IllegalArgumentException if the player is null
 	 */
-	public ExperienceManager(Player player) {
+	public ExperienceManager(@NotNull Player player) {
 		Validate.notNull(player, "Player cannot be null");
-		this.player = new WeakReference<Player>(player);
+		this.player = new WeakReference<>(player);
 		this.playerName = player.getName();
 	}
 
@@ -83,9 +86,9 @@ public class ExperienceManager {
 	 * Calculate the level that the given XP quantity corresponds to, without
 	 * using the lookup tables. This is needed if getLevelForExp() is called
 	 * with an XP quantity beyond the range of the existing lookup tables.
-	 * 
-	 * @param exp
-	 * @return
+	 *
+	 * @param exp the XP quantity
+	 * @return the level it corresponds to
 	 */
 	private static int calculateLevelForExp(int exp) {
 		int level = 0;
@@ -106,6 +109,7 @@ public class ExperienceManager {
 	 * @return the Player object
 	 * @throws IllegalStateException if the player is no longer online
 	 */
+	@Nullable
 	public Player getPlayer() {
 		Player p = player.get();
 		if (p == null) {
@@ -183,7 +187,7 @@ public class ExperienceManager {
 		Player player = getPlayer();
 
 		int lvl = player.getLevel();
-		int cur = getXpForLevel(lvl) + (int) Math.round(getXpNeededToLevelUp(lvl) * player.getExp());
+		int cur = getXpForLevel(lvl) + Math.round(getXpNeededToLevelUp(lvl) * player.getExp());
 		return cur;
 	}
 

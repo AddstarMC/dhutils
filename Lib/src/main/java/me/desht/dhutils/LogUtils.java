@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class LogUtils {
 
@@ -14,7 +16,7 @@ public class LogUtils {
 		logger = Logger.getLogger(name);
 	}
 
-	public static void init(Plugin plugin) {
+	public static void init(@NotNull Plugin plugin) {
 		logger = plugin.getLogger();
 
 		// this feels a bit hack-ish, but it avoids the problem where we would need to
@@ -30,7 +32,7 @@ public class LogUtils {
 		return logger.getLevel();
 	}
 
-	public static void setLogLevel(Level level) {
+	public static void setLogLevel(@NotNull Level level) {
 		logger.setLevel(level);
 		for (Handler h : logger.getHandlers()) {
 			h.setLevel(level);
@@ -40,10 +42,10 @@ public class LogUtils {
 	/**
 	 * Set the new log level
 	 *
-	 * @param val
+	 * @param val the value to set the log level too
 	 * @throws IllegalArgumentException if the value does not represent a valid log level
 	 */
-	public static void setLogLevel(String val) {
+	public static void setLogLevel(@NotNull String val) throws IllegalArgumentException {
 		setLogLevel(Level.parse(val.toUpperCase()));
 	}
 
@@ -75,7 +77,7 @@ public class LogUtils {
 		logger.severe(message);
 	}
 
-	public static void warning(String message, Exception err) {
+	public static void warning(String message, @Nullable Exception err) {
 		if (err == null) {
 			warning(message);
 		} else {
@@ -83,7 +85,7 @@ public class LogUtils {
 		}
 	}
 
-	public static void severe(String message, Exception err) {
+	public static void severe(String message, @Nullable Exception err) {
 		if (err == null) {
 			severe(message);
 		} else {
@@ -91,7 +93,7 @@ public class LogUtils {
 		}
 	}
 
-	private static String getMsg(String message, Exception e) {
+	private static String getMsg(@Nullable String message, @NotNull Exception e) {
 		return message == null ? e.getMessage() : ChatColor.stripColor(message);
 	}
 

@@ -5,8 +5,11 @@ import java.lang.reflect.InvocationTargetException;
 import me.desht.dhutils.nms.api.NMSAbstraction;
 
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class NMSHelper {
+	@Nullable
 	private static NMSAbstraction nms = null;
 
 	// This little hack ensures that these classes won't be excluded by Maven if the JAR
@@ -19,13 +22,15 @@ public class NMSHelper {
 			me.desht.dhutils.nms.v1_9_R2.NMSHandler.class
 	};
 
-	public static NMSAbstraction init(Plugin plugin) throws ClassNotFoundException, IllegalArgumentException,
+	@Nullable
+	public static NMSAbstraction init(@NotNull Plugin plugin) throws ClassNotFoundException, IllegalArgumentException,
 			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException {
 		return init(plugin, false);
 	}
 
-	public static NMSAbstraction init(Plugin plugin, boolean fallbackOk) throws ClassNotFoundException, IllegalArgumentException,
+	@Nullable
+	public static NMSAbstraction init(@NotNull Plugin plugin, boolean fallbackOk) throws ClassNotFoundException, IllegalArgumentException,
 			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException {
 
@@ -70,12 +75,14 @@ public class NMSHelper {
 		return nms;
 	}
 
-    public static NMSAbstraction initFallback() {
-        nms = new me.desht.dhutils.nms.fallback.NMSHandler();
+	@Nullable
+	public static NMSAbstraction initFallback() {
+		nms = new me.desht.dhutils.nms.fallback.NMSHandler();
 
         return nms;
     }
 
+	@Nullable
 	public static NMSAbstraction getNMS() {
 		return nms;
 	}

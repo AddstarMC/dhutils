@@ -18,17 +18,18 @@ import org.bukkit.potion.PotionEffectType;
 
 import me.desht.dhutils.ExperienceManager;
 import me.desht.dhutils.MiscUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @Deprecated
-/**
- * @deprecated Use {@link me.desht.dhutils.cost.Cost}
- */
 public class Cost {
 
+	@Nullable
 	private static Economy economy = null;
 
 	private final CostType type;
 	private final int id;
+	@Nullable
 	private final Short data;
 	private final double quantity;
 
@@ -73,7 +74,7 @@ public class Cost {
 	 * @param costSpec	The specification, in the format <i>id[:data],quantity</i>
 	 * @throws IllegalArgumentException if the specification contains an error
 	 */
-	public Cost(String costSpec) {
+	public Cost(@NotNull String costSpec) {
 		//System.out.println("cost = " + costSpec);
 		String[] itemAndQuantity = costSpec.split(",");
 		if (itemAndQuantity.length < 2) {
@@ -139,6 +140,7 @@ public class Cost {
 		return id;
 	}
 
+	@Nullable
 	public Short getData() {
 		return data;
 	}
@@ -151,12 +153,14 @@ public class Cost {
 		return type;
 	}
 
+	@NotNull
 	@Override
 	public String toString() {
 		String dataStr = data == null ? "" : ":" + data;
 		return type.toString() + "," + id + dataStr + "," + quantity;
 	}
 
+	@Nullable
 	public String getDescription() {
 		switch (type) {
 		case MONEY:
@@ -201,7 +205,7 @@ public class Cost {
 		HashMap<Integer, ? extends ItemStack> matchingInvSlots;
 		switch (getType()) {
 		case MONEY:
-			return economy == null || !economy.isEnabled() ? false : economy.has(player.getName(), getQuantity());
+			return !(economy == null || !economy.isEnabled()) && economy.has(player.getName(), getQuantity());
 		case ITEM:
 			matchingInvSlots = player.getInventory().all(Material.getMaterial(getId()));
 			int remainingCheck = (int) getQuantity();
@@ -299,9 +303,9 @@ public class Cost {
 	/**
 	 * Give items to a player.
 	 *
-	 * @param player
+	 * @param player the Player
 	 */
-	public void grantItems(Player player) {
+	public void grantItems(@Nullable Player player) {
 		if (player == null) {
 			return;
 		}
@@ -325,9 +329,9 @@ public class Cost {
 	 * Take items from a player's inventory.  Doesn't check to see if there is enough -
 	 * use playerCanAfford() for that.
 	 *
-	 * @param player
+	 * @param player the Player
 	 */
-	public void chargeItems(Player player) {
+	public void chargeItems(@Nullable Player player) {
 		if (player == null) {
 			return;
 		}
@@ -351,11 +355,12 @@ public class Cost {
 		}
 	}
 
+	@Nullable
 	private ItemStack makeStack(int quantity) {
 		return data == null ? new ItemStack(getId(), quantity) : new ItemStack(getId(), quantity, getData());
 	}
 
-	private int addItems(Player player, int quantity) {
+	private int addItems(@NotNull Player player, int quantity) {
 		Map<Integer, ItemStack> toDrop = player.getInventory().addItem(makeStack(quantity));
 		if (toDrop.size() == 0) {
 			return 0;
@@ -369,7 +374,7 @@ public class Cost {
 		return dropped;
 	}
 
-	private void chargeDurability(Player player) {
+	private void chargeDurability(@NotNull Player player) {
 		Material mat = Material.getMaterial(getId());
 		short maxDurability = mat.getMaxDurability();
 
@@ -388,8 +393,7 @@ public class Cost {
 
 			if (newDurability >= maxDurability) {
 				// break the item - reduce inventory count by 1
-				//FIXME: No item break sound anymore
-				//player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
+				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
 				int newAmount = entry.getValue().getAmount() - 1;
 				if (newAmount == 0) {
 					player.getInventory().setItem(entry.getKey(), new ItemStack(0));
@@ -418,7 +422,7 @@ public class Cost {
 	 * @param sender	The player to charge
 	 * @param costs		A List of Cost objects
 	 */
-	public static void chargePlayer(CommandSender sender, List<Cost> costs) {
+	public static void chargePlayer(CommandSender sender, @NotNull List<Cost> costs) {
 		for (Cost c : costs) {
 			c.chargePlayer(sender);
 		}
@@ -427,11 +431,11 @@ public class Cost {
 	/**
 	 * Check if the player can afford to pay the costs.
 	 *
-	 * @param sender
-	 * @param costs
+	 * @param sender the Sender
+	 * @param costs a List of costs
 	 * @return	True if the costs are affordable, false otherwise
 	 */
-	public static boolean playerCanAfford(CommandSender sender, List<Cost> costs) {
+	public static boolean playerCanAfford(CommandSender sender, @NotNull List<Cost> costs) {
 		for (Cost c : costs) {
 			if (!c.isAffordable(sender))
 				return false;
@@ -442,11 +446,11 @@ public class Cost {
 	/**
 	 * Check if the costs are applicable.
 	 *
-	 * @param sender
-	 * @param costs
-	 * @return
+	 * @param sender the Sender
+	 * @param costs a List of cost
+	 * @return {@code True} if the cost is applicable to the sender
 	 */
-	public static boolean isApplicable(CommandSender sender, List<Cost> costs) {
+	public static boolean isApplicable(CommandSender sender, @NotNull List<Cost> costs) {
 		for (Cost c : costs) {
 			if (!c.isApplicable(sender))
 				return false;

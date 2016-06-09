@@ -13,19 +13,25 @@ import java.util.Map;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ConfigurationManager {
 
+	@Nullable
 	private final Plugin plugin;
 	private final Configuration config;
+	@NotNull
 	private final Configuration descConfig;
-	private final Map<String,Class<?>> forceTypes = new HashMap<String,Class<?>>();
+	private final Map<String, Class<?>> forceTypes = new HashMap<>();
 
+	@Nullable
 	private ConfigurationListener listener;
+	@Nullable
 	private String prefix;
 	private boolean validate = true;
 
-	public ConfigurationManager(Plugin plugin, ConfigurationListener listener) {
+	public ConfigurationManager(@NotNull Plugin plugin, ConfigurationListener listener) {
 		this.plugin = plugin;
 		this.prefix = null;
 		this.listener = listener;
@@ -38,7 +44,7 @@ public class ConfigurationManager {
 		plugin.saveConfig();
 	}
 
-	public ConfigurationManager(Plugin plugin) {
+	public ConfigurationManager(@NotNull Plugin plugin) {
 		this(plugin, null);
 	}
 
@@ -58,6 +64,7 @@ public class ConfigurationManager {
 		this.validate = validate;
 	}
 
+	@Nullable
 	public Plugin getPlugin() {
 		return plugin;
 	}
@@ -74,6 +81,7 @@ public class ConfigurationManager {
 		forceTypes.put(key, c);
 	}
 
+	@Nullable
 	public String getPrefix() {
 		return prefix;
 	}
@@ -106,7 +114,7 @@ public class ConfigurationManager {
 		}
 	}
 
-	public void insert(String key, Object def) {
+	public void insert(@NotNull String key, Object def) {
 		String keyPrefixed = addPrefix(key);
 		if (config.contains(keyPrefixed)) {
 			throw new DHUtilsException("Config item already exists: " + keyPrefixed);
@@ -115,7 +123,7 @@ public class ConfigurationManager {
 		config.getDefaults().set(key, def);
 	}
 
-	public Object get(String key) {
+	public Object get(@NotNull String key) {
 		String keyPrefixed = addPrefix(key);
 
 		if (!config.contains(keyPrefixed)) {
@@ -125,13 +133,13 @@ public class ConfigurationManager {
 		return config.get(keyPrefixed);
 	}
 
-	public Object check(String key) {
+	public Object check(@NotNull String key) {
 		String keyPrefixed = addPrefix(key);
 
 		return config.get(keyPrefixed);
 	}
 
-	public void set(String key, String val) {
+	public void set(@NotNull String key, String val) {
 		Object current = get(key);
 
 		setItem(key, val);
@@ -145,7 +153,7 @@ public class ConfigurationManager {
 		}
 	}
 
-	public <T> void set(String key, List<T> val) {
+	public <T> void set(@NotNull String key, List<T> val) {
 		Object current = get(key);
 
 		setItem(key, val);
@@ -159,15 +167,16 @@ public class ConfigurationManager {
 		}
 	}
 
-	public String addPrefix(String key) {
+	@NotNull
+	public String addPrefix(@NotNull String key) {
 		return prefix == null ? key : prefix + "."	 + key;
 	}
 
-	public String removePrefix(String k) {
+	public String removePrefix(@NotNull String k) {
 		return k.replaceAll("^" + prefix + "\\.", "");
 	}
 
-	public void setDescription(String key, String desc) {
+	public void setDescription(@NotNull String key, String desc) {
 		String keyPrefixed = addPrefix(key);
 		if (!config.contains(keyPrefixed)) {
 			throw new DHUtilsException("No such config item: " + keyPrefixed);
@@ -175,7 +184,7 @@ public class ConfigurationManager {
 		descConfig.set(keyPrefixed, desc);
 	}
 
-	public String getDescription(String key) {
+	public String getDescription(@NotNull String key) {
 		String keyPrefixed = addPrefix(key);
 		if (!config.contains(keyPrefixed)) {
 			throw new DHUtilsException("No such config item: " + keyPrefixed);
@@ -184,7 +193,7 @@ public class ConfigurationManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setItem(String key, String val) {
+	private void setItem(@NotNull String key, @Nullable String val) {
 		Class<?> c = getType(key);
 		Debugger.getInstance().debug(2, "setItem: key = " + key + ", val = " + val + ", class = " + c.getName());
 
@@ -193,7 +202,7 @@ public class ConfigurationManager {
 		if (val == null) {
 			processedVal = null;
 		} else if (List.class.isAssignableFrom(c)) {
-			List<String>list = new ArrayList<String>(1);
+			List<String> list = new ArrayList<>(1);
 			list.add(val);
 			processedVal = handleListValue(key, list);
 		} else if (String.class.isAssignableFrom(c)) {
@@ -256,7 +265,7 @@ public class ConfigurationManager {
 		}
 	}
 
-	private <T> void setItem(String key, List<T> list) {
+	private <T> void setItem(@NotNull String key, List<T> list) {
 		String keyPrefixed = addPrefix(key);
 		if (config.getDefaults().get(keyPrefixed) == null) {
 			throw new DHUtilsException("No such key '" + key + "'");
@@ -271,9 +280,10 @@ public class ConfigurationManager {
 		config.set(addPrefix(key), handleListValue(key, list));
 	}
 
+	@NotNull
 	@SuppressWarnings("unchecked")
-	private <T> List<T> handleListValue(String key, List<T> list) {
-		HashSet<T> current = new HashSet<T>((List<T>)config.getList(addPrefix(key)));
+	private <T> List<T> handleListValue(@NotNull String key, @NotNull List<T> list) {
+		HashSet<T> current = new HashSet<>((List<T>) config.getList(addPrefix(key)));
 
 		if (list.get(0).equals("-")) {
 			// remove specified item from list
@@ -282,7 +292,7 @@ public class ConfigurationManager {
 		} else if (list.get(0).equals("=")) {
 			// replace list
 			list.remove(0);
-			current = new HashSet<T>(list);
+			current = new HashSet<>(list);
 		} else if (list.get(0).equals("+")) {
 			// append to list
 			list.remove(0);
@@ -292,6 +302,6 @@ public class ConfigurationManager {
 			current.addAll(list);
 		}
 
-		return new ArrayList<T>(current);
+		return new ArrayList<>(current);
 	}
 }

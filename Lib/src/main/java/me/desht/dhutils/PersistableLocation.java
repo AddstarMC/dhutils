@@ -8,6 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PersistableLocation implements ConfigurationSerializable {
 	private final String worldName;
@@ -15,7 +17,7 @@ public class PersistableLocation implements ConfigurationSerializable {
 	private final float pitch, yaw;
 	private boolean savePitchAndYaw;
 
-	public PersistableLocation(Location loc) {
+	public PersistableLocation(@NotNull Location loc) {
 		worldName = loc.getWorld().getName();
 		x = loc.getX();
 		y = loc.getY();
@@ -25,7 +27,7 @@ public class PersistableLocation implements ConfigurationSerializable {
 		savePitchAndYaw = true;
 	}
 
-	public PersistableLocation(Map<String,Object> map) {
+	public PersistableLocation(@NotNull Map<String, Object> map) {
 		worldName = (String)map.get("world");
 		x = toDouble(map.get("x"));
 		y = toDouble(map.get("y"));
@@ -35,7 +37,7 @@ public class PersistableLocation implements ConfigurationSerializable {
 		savePitchAndYaw = map.containsKey("pitch");
 	}
 
-	public PersistableLocation(World world, double x, double y, double z) {
+	public PersistableLocation(@NotNull World world, double x, double y, double z) {
 		worldName = world.getName();
 		this.x = x;
 		this.y = y;
@@ -43,7 +45,7 @@ public class PersistableLocation implements ConfigurationSerializable {
 		this.pitch = this.yaw = 0.0f;
 	}
 
-	public PersistableLocation(World world, int x, int y, int z) {
+	public PersistableLocation(@NotNull World world, int x, int y, int z) {
 		worldName = world.getName();
 		this.x = x;
 		this.y = y;
@@ -91,6 +93,7 @@ public class PersistableLocation implements ConfigurationSerializable {
 		this.savePitchAndYaw = savePitchAndYaw;
 	}
 
+	@NotNull
 	public Location getLocation() {
 		World w = Bukkit.getWorld(worldName);
 		if (w == null) {
@@ -111,8 +114,9 @@ public class PersistableLocation implements ConfigurationSerializable {
 		return Bukkit.getWorld(worldName) != null;
 	}
 
+	@NotNull
 	public Map<String, Object> serialize() {
-		Map<String,Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("world", worldName);
 		map.put("x", x);
 		map.put("y", y);
@@ -142,7 +146,7 @@ public class PersistableLocation implements ConfigurationSerializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(@Nullable Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -163,11 +167,10 @@ public class PersistableLocation implements ConfigurationSerializable {
 			return false;
 		if (Float.floatToIntBits(yaw) != Float.floatToIntBits(other.yaw))
 			return false;
-		if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z))
-			return false;
-		return true;
+		return Double.doubleToLongBits(z) == Double.doubleToLongBits(other.z);
 	}
 
+	@NotNull
 	@Override
 	public String toString() {
 		return "PersistableLocation [worldName=" + worldName + ", x=" + x + ", y=" + y + ", z=" + z + ", pitch="

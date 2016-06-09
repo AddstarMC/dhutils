@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Set;
 
 import me.desht.dhutils.StringUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 //import com.sk89q.util.StringUtil;
 
@@ -198,11 +200,11 @@ public enum BlockType {
     /**
      * Stores a map of the IDs for fast access.
      */
-    private static final Map<Integer, BlockType> ids = new HashMap<Integer, BlockType>();
+    private static final Map<Integer, BlockType> ids = new HashMap<>();
     /**
      * Stores a map of the names for fast access.
      */
-    private static final Map<String, BlockType> lookup = new HashMap<String, BlockType>();
+    private static final Map<String, BlockType> lookup = new HashMap<>();
 
     private final int id;
     private final String name;
@@ -221,8 +223,8 @@ public enum BlockType {
     /**
      * Construct the type.
      *
-     * @param id
-     * @param name
+     * @param id the Blocktype to construct
+     * @param name The name
      */
     BlockType(int id, String name, String lookupKey) {
         this.id = id;
@@ -233,8 +235,8 @@ public enum BlockType {
     /**
      * Construct the type.
      *
-     * @param id
-     * @param name
+     * @param id the Blocktype to construct
+     * @param name the name of the block
      */
     BlockType(int id, String name, String... lookupKeys) {
         this.id = id;
@@ -245,8 +247,8 @@ public enum BlockType {
     /**
      * Return type from ID. May return null.
      *
-     * @param id
-     * @return
+     * @param id The blocktype to return
+     * @return the BlockType may be {@code null}
      */
     public static BlockType fromID(int id) {
         return ids.get(id);
@@ -254,22 +256,23 @@ public enum BlockType {
 
     /**
      * Return type from name. May return null.
-     *
-     * @param name
-     * @return
+     * @param name  the name of the block to lookup using fuzzy logic
+     * @return the BlockType may be {@code null}
      */
-    public static BlockType lookup(String name) {
+    @Nullable
+    public static BlockType lookup(@NotNull String name) {
         return lookup(name, true);
     }
 
     /**
      * Return type from name. May return null.
      *
-     * @param name
-     * @param fuzzy
-     * @return
+     * @param name the name of the block to lookup
+     * @param fuzzy if true will use fuzzy logic
+     * @return the BlockType may be {@code null}
      */
-    public static BlockType lookup(String name, boolean fuzzy) {
+    @Nullable
+    public static BlockType lookup(@NotNull String name, boolean fuzzy) {
         try {
             return fromID(Integer.parseInt(name));
         } catch (NumberFormatException e) {
@@ -280,7 +283,7 @@ public enum BlockType {
     /**
      * Get block numeric ID.
      *
-     * @return
+     * @return the Block ID
      */
     public int getID() {
         return id;
@@ -289,7 +292,7 @@ public enum BlockType {
     /**
      * Get user-friendly block name.
      *
-     * @return
+     * @return the Block name
      */
     public String getName() {
         return name;
@@ -299,7 +302,7 @@ public enum BlockType {
     /**
      * HashSet for shouldPlaceLast.
      */
-    private static final Set<Integer> shouldPlaceLast = new HashSet<Integer>();
+    private static final Set<Integer> shouldPlaceLast = new HashSet<>();
     static {
         shouldPlaceLast.add(BlockID.SAPLING);
         shouldPlaceLast.add(BlockID.BED);
@@ -354,8 +357,8 @@ public enum BlockType {
     /**
      * Checks to see whether a block should be placed last.
      *
-     * @param id
-     * @return
+     * @param id the ID to check
+     * @return {@code True} if it should be placed last
      */
     public static boolean shouldPlaceLast(int id) {
         return shouldPlaceLast.contains(id);
@@ -364,7 +367,7 @@ public enum BlockType {
     /**
      * Checks to see whether this block should be placed last.
      *
-     * @return
+     * @return {@code True} if it should be placed last
      */
     public boolean shouldPlaceLast() {
         return shouldPlaceLast.contains(id);
@@ -373,7 +376,7 @@ public enum BlockType {
     /**
      * HashSet for shouldPlaceLast.
      */
-    private static final Set<Integer> shouldPlaceFinal = new HashSet<Integer>();
+    private static final Set<Integer> shouldPlaceFinal = new HashSet<>();
     static {
         shouldPlaceFinal.add(BlockID.SIGN_POST);
         shouldPlaceFinal.add(BlockID.WOODEN_DOOR);
@@ -391,8 +394,8 @@ public enum BlockType {
      *
      * This applies to blocks that can be attached to other blocks that have an attachment.
      *
-     * @param id
-     * @return
+     * @param id The block ID to check
+     * @return {@code true} if it should be in the final queue
      */
     public static boolean shouldPlaceFinal(int id) {
         return shouldPlaceFinal.contains(id);
@@ -401,7 +404,7 @@ public enum BlockType {
     /**
      * HashSet for canPassThrough.
      */
-    private static final Set<Integer> canPassThrough = new HashSet<Integer>();
+    private static final Set<Integer> canPassThrough = new HashSet<>();
     static {
         canPassThrough.add(BlockID.AIR);
         canPassThrough.add(BlockID.WATER);
@@ -457,8 +460,8 @@ public enum BlockType {
     /**
      * Checks whether a block can be passed through.
      *
-     * @param id
-     * @return
+     * @param id the ID to check
+     * @return {@code True} if the block can be passed through
      */
     public static boolean canPassThrough(int id) {
         return canPassThrough.contains(id);
@@ -467,7 +470,7 @@ public enum BlockType {
     /**
      * Checks whether a block can be passed through.
      *
-     * @return
+     * @return {@code True} if the block can be passed through
      */
     public boolean canPassThrough() {
         return canPassThrough.contains(id);
@@ -476,7 +479,7 @@ public enum BlockType {
     /**
      * HashSet for centralTopLimit.
      */
-    private static final Map<Integer, Double> centralTopLimit = new HashMap<Integer, Double>();
+    private static final Map<Integer, Double> centralTopLimit = new HashMap<>();
     static {
         centralTopLimit.put(BlockID.BED, 0.5625);
         centralTopLimit.put(BlockID.BREWING_STAND, 0.875);
@@ -505,9 +508,9 @@ public enum BlockType {
     /**
      * Returns the y offset a player falls to when falling onto the top of a block at xp+0.5/zp+0.5.
      *
-     * @param id
-     * @param data
-     * @return
+     * @param id The BlockID the player falls on
+     * @param data the block data
+     * @return a double representing the y offset
      */
     public static double centralTopLimit(int id, int data) {
         if (centralTopLimit.containsKey(id))
@@ -522,7 +525,7 @@ public enum BlockType {
     /**
      * Returns the y offset a player falls to when falling onto the top of a block at xp+0.5/zp+0.5.
      *
-     * @return
+     * @return a double representing the y offset
      */
     public double centralTopLimit() {
         if (centralTopLimit.containsKey(id))
@@ -534,7 +537,7 @@ public enum BlockType {
     /**
      * HashSet for usesData.
      */
-    private static final Set<Integer> usesData = new HashSet<Integer>();
+    private static final Set<Integer> usesData = new HashSet<>();
     static {
         usesData.add(BlockID.WOOD);
         usesData.add(BlockID.SAPLING);
@@ -633,8 +636,8 @@ public enum BlockType {
     /**
      * Returns true if the block uses its data value.
      *
-     * @param id
-     * @return
+     * @param id the Block ID
+     * @return {@code True} if the block uses Data
      */
     public static boolean usesData(int id) {
         return usesData.contains(id);
@@ -643,7 +646,7 @@ public enum BlockType {
     /**
      * Returns true if the block uses its data value.
      *
-     * @return
+     * @return {@code True} if the block uses Data
      */
     public boolean usesData() {
         return usesData.contains(id);
@@ -652,7 +655,7 @@ public enum BlockType {
     /**
      * HashSet for isContainerBlock.
      */
-    private static final Set<Integer> isContainerBlock = new HashSet<Integer>();
+    private static final Set<Integer> isContainerBlock = new HashSet<>();
     static {
         isContainerBlock.add(BlockID.DISPENSER);
         isContainerBlock.add(BlockID.FURNACE);
@@ -668,8 +671,8 @@ public enum BlockType {
     /**
      * Returns true if the block is a container block.
      *
-     * @param id
-     * @return
+     * @param id the Block ID
+     * @return {@code True} if the block is a contained
      */
     public static boolean isContainerBlock(int id) {
         return isContainerBlock.contains(id);
@@ -678,7 +681,7 @@ public enum BlockType {
     /**
      * Returns true if the block is a container block.
      *
-     * @return
+     * @return {@code True} if the block is a contained
      */
     public boolean isContainerBlock() {
         return isContainerBlock.contains(id);
@@ -687,7 +690,7 @@ public enum BlockType {
     /**
      * HashSet for isRedstoneBlock.
      */
-    private static final Set<Integer> isRedstoneBlock = new HashSet<Integer>();
+    private static final Set<Integer> isRedstoneBlock = new HashSet<>();
     static {
         isRedstoneBlock.add(BlockID.POWERED_RAIL);
         isRedstoneBlock.add(BlockID.DETECTOR_RAIL);
@@ -725,8 +728,8 @@ public enum BlockType {
     /**
      * Returns true if a block uses redstone in some way.
      *
-     * @param id
-     * @return
+     * @param id Block ID
+     * @return {@code True} if the block is a redstone related
      */
     public static boolean isRedstoneBlock(int id) {
         return isRedstoneBlock.contains(id);
@@ -735,7 +738,7 @@ public enum BlockType {
     /**
      * Returns true if a block uses redstone in some way.
      *
-     * @return
+     * @return {@code True} if the block is a redstone related
      */
     public boolean isRedstoneBlock() {
         return isRedstoneBlock.contains(id);
@@ -744,7 +747,7 @@ public enum BlockType {
     /**
      * HashSet for canTransferRedstone.
      */
-    private static final Set<Integer> canTransferRedstone = new HashSet<Integer>();
+    private static final Set<Integer> canTransferRedstone = new HashSet<>();
     static {
         canTransferRedstone.add(BlockID.REDSTONE_TORCH_OFF);
         canTransferRedstone.add(BlockID.REDSTONE_TORCH_ON);
@@ -759,8 +762,8 @@ public enum BlockType {
      * Returns true if a block can transfer redstone.
      * Made this since isRedstoneBlock was getting big.
      *
-     * @param id
-     * @return
+     * @param id Block ID
+     * @return {@code True} if the block can transfer redstone
      */
     public static boolean canTransferRedstone(int id) {
         return canTransferRedstone.contains(id);
@@ -770,7 +773,7 @@ public enum BlockType {
      * Returns true if a block can transfer redstone.
      * Made this since isRedstoneBlock was getting big.
      *
-     * @return
+     * @return {@code True} if the block can transfer redstone
      */
     public boolean canTransferRedstone() {
         return canTransferRedstone.contains(id);
@@ -779,7 +782,7 @@ public enum BlockType {
     /**
      * HashSet for isRedstoneSource.
      */
-    private static final Set<Integer> isRedstoneSource = new HashSet<Integer>();
+    private static final Set<Integer> isRedstoneSource = new HashSet<>();
     static {
         isRedstoneSource.add(BlockID.DETECTOR_RAIL);
         isRedstoneSource.add(BlockID.REDSTONE_TORCH_OFF);
@@ -799,8 +802,8 @@ public enum BlockType {
     /**
      * Yay for convenience methods.
      *
-     * @param id
-     * @return
+     * @param id the Block ID
+     * @return {@code True} if the block is a redstone source
      */
     public static boolean isRedstoneSource(int id) {
         return isRedstoneSource.contains(id);
@@ -809,7 +812,7 @@ public enum BlockType {
     /**
      * Yay for convenience methods.
      *
-     * @return
+     * @return {@code True} if the block is a redstone source
      */
     public boolean isRedstoneSource() {
         return isRedstoneSource.contains(id);
@@ -818,7 +821,7 @@ public enum BlockType {
     /**
      * HashSet for isRailBlock.
      */
-    private static final Set<Integer> isRailBlock = new HashSet<Integer>();
+    private static final Set<Integer> isRailBlock = new HashSet<>();
     static {
         isRailBlock.add(BlockID.POWERED_RAIL);
         isRailBlock.add(BlockID.DETECTOR_RAIL);
@@ -829,8 +832,8 @@ public enum BlockType {
     /**
      * Checks if the id is that of one of the rail types
      *
-     * @param id
-     * @return
+     * @param id the Block ID
+     * @return {@code True} if the block is a rail
      */
     public static boolean isRailBlock(int id) {
         return isRailBlock.contains(id);
@@ -839,7 +842,7 @@ public enum BlockType {
     /**
      * Checks if the id is that of one of the rail types
      *
-     * @return
+     * @return {@code True} if the block is a rail
      */
     public boolean isRailBlock() {
         return isRailBlock.contains(id);
@@ -848,7 +851,7 @@ public enum BlockType {
     /**
      * HashSet for isNaturalBlock.
      */
-    private static final Set<Integer> isNaturalTerrainBlock = new HashSet<Integer>();
+    private static final Set<Integer> isNaturalTerrainBlock = new HashSet<>();
     static {
         isNaturalTerrainBlock.add(BlockID.STONE);
         isNaturalTerrainBlock.add(BlockID.GRASS);
@@ -880,8 +883,8 @@ public enum BlockType {
     /**
      * Checks if the block type is naturally occuring
      *
-     * @param id
-     * @return
+     * @param id the Block ID
+     * @return {@code True} if the block is a naturally occuring
      */
     public static boolean isNaturalTerrainBlock(int id) {
         return isNaturalTerrainBlock.contains(id);
@@ -890,7 +893,7 @@ public enum BlockType {
     /**
      * Checks if the block type is naturally occuring
      *
-     * @return
+     * @return {@code True} if the block is a naturally occuring
      */
     public boolean isNaturalTerrainBlock() {
         return isNaturalTerrainBlock.contains(id);
@@ -899,7 +902,7 @@ public enum BlockType {
     /**
      * HashSet for emitsLight.
      */
-    private static final Set<Integer> emitsLight = new HashSet<Integer>();
+    private static final Set<Integer> emitsLight = new HashSet<>();
     static {
         emitsLight.add(BlockID.LAVA);
         emitsLight.add(BlockID.STATIONARY_LAVA);
@@ -927,8 +930,8 @@ public enum BlockType {
     /**
      * Checks if the block type emits light
      *
-     * @param id
-     * @return
+     * @param id the Block ID
+     * @return {@code True} if the block is a emits light
      */
     public static boolean emitsLight(int id) {
         return emitsLight.contains(id);
@@ -937,7 +940,7 @@ public enum BlockType {
     /**
      * HashSet for isTranslucent.
      */
-    private static final Set<Integer> isTranslucent = new HashSet<Integer>();
+    private static final Set<Integer> isTranslucent = new HashSet<>();
     static {
         isTranslucent.add(BlockID.AIR);
         isTranslucent.add(BlockID.SAPLING);
@@ -1034,8 +1037,8 @@ public enum BlockType {
     /**
      * Checks if the block type lets light through
      *
-     * @param id
-     * @return
+     * @param id the Block ID
+     * @return {@code True} if the block is a allows light thru
      */
     public static boolean isTranslucent(int id) {
         return isTranslucent.contains(id);

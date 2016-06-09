@@ -1,6 +1,7 @@
 package me.desht.dhutils;
 
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.Nullable;
 
 public class PermissionUtils {
 	private static final String defaultNotAllowed = "You are not allowed to do that.";
@@ -12,7 +13,7 @@ public class PermissionUtils {
 	 * @param node		Node to check for
 	 * @return	true if the player has the permission node, false otherwise
 	 */
-	public static boolean isAllowedTo(CommandSender sender, String node) {
+	public static boolean isAllowedTo(@Nullable CommandSender sender, String node) {
 		if (sender == null) {
 			// backwards compatibility - a null sender represents a console sender
 			return true;

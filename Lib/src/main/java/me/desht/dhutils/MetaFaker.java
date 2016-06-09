@@ -13,11 +13,14 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.events.PacketListener;
 import com.comphenix.protocol.reflect.StructureModifier;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MetaFaker {
 	private final Plugin plugin;
 	private final ProtocolManager protocolManager;
 	private final MetadataFilter filter;
+	@NotNull
 	private final PacketListener listener;
 
 	public MetaFaker(Plugin plugin, MetadataFilter filter) {
@@ -31,10 +34,11 @@ public class MetaFaker {
 		protocolManager.removePacketListener(listener);
 	}
 
+	@NotNull
 	private PacketListener registerListener() {
 		PacketListener l = new PacketAdapter(plugin, ConnectionSide.SERVER_SIDE, 0x67, 0x68) {
 			@Override
-			public void onPacketSending(PacketEvent event) {
+			public void onPacketSending(@NotNull PacketEvent event) {
 				PacketContainer packet = event.getPacket();
 				Player player = event.getPlayer();
 				switch (packet.getID()) {
@@ -62,7 +66,7 @@ public class MetaFaker {
 		return l;
 	}
 
-	private void filterMetaData(ItemStack stack, Player player) {
+	private void filterMetaData(@Nullable ItemStack stack, Player player) {
 		if (stack != null) {
 			ItemMeta newMeta = filter.filter(stack.getItemMeta(), player);
 			if (newMeta != null) {
@@ -72,6 +76,6 @@ public class MetaFaker {
 	}
 
 	public interface MetadataFilter {
-		public ItemMeta filter(ItemMeta itemMeta, Player player);
+		@NotNull ItemMeta filter(ItemMeta itemMeta, Player player);
 	}
 }

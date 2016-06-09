@@ -2,6 +2,7 @@ package me.desht.dhutils.midi;
 
 import org.bukkit.Note;
 import org.bukkit.Note.Tone;
+import org.jetbrains.annotations.NotNull;
 
 import javax.sound.midi.ShortMessage;
 
@@ -16,14 +17,15 @@ public class ToneUtil
 
 	private static final int MIDI_BASE_FSHARP = 54;
 
-	public static double noteToPitch(Note note)
+	public static double noteToPitch(@NotNull Note note)
 	{
 		double semitones = note.getId() - BASE_NOTE;
 		return Math.pow(2.0, semitones / 12.0);
 	}
 
 	// converts midi events into Note objects
-	public static Note midiToNote(ShortMessage smsg)
+	@NotNull
+	public static Note midiToNote(@NotNull ShortMessage smsg)
 	{
 		assert smsg.getCommand() == ShortMessage.NOTE_ON;
 		int semitones = smsg.getData1() - MIDI_BASE_FSHARP % 12;
@@ -31,7 +33,7 @@ public class ToneUtil
 	}
 
 	// converts midi events into pitch
-	public static double midiToPitch(ShortMessage smsg)
+	public static double midiToPitch(@NotNull ShortMessage smsg)
 	{
 		return noteToPitch(midiToNote(smsg));
 

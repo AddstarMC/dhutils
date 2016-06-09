@@ -13,18 +13,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.google.common.base.Joiner;
+import org.jetbrains.annotations.NotNull;
 
 public class CommandManager {
 	private static final List<String> EMPTY_STRING_LIST = Collections.emptyList();
 
-	private final List<AbstractCommand> cmdList = new ArrayList<AbstractCommand>();
+	private final List<AbstractCommand> cmdList = new ArrayList<>();
 	private Plugin plugin;
 
 	public CommandManager(Plugin plugin) {
 		this.plugin = plugin;
 	}
 
-	public void registerCommand(AbstractCommand cmd) {
+	public void registerCommand(@NotNull AbstractCommand cmd) {
 		Debugger.getInstance().debug(2, "register command: " + cmd.getClass().getName());
 		cmdList.add(cmd);
 	}
@@ -83,7 +84,7 @@ public class CommandManager {
 		return res;
 	}
 
-	public boolean dispatch(CommandSender sender, Command command, String label, String[] args) {
+	public boolean dispatch(CommandSender sender, @NotNull Command command, String label, String[] args) {
 		try {
 			return dispatch(sender, command.getName(), label, args);
 		} catch (DHUtilsException e) {
@@ -92,7 +93,7 @@ public class CommandManager {
 		}
 	}
 
-	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, String label, @NotNull String[] args) {
 		Debugger.getInstance().debug("tab complete: sender=" + sender.getName() + ", cmd=" + command.getName() +
 				", label=" + label + ", args=[" + Joiner.on(",").join(args) + "]");
 
@@ -112,7 +113,7 @@ public class CommandManager {
 			}
 		} else {
 			// tab completion done here; try to fill in the subcommand
-			Set<String> completions = new HashSet<String>();
+			Set<String> completions = new HashSet<>();
 			for (AbstractCommand cmd : possibleMatches) {
 				if (cmd.getPermissionNode() != null && !PermissionUtils.isAllowedTo(sender, cmd.getPermissionNode())) {
 					continue;
@@ -128,14 +129,16 @@ public class CommandManager {
 		}
 	}
 
-	private String[] subRange(String[] a, int from) {
+	@NotNull
+	private String[] subRange(@NotNull String[] a, int from) {
 		String[] res = new String[a.length - from];
 		System.arraycopy(a, from, res, 0, res.length);
 		return res;
 	}
 
+	@NotNull
 	private List<AbstractCommand> getPossibleMatches(String cmdName, String[] args, boolean partialOk) {
-		List<AbstractCommand> possibleMatches = new ArrayList<AbstractCommand>();
+		List<AbstractCommand> possibleMatches = new ArrayList<>();
 
 		for (AbstractCommand cmd : cmdList) {
 			if (cmd.matchesSubCommand(cmdName, args, partialOk)) {
@@ -148,10 +151,12 @@ public class CommandManager {
 		return possibleMatches;
 	}
 
+	@NotNull
 	static List<String> noCompletions() {
 		return EMPTY_STRING_LIST;
 	}
 
+	@NotNull
 	static List<String> noCompletions(CommandSender sender) {
 		if (sender instanceof Player) {
 			Player p = (Player)sender;

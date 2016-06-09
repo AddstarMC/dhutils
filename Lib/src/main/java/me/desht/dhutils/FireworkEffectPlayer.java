@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * FireworkEffectPlayer v1.0
@@ -38,20 +40,23 @@ public class FireworkEffectPlayer {
      */
     
     // internal references, performance improvements
+    @Nullable
     private Method world_getHandle = null;
+    @Nullable
     private Method nms_world_broadcastEntityEffect = null;
+    @Nullable
     private Method firework_getHandle = null;
     
     /**
      * Play a pretty firework at the location with the FireworkEffect when called
-     * @param world
-     * @param loc
-     * @param fe
+     * @param world bukkit world
+     * @param loc the location
+     * @param fe The firework effect
      * @throws Exception
      */
-    public void playFirework(World world, Location loc, FireworkEffect fe) throws Exception {
+    public void playFirework(@NotNull World world, Location loc, FireworkEffect fe) throws Exception {
         // Bukkity load (CraftFirework)
-        Firework fw = (Firework) world.spawn(loc, Firework.class);
+        Firework fw = world.spawn(loc, Firework.class);
         // the net.minecraft.server.World
         Object nms_world = null;
         Object nms_firework = null;
@@ -75,7 +80,7 @@ public class FireworkEffectPlayer {
          * Now we mess with the metadata, allowing nice clean spawning of a pretty firework (look, pretty lights!)
          */
         // metadata load
-        FireworkMeta data = (FireworkMeta) fw.getFireworkMeta();
+        FireworkMeta data = fw.getFireworkMeta();
         // clear existing
         data.clearEffects();
         // power of one
@@ -89,18 +94,18 @@ public class FireworkEffectPlayer {
          */
 
         // invoke with arguments
-        nms_world_broadcastEntityEffect.invoke(nms_world, new Object[] {nms_firework, (byte) 17});
+        nms_world_broadcastEntityEffect.invoke(nms_world, nms_firework, (byte) 17);
         // remove from the game
         fw.remove();
     }
     
     /**
      * Internal method, used as shorthand to grab our method in a nice friendly manner
-     * @param cl
-     * @param method
+     * @param cl the class to check
+     * @param method the method to return
      * @return Method (or null)
      */
-    private static Method getMethod(Class<?> cl, String method) {
+    private static Method getMethod(@NotNull Class<?> cl, String method) {
         for(Method m : cl.getMethods()) {
             if(m.getName().equals(method)) {
                 return m;

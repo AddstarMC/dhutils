@@ -24,6 +24,11 @@
       <version>${project.parent.version}</version>
       <type>jar</type>
     </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>RELEASE</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

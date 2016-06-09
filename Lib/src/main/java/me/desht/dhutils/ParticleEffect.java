@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * ParticleEffect
@@ -69,14 +70,14 @@ public enum ParticleEffect {
 	/**
 	 * Plays a particle effect at a location which is only shown to a specific player.
 	 */
-	 public void play(Player p, Location loc, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
+	public void play(Player p, @NotNull Location loc, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
 		 sendPacket(p, createNormalPacket(this, loc, offsetX, offsetY, offsetZ, speed, amount));
 	 }
 
 	 /**
 	  * Plays a particle effect at a location which is shown to all players in the current world.
 	  */
-	 public void play(Location loc, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
+	 public void play(@NotNull Location loc, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
 		 PacketContainer packet = createNormalPacket(this, loc, offsetX, offsetY, offsetZ, speed, amount);
 		 for (Player p : loc.getWorld().getPlayers()) {
 			 sendPacket(p, packet);
@@ -86,7 +87,7 @@ public enum ParticleEffect {
 	 /**
 	  * Plays a particle effect at a location which is shown to all players within a certain range in the current world.
 	  */
-	 public void play(Location loc, double range, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
+	 public void play(@NotNull Location loc, double range, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
 		 PacketContainer packet = createNormalPacket(this, loc, offsetX, offsetY, offsetZ, speed, amount);
 		 range *= range;
 		 for (Player p : loc.getWorld().getPlayers()) {
@@ -99,14 +100,14 @@ public enum ParticleEffect {
 	 /**
 	  * Plays a tilecrack effect at a location which is only shown to a specific player.
 	  */
-	 public static void playTileCrack(Player p, Location loc, Material mat, byte data, float offsetX, float offsetY, float offsetZ, int amount) {
+	 public static void playTileCrack(Player p, @NotNull Location loc, @NotNull Material mat, byte data, float offsetX, float offsetY, float offsetZ, int amount) {
 		 sendPacket(p, createTileCrackPacket(mat, data, loc, offsetX, offsetY, offsetZ, amount));
 	 }
 
 	 /**
 	  * Plays a tilecrack effect at a location which is shown to all players in the current world.
 	  */
-	 public static void playTileCrack(Location loc, Material mat, byte data, float offsetX, float offsetY, float offsetZ, int amount) {
+	 public static void playTileCrack(@NotNull Location loc, @NotNull Material mat, byte data, float offsetX, float offsetY, float offsetZ, int amount) {
 		 PacketContainer packet = createTileCrackPacket(mat, data, loc, offsetX, offsetY, offsetZ, amount);
 		 for (Player p : loc.getWorld().getPlayers()) {
 			 sendPacket(p, packet);
@@ -116,7 +117,7 @@ public enum ParticleEffect {
 	 /**
 	  * Plays a tilecrack effect at a location which is shown to all players within a certain range in the current world.
 	  */
-	 public static void playTileCrack(Location loc, double range, Material mat, byte data, float offsetX, float offsetY, float offsetZ, int amount) {
+	 public static void playTileCrack(@NotNull Location loc, double range, @NotNull Material mat, byte data, float offsetX, float offsetY, float offsetZ, int amount) {
 		 PacketContainer packet = createTileCrackPacket(mat, data, loc, offsetX, offsetY, offsetZ, amount);
 		 range *= range;
 		 for (Player p : loc.getWorld().getPlayers()) {
@@ -129,14 +130,14 @@ public enum ParticleEffect {
 	 /**
 	  * Plays an iconcrack effect at a location which is only shown to a specific player.
 	  */
-	 public static void playIconCrack(Player p, Location loc, Material mat, float offsetX, float offsetY, float offsetZ, int amount) {
+	 public static void playIconCrack(Player p, @NotNull Location loc, @NotNull Material mat, float offsetX, float offsetY, float offsetZ, int amount) {
 		 sendPacket(p, createIconCrackPacket(mat, loc, offsetX, offsetY, offsetZ, amount));
 	 }
 
 	 /**
 	  * Plays an iconcrack effect at a location which is shown to all players in the current world.
 	  */
-	 public static void playIconCrack(Location loc, Material mat, float offsetX, float offsetY, float offsetZ, int amount) {
+	 public static void playIconCrack(@NotNull Location loc, @NotNull Material mat, float offsetX, float offsetY, float offsetZ, int amount) {
 		 PacketContainer packet = createIconCrackPacket(mat, loc, offsetX, offsetY, offsetZ, amount);
 		 for (Player p : loc.getWorld().getPlayers()) {
 			 sendPacket(p, packet);
@@ -146,7 +147,7 @@ public enum ParticleEffect {
 	 /**
 	  * Plays an iconcrack effect at a location which is shown to all players within a certain range in the current world.
 	  */
-	 public static void playIconCrack(Location loc, double range, Material mat, float offsetX, float offsetY, float offsetZ, int amount) {
+	 public static void playIconCrack(@NotNull Location loc, double range, @NotNull Material mat, float offsetX, float offsetY, float offsetZ, int amount) {
 		 PacketContainer packet = createIconCrackPacket(mat, loc, offsetX, offsetY, offsetZ, amount);
 		 range *= range;
 		 for (Player p : loc.getWorld().getPlayers()) {
@@ -156,19 +157,23 @@ public enum ParticleEffect {
 		 }
 	 }
 
-	 private PacketContainer createNormalPacket(ParticleEffect effect, Location loc, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
+	@NotNull
+	private PacketContainer createNormalPacket(@NotNull ParticleEffect effect, @NotNull Location loc, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
 		 return createPacket(effect.getName(), loc, offsetX, offsetY, offsetZ, speed, amount);
 	 }
 
-	 private static PacketContainer createTileCrackPacket(Material mat, byte data, Location loc, float offsetX, float offsetY, float offsetZ, int amount) {
+	@NotNull
+	private static PacketContainer createTileCrackPacket(@NotNull Material mat, byte data, @NotNull Location loc, float offsetX, float offsetY, float offsetZ, int amount) {
 		 return createPacket("tilecrack_" + mat.getId() + "_" + data, loc, offsetX, offsetY, offsetZ, 0.1F, amount);
 	 }
 
-	 private static PacketContainer createIconCrackPacket(Material mat, Location loc, float offsetX, float offsetY, float offsetZ, int amount) {
+	@NotNull
+	private static PacketContainer createIconCrackPacket(@NotNull Material mat, @NotNull Location loc, float offsetX, float offsetY, float offsetZ, int amount) {
 		 return createPacket("iconcrack_" + mat.getId(), loc, offsetX, offsetY, offsetZ, 0.1F, amount);
 	 }
 
-	 private static PacketContainer createPacket(String effectName, Location loc, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
+	@NotNull
+	private static PacketContainer createPacket(String effectName, @NotNull Location loc, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
 		 PacketContainer particlePacket = new PacketContainer(63);
 		 Validate.isTrue(amount > 0, "Amount of particles must be greater than 0");
 		 particlePacket.getStrings().write(0, effectName);

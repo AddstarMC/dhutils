@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -587,9 +588,9 @@ public class ItemNames {
      * @param stack the item stack
      * @return a friendly printable name for the item
      */
-    public static String lookup(ItemStack stack) {
-        if (stack.hasItemMeta()) {
-            ItemMeta meta = stack.getItemMeta();
+	public static String lookup(@NotNull ItemStack stack) {
+		if (stack.hasItemMeta()) {
+			ItemMeta meta = stack.getItemMeta();
             if (meta.getDisplayName() != null) {
                 return meta.getDisplayName();
             } else if (meta instanceof BookMeta) {
@@ -631,8 +632,9 @@ public class ItemNames {
      * @param stack the item stack
      * @return a friendly printable name for the item, with amount information
      */
-    public static String lookupWithAmount(ItemStack stack) {
-        String s = lookup(stack);
-        return stack.getAmount() + " x " + s;
+	@NotNull
+	public static String lookupWithAmount(@NotNull ItemStack stack) {
+		String s = lookup(stack);
+		return stack.getAmount() + " x " + s;
     }
 }

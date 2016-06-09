@@ -13,6 +13,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.nbt.NbtCompound;
 import com.comphenix.protocol.wrappers.nbt.NbtFactory;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Use ProtocolLib to add a glow to unenchanted items.  With thanks to Comphenix; see
@@ -32,10 +33,10 @@ public class ItemGlow {
 	 *
 	 * @param plugin the plugin instance
 	 */
-	public static void init(Plugin plugin) {
+	public static void init(@NotNull Plugin plugin) {
 		PacketAdapter adapter = new PacketAdapter(plugin, ConnectionSide.SERVER_SIDE, ListenerPriority.HIGH, Packets.Server.SET_SLOT, Packets.Server.WINDOW_ITEMS) {
 			@Override
-			public void onPacketSending(PacketEvent event) {
+			public void onPacketSending(@NotNull PacketEvent event) {
 				if (event.getPacketID() == Packets.Server.SET_SLOT) {
 					addGlow(new ItemStack[] { event.getPacket().getItemModifier().read(0) });
 				} else {
@@ -53,7 +54,7 @@ public class ItemGlow {
 	 * @param stack the item stack to modify
 	 * @param glowing true to make the item glow, false to stop it glowing
 	 */
-	public static void setGlowing(ItemStack stack, boolean glowing) {
+	public static void setGlowing(@NotNull ItemStack stack, boolean glowing) {
 		if (!inited) {
 			throw new IllegalStateException("ItemGlow system has not been initialised.  Call ItemGlow.init(plugin) first.");
 		}
@@ -74,11 +75,11 @@ public class ItemGlow {
      * @param stack the item stack to check
      * @return true if the stack will glow; false otherwise
      */
-    public static boolean hasGlow(ItemStack stack) {
-        return stack.getEnchantmentLevel(getFlag(stack)) == GLOW_FLAG_LEVEL;
-    }
+	public static boolean hasGlow(@NotNull ItemStack stack) {
+		return stack.getEnchantmentLevel(getFlag(stack)) == GLOW_FLAG_LEVEL;
+	}
 
-	private static void addGlow(ItemStack[] stacks) {
+	private static void addGlow(@NotNull ItemStack[] stacks) {
 		for (ItemStack stack : stacks) {
 			if (stack != null) {
 				// Only update those stacks that have our flag enchantment
@@ -90,7 +91,7 @@ public class ItemGlow {
 		}
 	}
 
-    private static Enchantment getFlag(ItemStack item) {
-        return item.getType() == Material.BOW ? GLOW_FLAG_2 : GLOW_FLAG;
-    }
+	private static Enchantment getFlag(@NotNull ItemStack item) {
+		return item.getType() == Material.BOW ? GLOW_FLAG_2 : GLOW_FLAG;
+	}
 }

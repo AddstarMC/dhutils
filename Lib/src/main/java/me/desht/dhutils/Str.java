@@ -1,21 +1,22 @@
 package me.desht.dhutils;
 
-/**
- * Programmer: Jacob Scott
- * Program Name: Str
- * Description:
- * Date: Mar 31, 2011
- */
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
 /**
- * @author jacob
+ *  @author Jacob Scott
+ * Program Name: Str
+ * Description:
+ * @since Mar 31, 2011
  */
+
 public class Str extends OutputStream {
 
+	@NotNull
 	protected StringBuilder text = new StringBuilder();
 
 	public static String argStr(String[] s) {
@@ -30,7 +31,7 @@ public class Str extends OutputStream {
 		return argStr(s, sep, 0);
 	}
 
-	public static String argStr(String[] s, String sep, int start) {
+	public static String argStr(@Nullable String[] s, String sep, int start) {
 		StringBuilder ret = new StringBuilder();
 		if (s != null) {
 			for (int i = start; i < s.length; ++i) {
@@ -43,7 +44,7 @@ public class Str extends OutputStream {
 		return ret.toString();
 	}
 
-	public static String argStr(String[] s, String sep, int start, int length) {
+	public static String argStr(@Nullable String[] s, String sep, int start, int length) {
 		StringBuilder ret = new StringBuilder();
 		if (s != null) {
 			for (int i = start, j = 0; i < s.length && j < length; ++i, ++j) {
@@ -56,7 +57,7 @@ public class Str extends OutputStream {
 		return ret.toString();
 	}
 
-	public static boolean isIn(String input, String[] check) {
+	public static boolean isIn(String input, @NotNull String[] check) {
 		input = input.trim();
 		for (String c : check) {
 			if (input.equalsIgnoreCase(c.trim())) {
@@ -66,7 +67,7 @@ public class Str extends OutputStream {
 		return false;
 	}
 
-	public static boolean isIn(String input, String check) {
+	public static boolean isIn(String input, @NotNull String check) {
 		String comms[] = check.split(",");
 		input = input.trim();
 		for (String c : comms) {
@@ -77,7 +78,7 @@ public class Str extends OutputStream {
 		return false;
 	}
 
-	public static boolean startIsIn(String input, String check) {
+	public static boolean startIsIn(@NotNull String input, @NotNull String check) {
 		String comms[] = check.split(",");
 		for (String c : comms) {
 			if (input.length() >= c.length()) {
@@ -89,7 +90,7 @@ public class Str extends OutputStream {
 		return false;
 	}
 
-	public static boolean startIsIn(String input, String[] check) {
+	public static boolean startIsIn(@NotNull String input, @NotNull String[] check) {
 		for (String c : check) {
 			if (input.length() >= c.length()) {
 				if (input.substring(0, c.length()).equalsIgnoreCase(c)) {
@@ -100,7 +101,7 @@ public class Str extends OutputStream {
 		return false;
 	}
 
-	public static int count(String str, String find) {
+	public static int count(@NotNull String str, @NotNull String find) {
 		int c = 0;
 		for (int i = 0; i < str.length() - find.length(); ++i) {
 			if (str.substring(i, i + find.length()).equals(find)) {
@@ -110,7 +111,7 @@ public class Str extends OutputStream {
 		return c;
 	}
 
-	public static int count(String str, char find) {
+	public static int count(@NotNull String str, char find) {
 		int c = 0;
 		for (int i = 0; i < str.length(); ++i) {
 			if (str.charAt(i) == find) {
@@ -120,7 +121,7 @@ public class Str extends OutputStream {
 		return c;
 	}
 
-	public static int countIgnoreCase(String str, String find) {
+	public static int countIgnoreCase(@NotNull String str, @NotNull String find) {
 		int c = 0;
 		for (int i = 0; i < str.length() - find.length(); ++i) {
 			if (str.substring(i, i + find.length()).equalsIgnoreCase(find)) {
@@ -130,7 +131,7 @@ public class Str extends OutputStream {
 		return c;
 	}
 
-	public static int indexOf(String array[], String search) {
+	public static int indexOf(@Nullable String array[], String search) {
 		if (array != null && array.length > 0) {
 			for (int i = array.length - 1; i >= 0; --i) {
 				if (array[i].equals(search)) {
@@ -141,7 +142,7 @@ public class Str extends OutputStream {
 		return -1;
 	}
 
-	public static int indexOfIgnoreCase(String array[], String search) {
+	public static int indexOfIgnoreCase(@NotNull String array[], String search) {
 		for (int i = array.length - 1; i >= 0; --i) {
 			if (array[i].equalsIgnoreCase(search)) {
 				return i;
@@ -150,7 +151,7 @@ public class Str extends OutputStream {
 		return -1;
 	}
 
-	public static String getStackStr(Exception err) {
+	public static String getStackStr(@Nullable Exception err) {
 		if (err == null) {// || err.getCause() == null) {
 			return "";
 		}
@@ -165,22 +166,22 @@ public class Str extends OutputStream {
 
 	/**
 	 * pads str on the right (space-padded) (left-align)
-	 * @param str
-	 * @param len
+	 * @param str the String to pad
+	 * @param len the length to pad too
 	 * @return right-padded string
 	 */
-	public static String padRight(String str, int len) {
+	public static String padRight(@NotNull String str, int len) {
 		return padRight(str, len, ' ');
 	}
 
 	/**
 	 * pads str on the right with pad (left-align)
-	 * @param str
-	 * @param len
-	 * @param pad
+	 * @param str the String to pad
+	 * @param len the length to pad too
+	 * @param pad the character to use for padding
 	 * @return right-padded string
 	 */
-	public static String padRight(String str, int len, char pad) {
+	public static String padRight(@NotNull String str, int len, char pad) {
 		StringBuilder ret = new StringBuilder(str);
 		for (int i = str.length(); i < len; ++i) {
 			ret.append(pad);
@@ -190,32 +191,35 @@ public class Str extends OutputStream {
 
 	/**
 	 * pads str on the left (space-padded) (right-align)
-	 * @param str
-	 * @param len
+	 * @param str the String to pad
+	 * @param len the length to pad too
 	 * @return left-padded string
 	 */
-	public static String padLeft(String str, int len) {
+	@NotNull
+	public static String padLeft(@NotNull String str, int len) {
 		return repeat(' ', len - str.length()) + str;
 	}
 
 	/**
 	 * pads str on the left with pad (right-align)
-	 * @param str
-	 * @param len
-	 * @param pad
+	 * @param str the String to pad
+	 * @param len the length to pad too
+	 * @param pad the character to use for padding
 	 * @return left-padded string
 	 */
-	public static String padLeft(String str, int len, char pad) {
+	@NotNull
+	public static String padLeft(@NotNull String str, int len, char pad) {
 		return repeat(pad, len - str.length()) + str;
 	}
 
 	/**
 	 * pads str on the left & right (space-padded) (center-align)
-	 * @param str
-	 * @param len
+	 * @param str the String to pad
+	 * @param len the length to pad too
 	 * @return center-aligned string
 	 */
-	public static String padCenter(String str, int len) {
+	@NotNull
+	public static String padCenter(@NotNull String str, int len) {
 		len -= str.length();
 		int prepad = len / 2;
 		return repeat(' ', prepad) + str + repeat(' ', len - prepad);
@@ -223,26 +227,30 @@ public class Str extends OutputStream {
 
 	/**
 	 * pads str on the left & right with pad (center-align)
-	 * @param str
-	 * @param len
-	 * @param pad
+	 * @param str the String to pad
+	 * @param len the length to pad too
+	 * @param pad the character to use for padding
 	 * @return center-aligned string
 	 */
-	public static String padCenter(String str, int len, char pad) {
+	@NotNull
+	public static String padCenter(@NotNull String str, int len, char pad) {
 		len -= str.length();
 		int prepad = len / 2;
 		return repeat(pad, prepad) + str + repeat(pad, len - prepad);
 	}
 
-	public static String strWordWrap(String str, int width) {
+	@NotNull
+	public static String strWordWrap(@NotNull String str, int width) {
 		return strWordWrap(str, width, 0, ' ');
 	}
 
-	public static String strWordWrap(String str, int width, int tab) {
+	@NotNull
+	public static String strWordWrap(@NotNull String str, int width, int tab) {
 		return strWordWrap(str, width, tab, ' ');
 	}
 
-	public static String strWordWrap(String str, int width, int tab, char tabChar) {
+	@NotNull
+	public static String strWordWrap(@NotNull String str, int width, int tab, char tabChar) {
 		String ret = "";
 		while (str.length() > 0) {
 			// find last char of first line
@@ -266,13 +274,14 @@ public class Str extends OutputStream {
 
 	/**
 	 * right-aligns paragraphs
-	 * @param str
-	 * @param width
-	 * @param tab
-	 * @param tabChar
+	 * @param str the String
+	 * @param width the paragraph width
+	 * @param tab the tabs to indent
+	 * @param tabChar the Tabchar to use
 	 * @return right-aligned string
 	 */
-	public static String strWordWrapRight(String str, int width, int tab, char tabChar) {
+	@NotNull
+	public static String strWordWrapRight(@NotNull String str, int width, int tab, char tabChar) {
 		String ret = "";
 		while (str.length() > 0) {
 			// find last char of first line
@@ -294,7 +303,8 @@ public class Str extends OutputStream {
 		return ret;
 	}
 
-	public static String strWordWrapRight(String str, int width, int tab) {
+	@NotNull
+	public static String strWordWrapRight(@NotNull String str, int width, int tab) {
 		return strWordWrapRight(str, width, tab, ' ');
 	}
 
@@ -308,8 +318,8 @@ public class Str extends OutputStream {
 
 	/**
 	 * Returns a sequence str of the provided str count # of times
-	 * @param str
-	 * @param count
+	 * @param str the String to repeat
+	 * @param count the number of times to repeat it
 	 * @return string with the input string repeated
 	 */
 	public static String repeat(String str, int count) {
@@ -320,7 +330,7 @@ public class Str extends OutputStream {
 		return ret.toString();
 	}
 
-	public static String strTrim(String str, int length) {
+	public static String strTrim(@NotNull String str, int length) {
 		if (str.length() > length) {
 			int width = length;
 			String ret = "";
@@ -347,7 +357,7 @@ public class Str extends OutputStream {
 		return str;
 	}
 
-	public static String titleCase(String str) {
+	public static String titleCase(@NotNull String str) {
 		StringBuilder ret = new StringBuilder();
 		boolean st = true;
 		for (char c : str.toLowerCase().toCharArray()) {

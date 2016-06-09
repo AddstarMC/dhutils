@@ -1,7 +1,11 @@
 package me.desht.dhutils;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface PluginVersionListener {
-	public void onVersionChanged(int oldVersion, int newVersion);
-	public String getPreviousVersion();
-	public void setPreviousVersion(String currentVersion);
+	void onVersionChanged(int oldVersion, int newVersion);
+
+	@NotNull String getPreviousVersion();
+
+	void setPreviousVersion(String currentVersion);
 }

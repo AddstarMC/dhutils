@@ -3,6 +3,7 @@ package me.desht.dhutils.cost;
 import me.desht.dhutils.ExperienceManager;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class ExperienceCost extends Cost {
 
@@ -10,6 +11,7 @@ public class ExperienceCost extends Cost {
 		super(quantity);
 	}
 
+	@NotNull
 	@Override
 	public String getDescription() {
 		return (int) getQuantity() + " XP";

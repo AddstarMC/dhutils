@@ -26,6 +26,8 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.world.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author desht
@@ -39,6 +41,7 @@ public class TerrainManager {
 	private final WorldEdit we;
 	private final LocalSession localSession;
 	private final EditSession editSession;
+	@Nullable
 	private final Player wePlayer;
 
 	/**
@@ -47,7 +50,7 @@ public class TerrainManager {
 	 * @param wep	the WorldEdit plugin instance
 	 * @param player	the player to work with
 	 */
-	public TerrainManager(WorldEditPlugin wep, org.bukkit.entity.Player player) {
+	public TerrainManager(@NotNull WorldEditPlugin wep, org.bukkit.entity.Player player) {
 		we = wep.getWorldEdit();
 		wePlayer = wep.wrapPlayer(player);
 		localSession = we.getSessionManager().get(wePlayer);
@@ -60,7 +63,7 @@ public class TerrainManager {
 	 * @param wep	the WorldEdit plugin instance
 	 * @param world	the world to work in
 	 */
-	public TerrainManager(WorldEditPlugin wep, World world) {
+	public TerrainManager(@NotNull WorldEditPlugin wep, World world) {
 		we = wep.getWorldEdit();
 		wePlayer = null;
 		localSession = new LocalSession(we.getConfiguration());
@@ -77,7 +80,7 @@ public class TerrainManager {
 	 * @throws DataException
 	 * @throws IOException
 	 */
-	public void saveTerrain(File saveFile, Location l1, Location l2) throws FilenameException, DataException, IOException {
+	public void saveTerrain(File saveFile, @NotNull Location l1, @NotNull Location l2) throws FilenameException, DataException, IOException {
 		Vector min = getMin(l1, l2);
 		Vector max = getMax(l1, l2);
 
@@ -130,8 +133,8 @@ public class TerrainManager {
 
 	/**
 	 * Load the data from the given schematic file and paste it at the saved clipboard's origin.
-	 * 
-	 * @param saveFile
+	 *
+	 * @param saveFile the File to load the schematic from
 	 * @throws FilenameException
 	 * @throws DataException
 	 * @throws IOException
@@ -142,14 +145,15 @@ public class TerrainManager {
 		loadSchematic(saveFile, null);
 	}
 
-	private Vector getPastePosition(Location loc) throws EmptyClipboardException {
+	private Vector getPastePosition(@Nullable Location loc) throws EmptyClipboardException {
 		if (loc == null)
 			return localSession.getClipboard().getClipboard().getOrigin();
 		else 
 			return new Vector(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
-	private Vector getMin(Location l1, Location l2) {
+	@NotNull
+	private Vector getMin(@NotNull Location l1, @NotNull Location l2) {
 		return new Vector(
 		                  Math.min(l1.getBlockX(), l2.getBlockX()),
 		                  Math.min(l1.getBlockY(), l2.getBlockY()),
@@ -157,7 +161,8 @@ public class TerrainManager {
 				);
 	}
 
-	private Vector getMax(Location l1, Location l2) {
+	@NotNull
+	private Vector getMax(@NotNull Location l1, @NotNull Location l2) {
 		return new Vector(
 		                  Math.max(l1.getBlockX(), l2.getBlockX()),
 		                  Math.max(l1.getBlockY(), l2.getBlockY()),

@@ -16,6 +16,7 @@
     </parent>
 
     <repositories>
+        <!--WorldEdit-->
         <repository>
             <id>sk89q-maven</id>
             <url>http://maven.sk89q.com/repo/</url>
@@ -25,6 +26,7 @@
             <url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
         </repository>
         <repository>
+            <!-- For ProtocolLib-->
             <id>dmulloy2-releases</id>
             <url>http://repo.dmulloy2.net/content/repositories/releases/</url>
         </repository>
@@ -45,20 +47,6 @@
             <id>ext-snapshots</id>
             <name>addstar-snapshot-ext</name>
             <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>addstar-release</id>
-            <name>libs-release</name>
-            <url>http://maven.addstar.com.au/artifactory/libs-release</url>
-        </repository>
-        <repository>
-            <snapshots/>
-            <id>addstar-snapshots</id>
-            <name>libs-snapshot</name>
-            <url>http://maven.addstar.com.au/artifactory/libs-snapshot</url>
         </repository>
     </repositories>
 
@@ -120,6 +108,11 @@
             <version>${project.parent.version}</version>
             <type>jar</type>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
         </dependency>
     </dependencies>
 

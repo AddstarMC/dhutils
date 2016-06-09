@@ -12,18 +12,19 @@ import org.bukkit.entity.Player;
 
 import me.desht.dhutils.nms.api.NMSAbstraction;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class NMSHandler implements NMSAbstraction {
 
 	@Override
-	public boolean setBlockFast(World world, int x, int y, int z, int blockId, byte data) {
+	public boolean setBlockFast(@NotNull World world, int x, int y, int z, int blockId, byte data) {
 		net.minecraft.server.World w = ((CraftWorld) world).getHandle();
 		Chunk chunk = w.getChunkAt(x >> 4, z >> 4);
 		return chunk.a(x & 0x0f, y, z & 0x0f, blockId, data);
 	}
 
 	@Override
-	public void forceBlockLightLevel(World world, int x, int y, int z, int level) {
+	public void forceBlockLightLevel(@NotNull World world, int x, int y, int z, int level) {
 		net.minecraft.server.World w = ((CraftWorld) world).getHandle();
 		w.b(EnumSkyBlock.BLOCK, x, y, z, level);
 	}
@@ -40,17 +41,18 @@ public class NMSHandler implements NMSAbstraction {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void queueChunkForUpdate(Player player, int cx, int cz) {
+	public void queueChunkForUpdate(@NotNull Player player, int cx, int cz) {
 		((CraftPlayer) player).getHandle().chunkCoordIntPairQueue.add(new ChunkCoordIntPair(cx, cz));
 	}
 
+	@NotNull
 	@Override
 	public Vector[] getBlockHitbox(org.bukkit.block.Block block) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void recalculateBlockLighting(World world, int x, int y, int z) {
+	public void recalculateBlockLighting(@NotNull World world, int x, int y, int z) {
 		net.minecraft.server.World w = ((CraftWorld) world).getHandle();
 		w.z(x, y, z);
 	}

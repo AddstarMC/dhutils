@@ -10,6 +10,8 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Midi Receiver for processing note events.
@@ -20,7 +22,9 @@ public class NoteBlockReceiver implements Receiver
 {
 	private static final float VOLUME_RANGE = 10.0f;
 
+	@Nullable
 	private final Set<Player> listeners;
+	@Nullable
 	private final Location globalLoc;
 
 	public NoteBlockReceiver(Set<Player> listeners) throws InvalidMidiDataException, IOException
@@ -52,7 +56,7 @@ public class NoteBlockReceiver implements Receiver
 		}
 	}
 
-	public void playNote(ShortMessage message)
+	public void playNote(@NotNull ShortMessage message)
 	{
 		// if this isn't a NOTE_ON message, we can't play it
 		if (ShortMessage.NOTE_ON != message.getCommand()) return;

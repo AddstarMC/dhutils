@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.ChatPaginator;
+import org.jetbrains.annotations.NotNull;
 
 public class MessagePager {
     public static final String BULLET = ChatColor.LIGHT_PURPLE + "\u2022 " + ChatColor.RESET;
@@ -17,9 +18,11 @@ public class MessagePager {
     private static String pageCmd = "";
     private static int defaultPageSize = DEF_PAGE_SIZE;
 
-    private static final Map<String, MessagePager> pagers = new HashMap<String, MessagePager>();
+    private static final Map<String, MessagePager> pagers = new HashMap<>();
 
+    @NotNull
     private final List<String> messages;
+    @NotNull
     private final WeakReference<CommandSender> senderRef;
 
     private int currentPage;
@@ -27,11 +30,11 @@ public class MessagePager {
     private boolean parseColours;
 
     public MessagePager(CommandSender sender) {
-        this.senderRef = new WeakReference<CommandSender>(sender);
+        this.senderRef = new WeakReference<>(sender);
         this.currentPage = 1;
         this.parseColours = false;
         this.pageSize = getDefaultPageSize();
-        this.messages = new ArrayList<String>();
+        this.messages = new ArrayList<>();
     }
 
     public static int getDefaultPageSize() {
@@ -65,7 +68,7 @@ public class MessagePager {
      * @param sender	the command sender (a player or console)
      * @return			the player's message pager
      */
-    public static MessagePager getPager(CommandSender sender) {
+    public static MessagePager getPager(@NotNull CommandSender sender) {
         if (!pagers.containsKey(sender.getName())) {
             pagers.put(sender.getName(), new MessagePager(sender));
         }
@@ -78,7 +81,7 @@ public class MessagePager {
      *
      * @param sender		the command sender (a player or console)
      */
-    public static void deletePager(CommandSender sender) {
+    public static void deletePager(@NotNull CommandSender sender) {
         deletePager(sender.getName());
     }
 
@@ -110,6 +113,7 @@ public class MessagePager {
      *
      * @return this pager object for method chaining
      */
+    @NotNull
     public MessagePager clear() {
         currentPage = 1;
         parseColours = false;
@@ -123,6 +127,7 @@ public class MessagePager {
      * @param parseColours true to enable parsing, false to disable
      * @return this pager object for method chaining
      */
+    @NotNull
     public MessagePager setParseColours(boolean parseColours) {
         this.parseColours = parseColours;
         return this;
@@ -143,7 +148,7 @@ public class MessagePager {
      *
      * @param line	The message line to add
      */
-    public void add(String line) {
+    public void add(@NotNull String line) {
         Collections.addAll(messages, wrap(line));
     }
 
@@ -162,11 +167,11 @@ public class MessagePager {
         add(Arrays.asList(lines));
     }
 
-    public void add(List<String> lines) {
+    public void add(@NotNull List<String> lines) {
         //TODO: apply MinecraftChatStr.alignTags(lines, true)
         //		in pagesize segments before adding to buffer
 
-        List<String> actual = new ArrayList<String>();
+        List<String> actual = new ArrayList<>();
         for (String l : lines) {
             Collections.addAll(actual, wrap(l));
         }
@@ -271,7 +276,7 @@ public class MessagePager {
 
      * @param pageStr	A string containing the page number to display
      */
-    public void showPage(String pageStr) throws NumberFormatException {
+    public void showPage(@NotNull String pageStr) throws NumberFormatException {
         int pageNum = Integer.parseInt(pageStr);
         showPage(pageNum);
     }
@@ -325,7 +330,7 @@ public class MessagePager {
         }
     }
 
-    private String[] wrap(String line) {
+    private String[] wrap(@NotNull String line) {
         CommandSender sender = senderRef.get();
         if (sender != null && sender instanceof Player) {
             String s = parseColours ? MiscUtil.parseColourSpec(sender, line) : line;

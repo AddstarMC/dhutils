@@ -20,6 +20,7 @@
 package me.desht.dhutils.block;
 
 import com.sk89q.worldedit.CuboidClipboard.FlipDirection;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Block data related classes.
@@ -29,10 +30,10 @@ import com.sk89q.worldedit.CuboidClipboard.FlipDirection;
 public final class BlockData {
     /**
      * Rotate a block's data value 90 degrees (north->east->south->west->north);
-     * 
-     * @param type
-     * @param data
-     * @return
+     *
+     * @param type An int showing the block type compared to a {@link BlockID enum}
+     * @param data an int showing the data
+     * @return an int that is a 90 degree rotation of the Data value.
      */
     public static int rotate90(int type, int data) {
         switch (type) {
@@ -219,10 +220,10 @@ public final class BlockData {
 
     /**
      * Rotate a block's data value -90 degrees (north<-east<-south<-west<-north);
-     * 
-     * @param type
-     * @param data
-     * @return
+     *
+     * @param type The BlockType as an Int
+     * @param data the current block rotation
+     * @return the blockdata rotated reverse 90 degree
      */
     public static int rotate90Reverse(int type, int data) {
         // case ([0-9]+): return ([0-9]+) -> case \2: return \1
@@ -411,10 +412,10 @@ public final class BlockData {
 
     /**
      * Flip a block's data value.
-     * 
-     * @param type
-     * @param data
-     * @return
+     *
+     * @param type The BlockID
+     * @param data The data value
+     * @return the data value flipped
      */
     public static int flip(int type, int data) {
         return rotate90(type, rotate90(type, data));
@@ -422,13 +423,13 @@ public final class BlockData {
 
     /**
      * Flip a block's data value.
-     * 
-     * @param type
-     * @param data
-     * @param direction
-     * @return
+     *
+     * @param type The BlockID
+     * @param data The data value
+     * @param direction the direction to flip the block
+     * @return the data value flipped
      */
-    public static int flip(int type, int data, FlipDirection direction) {
+    public static int flip(int type, int data, @NotNull FlipDirection direction) {
         int flipX = 0;
         int flipY = 0;
         int flipZ = 0;
@@ -843,7 +844,7 @@ public final class BlockData {
         case BlockID.CLOTH:
             if (increment == 1) {
                 data = nextClothColor(data);
-            } else if (increment == -1) {
+            } else {
                 data = prevClothColor(data);
             }
             return data;
@@ -864,8 +865,8 @@ public final class BlockData {
     /**
      * Returns the data value for the next color of cloth in the rainbow. This
      * should not be used if you want to just increment the data value.
-     * @param data
-     * @return
+     * @param data the colour data to check
+     * @return the next colour in a rainbow
      */
     public static int nextClothColor(int data) {
         switch (data) {
@@ -893,8 +894,8 @@ public final class BlockData {
     /**
      * Returns the data value for the previous ext color of cloth in the rainbow.
      * This should not be used if you want to just increment the data value.
-     * @param data
-     * @return
+     * @param data the colour value
+     * @return the previous colour value
      */
     public static int prevClothColor(int data) {
         switch (data) {

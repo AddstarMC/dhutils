@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.NotNull;
 
 public class EconomyCost extends Cost {
     private boolean vaultLegacyMode;
@@ -40,14 +41,14 @@ public class EconomyCost extends Cost {
 	}
 
 	@Override
-	public boolean isAffordable(Player player) {
+	public boolean isAffordable(@NotNull Player player) {
 		return vaultLegacyMode ?
                 getEconomy().has(player.getName(), getQuantity()) :
                 getEconomy().has(player, getQuantity());
 	}
 
 	@Override
-	public void apply(Player player) {
+	public void apply(@NotNull Player player) {
 		EconomyResponse resp;
 		if (getQuantity() < 0.0) {
 			resp = vaultLegacyMode ?

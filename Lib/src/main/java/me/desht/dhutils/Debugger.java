@@ -2,6 +2,7 @@ package me.desht.dhutils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class Debugger {
 	private static final String DEBUG_COLOR = ChatColor.DARK_GREEN.toString();
@@ -51,6 +52,7 @@ public class Debugger {
 		}
 	}
 
+	@NotNull
 	@Override
 	public Debugger clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException();

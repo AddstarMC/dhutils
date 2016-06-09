@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.Set;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MetaEventListener;
-import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
@@ -65,14 +63,11 @@ public class MidiUtil
 	{
 		if (sequencer == null) {
 			sequencer = MidiSystem.getSequencer(false);
-			sequencer.addMetaEventListener(new MetaEventListener() {
-	            @Override
-	            public void meta(MetaMessage metaMsg) {
-	                if (metaMsg.getType() == 0x2F) {
-	                    sequencer.close();
-	                }
-	            }
-	        });
+			sequencer.addMetaEventListener(metaMsg -> {
+				if (metaMsg.getType() == 0x2F) {
+					sequencer.close();
+				}
+			});
 		} else if (sequencer.isOpen()) {
 			sequencer.close(); // in case any other sequence is already playing
 		}

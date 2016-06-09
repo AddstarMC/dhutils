@@ -6,21 +6,23 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ResponseHandler {
 
 	private final Plugin plugin;
-	private final ConcurrentMap<String, ExpectBase> exp = new ConcurrentHashMap<String, ExpectBase>();
+	private final ConcurrentMap<String, ExpectBase> exp = new ConcurrentHashMap<>();
 
 	public ResponseHandler(Plugin plugin) {
 		this.plugin = plugin;
 	}
 
-	public void expect(Player player, ExpectBase data) {
+	public void expect(@NotNull Player player, @NotNull ExpectBase data) {
 		expect(player, data, null);
 	}
 
-	private void expect(Player player, ExpectBase data, Player expectee) {
+	private void expect(@NotNull Player player, @NotNull ExpectBase data, @Nullable Player expectee) {
 		data.setPlayerId(player.getUniqueId());
 		data.setResponseHandler(this);
 		if (expectee != null) {
@@ -30,25 +32,26 @@ public class ResponseHandler {
 		}
 	}
 
-	private String genKey(UUID playerId, Class<? extends ExpectBase> c) {
+	@NotNull
+	private String genKey(@NotNull UUID playerId, @NotNull Class<? extends ExpectBase> c) {
 		return playerId.toString() + ":" + c.getName();
 	}
 
-	public boolean isExpecting(Player player, Class<? extends ExpectBase> action) {
+	public boolean isExpecting(@NotNull Player player, @NotNull Class<? extends ExpectBase> action) {
 		return exp.containsKey(genKey(player.getUniqueId(), action));
 	}
 
-	public void handleAction(Player player, Class<? extends ExpectBase> action) {
+	public void handleAction(@NotNull Player player, @NotNull Class<? extends ExpectBase> action) {
 		ExpectBase e = exp.get(genKey(player.getUniqueId(), action));
 		cancelAction(player, action);
 		e.doResponse(player.getUniqueId());
 	}
 
-	public void cancelAction(Player player, Class<? extends ExpectBase> action) {
+	public void cancelAction(@NotNull Player player, @NotNull Class<? extends ExpectBase> action) {
 		exp.remove(genKey(player.getUniqueId(), action));
 	}
 
-	public <T extends ExpectBase> T getAction(Player player, Class<T> action) {
+	public <T extends ExpectBase> T getAction(@NotNull Player player, @NotNull Class<T> action) {
 		return action.cast(exp.get(genKey(player.getUniqueId(), action)));
 	}
 

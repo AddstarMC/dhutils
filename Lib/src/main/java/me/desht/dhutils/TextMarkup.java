@@ -1,6 +1,7 @@
 package me.desht.dhutils;
 
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class TextMarkup {
 	private enum MarkupType {
@@ -43,7 +44,8 @@ public class TextMarkup {
 		}
 	}
 
-	private static MarkedUpTextSegment processMarkup(String text) {
+	@NotNull
+	private static MarkedUpTextSegment processMarkup(@NotNull String text) {
 		char code = Character.toLowerCase(text.charAt(0));
 		text = text.substring(1);
 		if (code >= '0' && code <= '9' || code >= 'a' && code <= 'f') {
@@ -85,7 +87,7 @@ public class TextMarkup {
 		}
 	}
 
-	public static String textToHTML(String text) {
+	public static String textToHTML(@NotNull String text) {
 		String[] sections = text.split("\u00a7");
 		StringBuilder sb = new StringBuilder();
 

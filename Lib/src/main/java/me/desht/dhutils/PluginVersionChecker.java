@@ -1,9 +1,10 @@
 package me.desht.dhutils;
 
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public class PluginVersionChecker {
-	public PluginVersionChecker(Plugin plugin, PluginVersionListener listener) {
+	public PluginVersionChecker(@NotNull Plugin plugin, @NotNull PluginVersionListener listener) {
 
 		String currentVersion = plugin.getDescription().getVersion();
 		String lastVersion = listener.getPreviousVersion();
@@ -22,7 +23,7 @@ public class PluginVersionChecker {
 	 * @param ver the version string as returned by {@link org.bukkit.plugin.PluginDescriptionFile#getVersion()}
 	 * @return the integer version number
 	 */
-	public static int getRelease(String ver) {
+	public static int getRelease(@NotNull String ver) {
 		String[] a = ver.replaceAll("-.+$", "").split("\\.");
 		try {
 			int major = Integer.parseInt(a[0]);

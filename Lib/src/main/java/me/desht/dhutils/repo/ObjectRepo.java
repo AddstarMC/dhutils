@@ -11,15 +11,17 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import me.desht.dhutils.DHUtilsException;
+import org.jetbrains.annotations.NotNull;
 
 public class ObjectRepo {
-	private Map<String, DHStorable> repo = new HashMap<String, DHStorable>();
+	@NotNull
+	private Map<String, DHStorable> repo = new HashMap<>();
 
 	public ObjectRepo() {
 
 	}
 
-	public void store(DHStorable object) throws IOException {
+	public void store(@NotNull DHStorable object) throws IOException {
 		String key = makeKey(object);
 
 		if (repo.containsKey(key)) {
@@ -31,7 +33,7 @@ public class ObjectRepo {
 		persist(object);
 	}
 
-	public <T extends DHStorable> T get(Class<T> clazz, String name) {
+	public <T extends DHStorable> T get(@NotNull Class<T> clazz, String name) {
 		String key = makeKey(clazz, name);
 		if (!repo.containsKey(key)) {
 			throw new DHUtilsException("No such object: " + key);
@@ -39,7 +41,7 @@ public class ObjectRepo {
 		return clazz.cast(repo.get(key));
 	}
 
-	public void remove(DHStorable object) {
+	public void remove(@NotNull DHStorable object) {
 		String key = makeKey(object);
 		if (!repo.containsKey(key)) {
 			throw new DHUtilsException("No such object: " + key);
@@ -48,12 +50,12 @@ public class ObjectRepo {
 		unpersist(object);
 	}
 
-	public boolean contains(DHStorable object) {
+	public boolean contains(@NotNull DHStorable object) {
 		String key = makeKey(object);
 		return repo.containsKey(key);
 	}
 
-	private void persist(DHStorable object) throws IOException {
+	private void persist(@NotNull DHStorable object) throws IOException {
 		if (object.getStorageFolder() == null) {
 			// object doesn't want to be saved
 			return;
@@ -69,7 +71,7 @@ public class ObjectRepo {
 		c.save(dest);
 	}
 
-	private void unpersist(DHStorable object) {
+	private void unpersist(@NotNull DHStorable object) {
 		if (object.getStorageFolder() == null) {
 			// object doesn't want to be saved
 			return;
@@ -78,18 +80,20 @@ public class ObjectRepo {
 		dest.delete();
 	}
 
-	private String makeKey(DHStorable object) {
+	@NotNull
+	private String makeKey(@NotNull DHStorable object) {
 		String k = object.getClass().getCanonicalName() + ":" + object.getName();
 		return k;
 	}
 
-	private String makeKey(Class<? extends DHStorable> clazz, String name) {
+	@NotNull
+	private String makeKey(@NotNull Class<? extends DHStorable> clazz, String name) {
 		String k = clazz.getCanonicalName() + ":" + name;
 		return k;
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void expandMapIntoConfig(ConfigurationSection conf, Map<String, Object> map) {
+	private static void expandMapIntoConfig(@NotNull ConfigurationSection conf, @NotNull Map<String, Object> map) {
 		for (Entry<String, Object> e : map.entrySet()) {
 			if (e.getValue() instanceof Map<?,?>) {
 				ConfigurationSection section = conf.createSection(e.getKey());

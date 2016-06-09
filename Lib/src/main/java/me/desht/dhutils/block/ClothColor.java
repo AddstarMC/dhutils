@@ -19,6 +19,8 @@
 
 package me.desht.dhutils.block;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumSet;
@@ -68,11 +70,11 @@ public enum ClothColor {
     /**
      * Stores a map of the IDs for fast access.
      */
-    private static final Map<Integer, ClothColor> ids = new HashMap<Integer, ClothColor>();
+    private static final Map<Integer, ClothColor> ids = new HashMap<>();
     /**
      * Stores a map of the names for fast access.
      */
-    private static final Map<String, ClothColor> lookup = new HashMap<String, ClothColor>();
+    private static final Map<String, ClothColor> lookup = new HashMap<>();
 
     private final int id;
     private final String name;
@@ -91,8 +93,8 @@ public enum ClothColor {
     /**
      * Construct the type.
      *
-     * @param id
-     * @param name
+     * @param id The cloth ID
+     * @param name the Cloth name
      */
     ClothColor(int id, String name, String lookupKey) {
         this.id = id;
@@ -103,8 +105,8 @@ public enum ClothColor {
     /**
      * Construct the type.
      *
-     * @param id
-     * @param name
+     * @param id The cloth ID
+     * @param name the Cloth name
      */
     ClothColor(int id, String name, String[] lookupKeys) {
         this.id = id;
@@ -115,8 +117,9 @@ public enum ClothColor {
     /**
      * Return type from ID. May return null.
      *
-     * @param id
-     * @return
+     * @param id the cloth ID
+     * @return type from ID. May return null.
+
      */
     public static ClothColor fromID(int id) {
         return ids.get(id);
@@ -125,17 +128,17 @@ public enum ClothColor {
     /**
      * Return type from name. May return null.
      *
-     * @param name
-     * @return
+     * @param name the Cloth name
+     * @return type from name. May return null.
      */
-    public static ClothColor lookup(String name) {
+    public static ClothColor lookup(@NotNull String name) {
         return lookup.get(name.toLowerCase());
     }
 
     /**
      * Get item numeric ID.
      *
-     * @return
+     * @return the ID
      */
     public int getID() {
         return id;
@@ -144,7 +147,7 @@ public enum ClothColor {
     /**
      * Get user-friendly item name.
      *
-     * @return
+     * @return the name
      */
     public String getName() {
         return name;

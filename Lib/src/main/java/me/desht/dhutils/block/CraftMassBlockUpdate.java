@@ -8,6 +8,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.HashSet;
@@ -18,12 +20,15 @@ import java.util.concurrent.TimeUnit;
 public class CraftMassBlockUpdate implements MassBlockUpdate, Runnable {
 	private final Plugin plugin;
 	private final World world;
+	@Nullable
 	private final NMSAbstraction nms;
 
 	private RelightingStrategy relightingStrategy = RelightingStrategy.IMMEDIATE;
 
 	private static final int MAX_BLOCKS_PER_TIME_CHECK = 1000;
-	private Queue<DeferredBlock> deferredBlocks = new ArrayDeque<DeferredBlock>();
+	@NotNull
+	private Queue<DeferredBlock> deferredBlocks = new ArrayDeque<>();
+	@Nullable
 	private BukkitTask relightTask = null;
 	private long maxRelightTimePerTick = TimeUnit.NANOSECONDS.convert(1, TimeUnit.MILLISECONDS);
 
@@ -112,7 +117,7 @@ public class CraftMassBlockUpdate implements MassBlockUpdate, Runnable {
 		this.relightingStrategy = strategy;
 	}
 
-	public void setMaxRelightTimePerTick(long value, TimeUnit timeUnit) {
+	public void setMaxRelightTimePerTick(long value, @NotNull TimeUnit timeUnit) {
 		maxRelightTimePerTick = timeUnit.toNanos(value);
 	}
 
@@ -129,12 +134,12 @@ public class CraftMassBlockUpdate implements MassBlockUpdate, Runnable {
 			// reduce accidental memory wastage if called when not needed
 			throw new IllegalStateException("setDeferredBufferSize() called when relighting strategy not DEFERRED or HYBRID");
 		}
-		deferredBlocks = new ArrayDeque<CraftMassBlockUpdate.DeferredBlock>(size);
+		deferredBlocks = new ArrayDeque<>(size);
 	}
 
-    private boolean canAffectLighting(World world, int x, int y, int z) {
-        Block base  = world.getBlockAt(x, y, z);
-        Block east  = base.getRelative(BlockFace.EAST);
+	private boolean canAffectLighting(@NotNull World world, int x, int y, int z) {
+		Block base = world.getBlockAt(x, y, z);
+		Block east  = base.getRelative(BlockFace.EAST);
         Block west  = base.getRelative(BlockFace.WEST);
         Block up    = base.getRelative(BlockFace.UP);
         Block down  = base.getRelative(BlockFace.DOWN);
@@ -149,8 +154,9 @@ public class CraftMassBlockUpdate implements MassBlockUpdate, Runnable {
                 north.getType().isTransparent();
     }
 
+	@NotNull
 	private Set<ChunkCoords> calculateChunks() {
-		Set<ChunkCoords> res = new HashSet<ChunkCoords>();
+		Set<ChunkCoords> res = new HashSet<>();
 		if (blocksModified == 0) {
 			return res;
 		}
@@ -167,9 +173,10 @@ public class CraftMassBlockUpdate implements MassBlockUpdate, Runnable {
 	/**
 	 * TODO: this should be a method in the Bukkit CraftWorld class, e.g world.createMassBlockUpdate()
 	 *
-	 * @param world
-	 * @return
+	 * @param world the Bukkit World
+	 * @return a CraftMassBlockUpdate object
 	 */
+	@NotNull
 	public static MassBlockUpdate createMassBlockUpdater(Plugin plugin, org.bukkit.World world) {
 		return new CraftMassBlockUpdate(plugin, world);
 	}
@@ -182,17 +189,16 @@ public class CraftMassBlockUpdate implements MassBlockUpdate, Runnable {
 		}
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+		public boolean equals(@Nullable Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
 
             ChunkCoords that = (ChunkCoords) o;
 
             if (x != that.x) return false;
-            if (z != that.z) return false;
+			return z == that.z;
 
-            return true;
-        }
+		}
 
         @Override
         public int hashCode() {

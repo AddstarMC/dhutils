@@ -8,13 +8,14 @@ import org.bukkit.craftbukkit.v1_9_R2.CraftChunk;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 
 public class NMSHandler implements NMSAbstraction {
 
     @Override
-    public boolean setBlockFast(World world, int x, int y, int z, int blockId, byte data) {
+    public boolean setBlockFast(@NotNull World world, int x, int y, int z, int blockId, byte data) {
         net.minecraft.server.v1_9_R2.World w = ((CraftWorld) world).getHandle();
         Chunk chunk = w.getChunkAt(x >> 4, z >> 4);
         chunk.a(new BlockPosition(x & 0xF, y, z & 0xF), Block.getById(blockId).fromLegacyData(data));
@@ -22,7 +23,7 @@ public class NMSHandler implements NMSAbstraction {
     }
 
     @Override
-    public void forceBlockLightLevel(World world, int x, int y, int z, int level) {
+    public void forceBlockLightLevel(@NotNull World world, int x, int y, int z, int level) {
         net.minecraft.server.v1_9_R2.World w = ((CraftWorld) world).getHandle();
         w.a(EnumSkyBlock.BLOCK, new BlockPosition(x, y, z), level);
     }
@@ -41,12 +42,13 @@ public class NMSHandler implements NMSAbstraction {
 
     @Override
     @Deprecated
-    public void queueChunkForUpdate(Player player, int cx, int cz) {
+    public void queueChunkForUpdate(@NotNull Player player, int cx, int cz) {
         player.getWorld().refreshChunk(cx, cz);
     }
 
+    @NotNull
     @Override
-    public Vector[] getBlockHitbox(org.bukkit.block.Block block) {
+    public Vector[] getBlockHitbox(@NotNull org.bukkit.block.Block block) {
         net.minecraft.server.v1_9_R2.World w = ((CraftWorld)block.getWorld()).getHandle();
         BlockPosition pos = new BlockPosition(block.getX(), block.getY(), block.getZ());
         IBlockData b = w.getType(pos);
@@ -58,7 +60,7 @@ public class NMSHandler implements NMSAbstraction {
     }
 
     @Override
-    public void recalculateBlockLighting(World world, int x, int y, int z) {
+    public void recalculateBlockLighting(@NotNull World world, int x, int y, int z) {
         // Don't consider blocks that are completely surrounded by other non-transparent blocks
         if (!canAffectLighting(world, x, y, z)) {
             return;
@@ -122,7 +124,7 @@ public class NMSHandler implements NMSAbstraction {
         }
     }
 
-    private boolean canAffectLighting(World world, int x, int y, int z) {
+    private boolean canAffectLighting(@NotNull World world, int x, int y, int z) {
         org.bukkit.block.Block base  = world.getBlockAt(x, y, z);
         org.bukkit.block.Block east  = base.getRelative(BlockFace.EAST);
         org.bukkit.block.Block west  = base.getRelative(BlockFace.WEST);

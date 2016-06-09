@@ -11,16 +11,19 @@ import org.bukkit.block.Sign;
 import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MaterialWithData implements Cloneable {
 
-	private static final Map<String, MaterialWithData> materialCache = new HashMap<String, MaterialWithData>();
+	private static final Map<String, MaterialWithData> materialCache = new HashMap<>();
 
 	private final int matId;
 	private final short data;
+	@Nullable
 	private final String[] metadata; // e.g. sign text
 
 	private MaterialWithData(int matId, short data) {
@@ -33,13 +36,13 @@ public class MaterialWithData implements Cloneable {
 		this(mat, (byte) 0);
 	}
 
-	private MaterialWithData(MaterialWithData m) {
+	private MaterialWithData(@NotNull MaterialWithData m) {
 		this.matId = m.matId;
 		this.data = m.data;
 		this.metadata = m.metadata;
 	}
 
-	private MaterialWithData(String string) {
+	private MaterialWithData(@NotNull String string) {
 		String[] matAndText = string.split("=");
 		String[] matAndData = matAndText[0].split(":");
 
@@ -97,7 +100,7 @@ public class MaterialWithData implements Cloneable {
 	 * @throws IllegalArgumentException if the specification is invalid
 	 */
 	@FactoryMethod
-	public static MaterialWithData get(String spec) {
+	public static MaterialWithData get(@NotNull String spec) {
 		String key = spec.toLowerCase();
 		if (materialCache.containsKey(key)) {
 			return materialCache.get(key);
@@ -123,7 +126,7 @@ public class MaterialWithData implements Cloneable {
 	 * @param metadata list of Strings representing extra data for this object
 	 * @return the MaterialWithData object
 	 */
-	public static MaterialWithData get(int id, short data, String[] metadata) {
+	public static MaterialWithData get(int id, short data, @Nullable String[] metadata) {
 		String key = metadata == null ? String.format("%d:%d", id, data) : String.format("%d:%d=%s", id, data, Joiner.on(";").join(metadata));
 		return get(key);
 	}
@@ -144,7 +147,7 @@ public class MaterialWithData implements Cloneable {
 		return get(String.format("%d:%d", id, data));
 	}
 
-	public static MaterialWithData get(Block b) {
+	public static MaterialWithData get(@NotNull Block b) {
 		return get(String.format("%d:%d", b.getTypeId(), (short)b.getData()));
 	}
 
@@ -181,6 +184,7 @@ public class MaterialWithData implements Cloneable {
 	 *
 	 * @return list of Strings representing extra data for this object
 	 */
+	@Nullable
 	public String[] getText() {
 		return metadata;
 	}
@@ -199,23 +203,27 @@ public class MaterialWithData implements Cloneable {
      *
      * @return the Bukkit MaterialData object
      */
-    public MaterialData getMaterialData() {
-        return new MaterialData(matId, (byte) data);
-    }
+	@NotNull
+	public MaterialData getMaterialData() {
+		return new MaterialData(matId, (byte) data);
+	}
 
 	/**
 	 * Return an item stack of this material.
 	 *
-	 * @return
+	 * @return an item stack of this material.
 	 */
+	@NotNull
 	public ItemStack makeItemStack() {
 		return makeItemStack(1);
 	}
 
+	@NotNull
 	public ItemStack makeItemStack(int amount) {
-		return makeItemStack(amount, (short)getData());
+		return makeItemStack(amount, getData());
 	}
 
+	@NotNull
 	public ItemStack makeItemStack(int amount, short damage) {
 		return new ItemStack(getId(), amount, damage);
 	}
@@ -250,7 +258,7 @@ public class MaterialWithData implements Cloneable {
 	 *
 	 * @param b the block to apply the material to
 	 */
-	public void applyToBlock(Block b) {
+	public void applyToBlock(@NotNull Block b) {
 		b.setTypeIdAndData(matId, (byte)data, false);
 		applyTileEntityData(b);
 	}
@@ -261,12 +269,12 @@ public class MaterialWithData implements Cloneable {
 	 * @param b the block to apply the material to
 	 * @param mbu the MBU object
 	 */
-	public void applyToBlock(Block b, MassBlockUpdate mbu) {
+	public void applyToBlock(@NotNull Block b, @NotNull MassBlockUpdate mbu) {
 		mbu.setBlock(b.getX(), b.getY(), b.getZ(), matId, data);
 		applyTileEntityData(b);
 	}
 
-	private void applyTileEntityData(Block b) {
+	private void applyTileEntityData(@NotNull Block b) {
 		if (metadata != null) {
 			if (matId == 63 || matId == 68) {
 				// updating a wall sign or floor sign, with text
@@ -294,6 +302,7 @@ public class MaterialWithData implements Cloneable {
 	 *
 	 * @see java.lang.Object#toString()
 	 */
+	@NotNull
 	@Override
 	public String toString() {
 		Material mat = Material.getMaterial(matId);
@@ -312,6 +321,7 @@ public class MaterialWithData implements Cloneable {
 	 *
 	 * @see java.lang.Object#clone()
 	 */
+	@NotNull
 	@Override
 	public MaterialWithData clone() {
 		return new MaterialWithData(this);
@@ -337,7 +347,7 @@ public class MaterialWithData implements Cloneable {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(@Nullable Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -350,14 +360,11 @@ public class MaterialWithData implements Cloneable {
 		MaterialWithData other = (MaterialWithData) obj;
 		if (matId != other.matId) {
 			return false;
-		} else if (data != other.data) {
-			return false;
-		} else {
-			return true;
-		}
+		} else return data == other.data;
 	}
 
-	private String[] makeText(String input) {
+	@NotNull
+	private String[] makeText(@NotNull String input) {
 		String[] t = new String[] { "", "", "", "" };
 		String[] s = input.split(";");
 		for (int i = 0; i < 4 && i < s.length; i++) {

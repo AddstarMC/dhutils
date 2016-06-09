@@ -7,6 +7,7 @@ import me.desht.dhutils.MiscUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -41,22 +42,19 @@ public abstract class ExpectBase {
 		resp.cancelAction(player, getClass());
 	}
 
-	protected BukkitTask deferTask(final UUID playerId, final Runnable task) {
+	protected BukkitTask deferTask(final UUID playerId, @NotNull final Runnable task) {
 		if (resp.getPlugin() == null) {
 			throw new IllegalStateException("deferTask() called when response handler plugin not set");
 		}
-		return Bukkit.getScheduler().runTask(resp.getPlugin(), new Runnable() {
-			@Override
-			public void run() {
-				try {
-					task.run();
-				} catch (DHUtilsException e) {
-					Player player = Bukkit.getPlayer(playerId);
-					if (player != null) {
-						MiscUtil.errorMessage(player, e.getMessage());
-					} else {
-						LogUtils.warning(e.getMessage());
-					}
+		return Bukkit.getScheduler().runTask(resp.getPlugin(), () -> {
+			try {
+				task.run();
+			} catch (DHUtilsException e) {
+				Player player = Bukkit.getPlayer(playerId);
+				if (player != null) {
+					MiscUtil.errorMessage(player, e.getMessage());
+				} else {
+					LogUtils.warning(e.getMessage());
 				}
 			}
 		});

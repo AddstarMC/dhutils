@@ -17,6 +17,8 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * SpecialFX: map logical effect names to specifications for various effects that can be played in the world.
@@ -25,23 +27,28 @@ import org.bukkit.configuration.MemoryConfiguration;
  * @author desht
  */
 public class SpecialFX {
-	public enum EffectType { EXPLOSION, LIGHTNING, EFFECT, SOUND, FIREWORK, MIDI };
+	public enum EffectType {EXPLOSION, LIGHTNING, EFFECT, SOUND, FIREWORK, MIDI}
 
+	@NotNull
 	private final ConfigurationSection conf;
+	@NotNull
 	private final Map<String, SpecialEffect> effects;
 
 	private float masterVolume;
 
-	private static Map<String, Set<String>> validArgs = new HashMap<String, Set<String>>();
-	private static void args(EffectType ef, String... valid) {
+	@NotNull
+	private static Map<String, Set<String>> validArgs = new HashMap<>();
+
+	private static void args(@NotNull EffectType ef, String... valid) {
 		validArgs.get(ef.toString()).addAll(Arrays.asList(valid));
 	}
-	private static boolean isValidArg(EffectType type, String arg) {
+
+	private static boolean isValidArg(@NotNull EffectType type, String arg) {
 		return validArgs.get(type.toString()).contains(arg);
 	}
 	static {
 		for (EffectType ef : EffectType.values()) {
-			validArgs.put(ef.toString(), new HashSet<String>());
+			validArgs.put(ef.toString(), new HashSet<>());
 		}
 		args(EffectType.EXPLOSION, "power", "fire" );
 		args(EffectType.LIGHTNING, "power");
@@ -57,17 +64,17 @@ public class SpecialFX {
 	 *
 	 * @param conf configuration object which maps logical (plugin-defined) effect names to the effect specification
 	 */
-	public SpecialFX(ConfigurationSection conf) {
+	public SpecialFX(@NotNull ConfigurationSection conf) {
 		this.conf = conf;
-		effects = new HashMap<String, SpecialFX.SpecialEffect>();
+		effects = new HashMap<>();
 		masterVolume = (float) conf.getDouble("volume", 1.0);
 	}
 
 	/**
 	 * Play the named effect at the given location.
 	 *
-	 * @param loc
-	 * @param effectName
+	 * @param loc the Location
+	 * @param effectName the Effect name as a string
 	 * @throws IllegalArgumentException if the effect name is unknown or its definition is invalid
 	 */
 	public void playEffect(Location loc, String effectName) {
@@ -104,7 +111,7 @@ public class SpecialFX {
 			this(spec, 1.0f);
 		}
 
-		public SpecialEffect(String spec, float volume) {
+		public SpecialEffect(@Nullable String spec, float volume) {
 			this.volumeMult = volume;
 
 			if (spec == null) {
@@ -144,7 +151,7 @@ public class SpecialFX {
 		 * @throws IllegalArgumentException if any effect parameter is not valid
 		 * @throws NumberFormatException if any numeric parameter is misformed
 		 */
-		public void play(Location loc) {
+		public void play(@Nullable Location loc) {
 			switch (type) {
 			case LIGHTNING:
 				int lPower = Integer.parseInt(params.getString("power", "0"));
@@ -219,7 +226,8 @@ public class SpecialFX {
 			}
 		}
 
-		private Color[] getColors(String string) {
+		@NotNull
+		private Color[] getColors(@NotNull String string) {
 			String[] s = string.split(" ");
 			Color[] colors = new Color[s.length];
 			for (int i = 0; i < s.length; i++) {

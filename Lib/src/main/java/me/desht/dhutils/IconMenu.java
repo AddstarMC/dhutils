@@ -13,6 +13,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * IconMenu - display a popup inventory window with selectable icons.
@@ -22,13 +24,17 @@ import org.bukkit.plugin.Plugin;
 public class IconMenu implements Listener {
 	private String name;
 	private int size;
+	@Nullable
 	private OptionClickEventHandler handler;
+	@Nullable
 	private Plugin plugin;
 
+	@Nullable
 	private String[] optionNames;
+	@Nullable
 	private ItemStack[] optionIcons;
 
-	public IconMenu(String name, int size, OptionClickEventHandler handler, Plugin plugin) {
+	public IconMenu(String name, int size, OptionClickEventHandler handler, @NotNull Plugin plugin) {
 		this.name = name;
 		this.size = size;
 		this.handler = handler;
@@ -38,13 +44,14 @@ public class IconMenu implements Listener {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
-	public IconMenu setOption(int position, ItemStack icon, String name, String... info) {
+	@NotNull
+	public IconMenu setOption(int position, @NotNull ItemStack icon, String name, String... info) {
 		optionNames[position] = name;
 		optionIcons[position] = setItemNameAndLore(icon, name, info);
 		return this;
 	}
 
-	public void open(Player player) {
+	public void open(@NotNull Player player) {
 		Inventory inventory = Bukkit.createInventory(player, size, name);
 		for (int i = 0; i < optionIcons.length; i++) {
 			if (optionIcons[i] != null) {
@@ -63,7 +70,7 @@ public class IconMenu implements Listener {
 	}
 
 	@EventHandler(priority=EventPriority.MONITOR)
-	void onInventoryClick(InventoryClickEvent event) {
+	void onInventoryClick(@NotNull InventoryClickEvent event) {
 		if (event.getInventory().getTitle().equals(name)) {
 			event.setCancelled(true);
 			int slot = event.getRawSlot();
@@ -73,11 +80,7 @@ public class IconMenu implements Listener {
 				handler.onOptionClick(e);
 				if (e.willClose()) {
 					final Player p = (Player)event.getWhoClicked();
-					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						public void run() {
-							p.closeInventory();
-						}
-					}, 1);
+					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> p.closeInventory(), 1);
 				}
 				if (e.willDestroy()) {
 					destroy();
@@ -87,7 +90,7 @@ public class IconMenu implements Listener {
 	}
 
 	public interface OptionClickEventHandler {
-		public void onOptionClick(OptionClickEvent event);
+		void onOptionClick(OptionClickEvent event);
 	}
 
 	public class OptionClickEvent {
@@ -134,7 +137,8 @@ public class IconMenu implements Listener {
 		}
 	}
 
-	private ItemStack setItemNameAndLore(ItemStack item, String name, String[] lore) {
+	@NotNull
+	private ItemStack setItemNameAndLore(@NotNull ItemStack item, String name, String[] lore) {
 		ItemMeta im = item.getItemMeta();
 		im.setDisplayName(name);
 		im.setLore(Arrays.asList(lore));

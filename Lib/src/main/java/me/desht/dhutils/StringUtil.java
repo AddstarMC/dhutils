@@ -19,6 +19,9 @@
 //package com.sk89q.util;
 package me.desht.dhutils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -30,12 +33,13 @@ import java.util.Map;
 public class StringUtil {
     /**
      * Trim a string if it is longer than a certain length.
-     *  
-     * @param str
-     * @param len
-     * @return
+     *
+     * @param str the String
+     * @param len the length to trim it
+     * @return the trimmed string
      */
-    public static String trimLength(String str, int len) {
+    @NotNull
+    public static String trimLength(@NotNull String str, int len) {
         if (str.length() > len) {
             return str.substring(0, len);
         }
@@ -45,14 +49,14 @@ public class StringUtil {
 
     /**
      * Join an array of strings into a string.
-     * 
-     * @param str
-     * @param delimiter
-     * @param initialIndex
-     * @return
+     *
+     * @param str The String Array to join
+     * @param delimiter the delimiter to seperate them with
+     * @param initialIndex the initial index of the array to start with
+     * @return Join an array of strings into a string.
      */
-    public static String joinString(String[] str, String delimiter,
-            int initialIndex) {
+    public static String joinString(@NotNull String[] str, String delimiter,
+                                    int initialIndex) {
         if (str.length == 0) {
             return "";
         }
@@ -64,16 +68,16 @@ public class StringUtil {
     }
 
     /**
-     * Join an array of strings into a string.
-     * 
-     * @param str
-     * @param delimiter
-     * @param initialIndex
-     * @param quote 
-     * @return
+     * Join an array of strings into a string quoted
+     *
+     * @param str The String Array to join
+     * @param delimiter the delimiter to seperate them with
+     * @param initialIndex the initial index of the array to start with
+     * @param quote the Quotation mark to use
+     * @return Join an array of strings into a string quoted
      */
-    public static String joinQuotedString(String[] str, String delimiter,
-            int initialIndex, String quote) {
+    public static String joinQuotedString(@NotNull String[] str, String delimiter,
+                                          int initialIndex, String quote) {
         if (str.length == 0) {
             return "";
         }
@@ -89,25 +93,25 @@ public class StringUtil {
 
     /**
      * Join an array of strings into a string.
-     * 
-     * @param str
-     * @param delimiter
-     * @return
+     *
+     * @param str The String Array to join
+     * @param delimiter the delimiter to seperate them with
+     * @return The String joined
      */
-    public static String joinString(String[] str, String delimiter) {
+    public static String joinString(@NotNull String[] str, String delimiter) {
         return joinString(str, delimiter, 0);
     }
 
     /**
      * Join an array of strings into a string.
-     * 
-     * @param str
-     * @param delimiter
-     * @param initialIndex
-     * @return
+     *
+     * @param str The Object Array to join
+     * @param delimiter the delimiter to seperate them with
+     * @param initialIndex the initial index to start with
+     * @return the joined string
      */
-    public static String joinString(Object[] str, String delimiter,
-            int initialIndex) {
+    public static String joinString(@NotNull Object[] str, String delimiter,
+                                    int initialIndex) {
         if (str.length == 0) {
             return "";
         }
@@ -119,15 +123,15 @@ public class StringUtil {
     }
 
     /**
-     * Join an array of strings into a string.
-     * 
-     * @param str
-     * @param delimiter
-     * @param initialIndex
-     * @return
+     * Join an array of ints into a string.
+     *
+     * @param str The Int Array to join
+     * @param delimiter the delimiter to seperate them with
+     * @param initialIndex the initial index to start with
+     * @return the joined string
      */
-    public static String joinString(int[] str, String delimiter,
-            int initialIndex) {
+    public static String joinString(@NotNull int[] str, String delimiter,
+                                    int initialIndex) {
         if (str.length == 0) {
             return "";
         }
@@ -140,14 +144,14 @@ public class StringUtil {
 
     /**
      * Join an list of strings into a string.
-     * 
-     * @param str
-     * @param delimiter
-     * @param initialIndex
-     * @return
+     *
+     * @param str The Collection  Array to join
+     * @param delimiter the delimiter to seperate them with
+     * @param initialIndex the initial index to start with
+     * @return the joined string
      */
-    public static String joinString(Collection<?> str, String delimiter,
-            int initialIndex) {
+    public static String joinString(@NotNull Collection<?> str, String delimiter,
+                                    int initialIndex) {
         if (str.size() == 0) {
             return "";
         }
@@ -198,9 +202,9 @@ public class StringUtil {
      * @param s  the first String, must not be null
      * @param t  the second String, must not be null
      * @return result distance
-     * @throws IllegalArgumentException if either String input <code>null</code>
+     * @throws IllegalArgumentException if either String input {@code null}
      */
-    public static int getLevenshteinDistance(String s, String t) {
+    public static int getLevenshteinDistance(@Nullable String s, @Nullable String t) {
         if (s == null || t == null) {
             throw new IllegalArgumentException("Strings must not be null");
         }
@@ -273,7 +277,7 @@ public class StringUtil {
         return p[n];
     }
 
-    public static <T extends Enum<?>> T lookup(Map<String, T> lookup, String name, boolean fuzzy) {
+    public static <T extends Enum<?>> T lookup(@NotNull Map<String, T> lookup, @NotNull String name, boolean fuzzy) {
         String testName = name.replaceAll("[ _]", "").toLowerCase();
 
         T type = lookup.get(testName);

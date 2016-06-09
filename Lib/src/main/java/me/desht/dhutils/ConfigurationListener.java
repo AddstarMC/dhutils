@@ -1,5 +1,7 @@
 package me.desht.dhutils;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface ConfigurationListener {
     /**
      * Validate and possibly modify or veto a potential change to this configuration.
@@ -13,7 +15,7 @@ public interface ConfigurationListener {
      * @return the new configuration value, possibly different from {@code newVal}
      * @throws DHUtilsException to prevent the change from occurring
      */
-	public Object onConfigurationValidate(ConfigurationManager configurationManager, String key, Object oldVal, Object newVal);
+    @NotNull Object onConfigurationValidate(ConfigurationManager configurationManager, String key, Object oldVal, Object newVal);
 
     /**
      * Called when a change has been made to this configuration.
@@ -23,5 +25,5 @@ public interface ConfigurationListener {
      * @param oldVal the previous configuration value
      * @param newVal the new configuration value
      */
-	public void onConfigurationChanged(ConfigurationManager configurationManager, String key, Object oldVal, Object newVal);
+    void onConfigurationChanged(ConfigurationManager configurationManager, String key, Object oldVal, Object newVal);
 }

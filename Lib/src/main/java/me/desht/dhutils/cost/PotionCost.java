@@ -3,6 +3,7 @@ package me.desht.dhutils.cost;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 public class PotionCost extends Cost {
     private final PotionEffectType effectType;
@@ -22,6 +23,7 @@ public class PotionCost extends Cost {
         return magnitude;
     }
 
+    @NotNull
     @Override
     public String getDescription() {
         if (getMagnitude() > 1) {
@@ -37,7 +39,7 @@ public class PotionCost extends Cost {
     }
 
     @Override
-    public void apply(Player player) {
+    public void apply(@NotNull Player player) {
         if (player.hasPotionEffect(getEffectType())) {
             player.removePotionEffect(getEffectType());
         }

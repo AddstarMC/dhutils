@@ -9,6 +9,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 
 public class ClassEnumerator {
@@ -20,7 +21,7 @@ public class ClassEnumerator {
 		}
 	}
 
-	private static void processDirectory(File directory, String pkgname, ArrayList<Class<?>> classes) {
+	private static void processDirectory(@NotNull File directory, String pkgname, @NotNull ArrayList<Class<?>> classes) {
 		Debugger.getInstance().debug(2, "Reading Directory '" + directory + "'");
 		// Get the list of the files contained in the package
 		String[] files = directory.list();
@@ -40,7 +41,7 @@ public class ClassEnumerator {
 		}
 	}
 
-	private static void processJarfile(URL resource, String pkgname, ArrayList<Class<?>> classes) {
+	private static void processJarfile(@NotNull URL resource, @NotNull String pkgname, @NotNull ArrayList<Class<?>> classes) {
 		String relPath = pkgname.replace('.', '/');
 		String resPath = resource.getPath();
 		String jarPath = resPath.replaceFirst("[.]jar[!].*", ".jar").replaceFirst("file:", "");
@@ -66,8 +67,9 @@ public class ClassEnumerator {
 		}
 	}
 
-	public static ArrayList<Class<?>> getClassesForPackage(Plugin plugin, Package pkg) {
-		ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
+	@NotNull
+	public static ArrayList<Class<?>> getClassesForPackage(@NotNull Plugin plugin, @NotNull Package pkg) {
+		ArrayList<Class<?>> classes = new ArrayList<>();
 
 		String pkgname = pkg.getName();
 		String relPath = pkgname.replace('.', '/');

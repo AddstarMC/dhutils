@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class DurabilityCost extends Cost {
 
@@ -21,13 +22,14 @@ public class DurabilityCost extends Cost {
 		return material;
 	}
 
+	@NotNull
 	@Override
 	public String getDescription() {
 		return (int)getQuantity() + " durability from " + material;
 	}
 
 	@Override
-	public boolean isAffordable(Player player) {
+	public boolean isAffordable(@NotNull Player player) {
 		short maxDurability = material.getMaxDurability();
 		HashMap<Integer, ? extends ItemStack> matchingInvSlots = player.getInventory().all(material);
 		int total = 0;
@@ -38,7 +40,7 @@ public class DurabilityCost extends Cost {
 	}
 
 	@Override
-	public void apply(Player player) {
+	public void apply(@NotNull Player player) {
 		short maxDurability = material.getMaxDurability();
 
 		HashMap<Integer, ? extends ItemStack> matchingInvSlots = player.getInventory().all(material);
@@ -52,8 +54,7 @@ public class DurabilityCost extends Cost {
 
 			if (newDurability >= maxDurability) {
 				// break the item - reduce inventory count by 1
-				//FIXME: No item break sound anymore
-				//player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
+				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
 				int newAmount = entry.getValue().getAmount() - 1;
 				if (newAmount == 0) {
 					player.getInventory().setItem(entry.getKey(), new ItemStack(Material.AIR));

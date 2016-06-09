@@ -16,6 +16,8 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class JARUtil {
 	public enum ExtractWhen { ALWAYS, IF_NOT_EXISTS, IF_NEWER }
@@ -29,11 +31,11 @@ public class JARUtil {
 		this.plugin = plugin;
 	}
 
-	public void extractResource(String from, File to) {
+	public void extractResource(@NotNull String from, @NotNull File to) {
 		extractResource(from, to, ExtractWhen.IF_NEWER);
 	}
 
-	public void extractResource(String from, File to, ExtractWhen when) {
+	public void extractResource(@NotNull String from, @NotNull File to, ExtractWhen when) {
 		File of = to;
 		if (to.isDirectory()) {
 			String fname = new File(from).getName();
@@ -79,6 +81,7 @@ public class JARUtil {
 		}
 	}
 
+	@Nullable
 	public File getJarFile() {
 		URL url = plugin.getClass().getProtectionDomain().getCodeSource().getLocation();
 		try {
@@ -88,6 +91,7 @@ public class JARUtil {
 		}
 	}
 
+	@Nullable
 	public InputStream openResourceNoCache(String resource) throws IOException {
 		URL res = plugin.getClass().getResource(resource);
 		if (res == null) {

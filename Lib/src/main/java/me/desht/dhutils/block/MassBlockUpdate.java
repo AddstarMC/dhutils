@@ -3,7 +3,7 @@ package me.desht.dhutils.block;
 import java.util.concurrent.TimeUnit;
 
 public interface MassBlockUpdate {
-	public enum RelightingStrategy {
+	enum RelightingStrategy {
 		/**
 		 * Do not do any relighting calculations at all.  If any block
 		 * lighting properties (i.e. light emission or light blocking)
@@ -35,7 +35,7 @@ public interface MassBlockUpdate {
          * Recalculate relighting in the background like DEFERRED mode.
          */
         HYBRID,
-	};
+	}
 
 	/**
 	 * Make a fast block change at the given coordinates.  Clients will
@@ -47,7 +47,7 @@ public interface MassBlockUpdate {
 	 * @param materialId the new material ID for the block
 	 * @return whether the block was actually changed
 	 */
-	public boolean setBlock(int x, int y, int z, int materialId);
+	boolean setBlock(int x, int y, int z, int materialId);
 
 	/**
 	 * Make a fast block change at the given coordinates.  Clients will
@@ -60,14 +60,14 @@ public interface MassBlockUpdate {
 	 * @param data the new block data
 	 * @return whether the block was actually changed
 	 */
-	public boolean setBlock(int x, int y, int z, int materialId, int data);
+	boolean setBlock(int x, int y, int z, int materialId, int data);
 
 	/**
 	 * Recalculate lighting on all chunks affected by this mass block
 	 * update, and resend any altered chunks to all players within
 	 * viewing distance of the change.
 	 */
-	public void notifyClients();
+	void notifyClients();
 
 	/**
 	 * Set the block relighting strategy for this mass block update.
@@ -75,7 +75,7 @@ public interface MassBlockUpdate {
 	 * 
 	 * @param strategy the desired re-lighting strategy
 	 */
-	public void setRelightingStrategy(RelightingStrategy strategy);
+	void setRelightingStrategy(RelightingStrategy strategy);
 
 	/**
 	 * For relighting with RelightingStrategy.DEFERRED, specify the 
@@ -86,7 +86,7 @@ public interface MassBlockUpdate {
 	 * @param value the value in units of the given time unit
 	 * @param timeUnit the time unit
 	 */
-	public void setMaxRelightTimePerTick(long value, TimeUnit timeUnit);
+	void setMaxRelightTimePerTick(long value, TimeUnit timeUnit);
 
 	/**
 	 * For relighting with RelightingStrategy.DEFERRED, get the number
@@ -94,5 +94,5 @@ public interface MassBlockUpdate {
 	 *
 	 * @return the number of blocks the need re-lighting
 	 */
-	public int getBlocksToRelight();
+	int getBlocksToRelight();
 }

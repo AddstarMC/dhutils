@@ -10,6 +10,8 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.*;
@@ -20,7 +22,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class MiscUtil {
-    private static Map<String, String> prevColours = new HashMap<String, String>();
+    @NotNull
+    private static Map<String, String> prevColours = new HashMap<>();
 
     public static final String STATUS_COLOUR = ChatColor.AQUA.toString();
     public static final String ERROR_COLOUR = ChatColor.RED.toString();
@@ -37,25 +40,25 @@ public class MiscUtil {
         colouredConsole = coloured;
     }
 
-    public static void errorMessage(CommandSender sender, String string) {
+    public static void errorMessage(@NotNull CommandSender sender, String string) {
         setPrevColour(sender.getName(), ERROR_COLOUR);
         message(sender, ERROR_COLOUR + string, Level.WARNING);
         prevColours.remove(sender.getName());
     }
 
-    public static void statusMessage(CommandSender sender, String string) {
+    public static void statusMessage(@NotNull CommandSender sender, String string) {
         setPrevColour(sender.getName(), STATUS_COLOUR);
         message(sender, STATUS_COLOUR + string, Level.INFO);
         prevColours.remove(sender.getName());
     }
 
-    public static void alertMessage(CommandSender sender, String string) {
+    public static void alertMessage(@NotNull CommandSender sender, String string) {
         setPrevColour(sender.getName(), ALERT_COLOUR);
         message(sender, ALERT_COLOUR + string, Level.INFO);
         prevColours.remove(sender.getName());
     }
 
-    public static void generalMessage(CommandSender sender, String string) {
+    public static void generalMessage(@NotNull CommandSender sender, String string) {
         setPrevColour(sender.getName(), GENERAL_COLOUR);
         message(sender, GENERAL_COLOUR + string, Level.INFO);
         prevColours.remove(sender.getName());
@@ -77,7 +80,7 @@ public class MiscUtil {
         return colour == null ? GENERAL_COLOUR : colour;
     }
 
-    public static void rawMessage(CommandSender sender, String string) {
+    public static void rawMessage(CommandSender sender, @NotNull String string) {
         boolean strip = sender instanceof ConsoleCommandSender && !colouredConsole;
         for (String line : string.split("\\n")) {
             if (strip) {
@@ -88,7 +91,7 @@ public class MiscUtil {
         }
     }
 
-    private static void message(CommandSender sender, String string, Level level) {
+    private static void message(CommandSender sender, @NotNull String string, Level level) {
         boolean strip = sender instanceof ConsoleCommandSender && !colouredConsole;
         for (String line : string.split("\\n")) {
             if (strip) {
@@ -99,15 +102,17 @@ public class MiscUtil {
         }
     }
 
-    public static String formatLocation(Location loc) {
+    public static String formatLocation(@NotNull Location loc) {
         return String.format("%d,%d,%d,%s", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getWorld().getName());
     }
 
-    public static Location parseLocation(String arglist) {
+    @NotNull
+    public static Location parseLocation(@NotNull String arglist) {
         return parseLocation(arglist, null);
     }
 
-    public static Location parseLocation(String arglist, CommandSender sender) {
+    @NotNull
+    public static Location parseLocation(@NotNull String arglist, CommandSender sender) {
         String s = sender instanceof Player ? "" : ",worldname";
         String args[] = arglist.split(",");
 
@@ -126,17 +131,17 @@ public class MiscUtil {
 
     private static final Pattern colourPat = Pattern.compile("(?<!&)&(?=[0-9a-fA-Fk-oK-OrR])");
 
-    public static String parseColourSpec(String spec) {
+    public static String parseColourSpec(@NotNull String spec) {
         return parseColourSpec(null, spec);
     }
 
-    public static String parseColourSpec(CommandSender sender, String spec) {
+    public static String parseColourSpec(@Nullable CommandSender sender, @NotNull String spec) {
         String who = sender == null ? "*" : sender.getName();
         String res = colourPat.matcher(spec).replaceAll("\u00A7");
         return res.replace("&-", getPrevColour(who)).replace("&&", "&");
     }
 
-    public static String unParseColourSpec(String spec) {
+    public static String unParseColourSpec(@NotNull String spec) {
         return spec.replaceAll("\u00A7", "&");
     }
 
@@ -165,8 +170,9 @@ public class MiscUtil {
      * @param s the String to split
      * @return a List of items
      */
-    public static List<String> splitQuotedString(String s) {
-        List<String> matchList = new ArrayList<String>();
+    @NotNull
+    public static List<String> splitQuotedString(@NotNull String s) {
+        List<String> matchList = new ArrayList<>();
 
         Pattern regex = Pattern.compile("[^\\s\"']+|\"([^\"]*)\"|'([^']*)'");
         Matcher regexMatcher = regex.matcher(s);
@@ -193,8 +199,9 @@ public class MiscUtil {
      * @param c	the collection to sort
      * @return a list of the sorted items in the collection
      */
-    public static <T extends Comparable<? super T>> List<T> asSortedList(Collection<T> c) {
-        List<T> list = new ArrayList<T>(c);
+    @NotNull
+    public static <T extends Comparable<? super T>> List<T> asSortedList(@NotNull Collection<T> c) {
+        List<T> list = new ArrayList<>(c);
         java.util.Collections.sort(list);
         return list;
     }
@@ -206,7 +213,8 @@ public class MiscUtil {
      * @param nLists the number of smaller lists
      * @return an array of lists
      */
-    public static <T> List<T>[] splitList(List<T> list, int nLists) {
+    @NotNull
+    public static <T> List<T>[] splitList(@NotNull List<T> list, int nLists) {
         @SuppressWarnings("unchecked")
         List<T>[] res = (ArrayList<T>[]) new ArrayList[nLists];
         Collections.shuffle(list);
@@ -226,11 +234,11 @@ public class MiscUtil {
      * @return	an array of path names to the found resources
      * @throws IOException
      */
-    public static String[] listFilesinJAR(File jarFile, String path, String ext) throws IOException {
+    public static String[] listFilesinJAR(@NotNull File jarFile, @NotNull String path, @Nullable String ext) throws IOException {
         ZipInputStream zip = new ZipInputStream(new FileInputStream(jarFile));
         ZipEntry ze;
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         while ((ze = zip.getNextEntry()) != null ) {
             String entryName = ze.getName();
             if (entryName.startsWith(path) && ext != null && entryName.endsWith(ext)) {
@@ -250,7 +258,8 @@ public class MiscUtil {
      * @throws InvalidConfigurationException
      * @throws IOException
      */
-    public static YamlConfiguration loadYamlUTF8(File file) throws InvalidConfigurationException, IOException {
+    @NotNull
+    public static YamlConfiguration loadYamlUTF8(@NotNull File file) throws InvalidConfigurationException, IOException {
         StringBuilder sb = new StringBuilder((int) file.length());
 
         BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
@@ -267,7 +276,7 @@ public class MiscUtil {
         return yaml;
     }
 
-    public static boolean looksLikeUUID(String s) {
+    public static boolean looksLikeUUID(@NotNull String s) {
         return s.length() == 36 && s.charAt(8) == '-' && s.charAt(13) == '-' && s.charAt(18) == '-' && s.charAt(23) == '-';
     }
 }

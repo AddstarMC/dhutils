@@ -21,7 +21,7 @@ public interface NMSAbstraction {
 	 * @param data the block data
 	 * @return true if the change was made, false otherwise
 	 */
-	public boolean setBlockFast(World world, int x, int y, int z, int blockId, byte data);
+	boolean setBlockFast(World world, int x, int y, int z, int blockId, byte data);
 
 	/**
 	 * Force an override of the light level at the given block position
@@ -32,7 +32,7 @@ public interface NMSAbstraction {
 	 * @param z Z co-ordinate of the block to relight
 	 * @param level the new light level
 	 */
-	public void forceBlockLightLevel(World world, int x, int y, int z, int level);
+	void forceBlockLightLevel(World world, int x, int y, int z, int level);
 
 	/**
 	 * Force a recalculation of the "natural" light level at the given block position
@@ -42,7 +42,7 @@ public interface NMSAbstraction {
 	 * @param y Y co-ordinate of the block to relight
 	 * @param z Z co-ordinate of the block to relight
 	 */
-	public void recalculateBlockLighting(World world, int x, int y, int z);
+	void recalculateBlockLighting(World world, int x, int y, int z);
 
 	/**
 	 * Get the light emission level for the given block.
@@ -50,7 +50,7 @@ public interface NMSAbstraction {
 	 * @param blockId numeric ID of the block to check
 	 * @return the block's light emission level
 	 */
-	public int getBlockLightEmission(int blockId);
+	int getBlockLightEmission(int blockId);
 
 	/**
 	 * Get the light blocking amount of the given block, i.e. the amount of light lost when
@@ -59,7 +59,7 @@ public interface NMSAbstraction {
 	 * @param blockId numeric ID of the block to check
 	 * @return the block's light blocking level
 	 */
-	public int getBlockLightBlocking(int blockId);
+	int getBlockLightBlocking(int blockId);
 
 	/**
 	 * Queue the given chunk up for updating to the player.
@@ -70,7 +70,7 @@ public interface NMSAbstraction {
 	 * @deprecated use Bukkit's world.refreshChunk() method
 	 */
 	@Deprecated
-	public void queueChunkForUpdate(Player player, int cx, int cz);
+	void queueChunkForUpdate(Player player, int cx, int cz);
 
 	/**
 	 * Get the actual hitbox of the given block, which may be smaller than the block's full boundary.
@@ -80,5 +80,5 @@ public interface NMSAbstraction {
 	 * @param block the block to check
 	 * @return a pair of vectors representing two opposite corners of the hitbox
 	 */
-	public Vector[] getBlockHitbox(Block block);
+	Vector[] getBlockHitbox(Block block);
 }

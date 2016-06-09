@@ -1,5 +1,7 @@
 package me.desht.dhutils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.TimeUnit;
 
 public class Duration {
@@ -71,7 +73,7 @@ public class Duration {
 		milliseconds = d.getMilliseconds();
 	}
 
-	private int getMult(String str) {
+	private int getMult(@NotNull String str) {
 		if (str.startsWith("ms") || str.startsWith("mil")) {
 			return 1;
 		} else if (str.startsWith("s")) {
@@ -123,6 +125,7 @@ public class Duration {
 		}
 	}
 
+	@NotNull
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		if (days > 0) {

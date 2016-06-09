@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MinecraftChatStr {
 
@@ -18,7 +20,8 @@ public class MinecraftChatStr {
     private static final int DEF_CHAR_WIDTH = 6;
 
     private static class CharacterBag {
-        private int[][] data = new int[255][];
+		@NotNull
+		private int[][] data = new int[255][];
 
         public void add(char ch, int width) {
             int[] bin = data[ch >> 8];
@@ -36,9 +39,9 @@ public class MinecraftChatStr {
     private static final CharacterBag bag = new CharacterBag();
 
     static {
-        final Map<Integer, String> widths = new HashMap<Integer, String>();
-        widths.put(7, "@~");
-        widths.put(6, "#$%&+-/0123456789=?ABCDEFGHJKLMNOPQRSTUVWXYZ\\^_abcdeghjmnopqrsuvwxyzñÑáéóúü");
+		final Map<Integer, String> widths = new HashMap<>();
+		widths.put(7, "@~");
+		widths.put(6, "#$%&+-/0123456789=?ABCDEFGHJKLMNOPQRSTUVWXYZ\\^_abcdeghjmnopqrsuvwxyzñÑáéóúü");
         widths.put(5, "\"()*<>fk{}");
         widths.put(4, " I[]t");
         widths.put(3, "'`lí");
@@ -52,7 +55,7 @@ public class MinecraftChatStr {
         }
     }
 
-	public static int getStringWidth(String s) {
+	public static int getStringWidth(@Nullable String s) {
 		int i = 0;
 		if (s != null) {
 //			s = s.replaceAll("\\u00A7.", "");
@@ -73,7 +76,8 @@ public class MinecraftChatStr {
         return bag.getWidth(c, def);
 	}
 
-	public static String uncoloredStr(String s) {
+	@Nullable
+	public static String uncoloredStr(@Nullable String s) {
 		return s != null ? s.replaceAll("\\u00A7.", "") : s;
 	}
 
@@ -84,27 +88,32 @@ public class MinecraftChatStr {
 	 * @param pad character to use when padding
 	 * @return str with padding appended
 	 */
+	@NotNull
 	public static String strPadRight(String str, int len, char pad) {
 		len *= DEF_CHAR_WIDTH;
 		len -= getStringWidth(str);
 		return str + Str.repeat(pad, len / getCharWidth(pad, DEF_CHAR_WIDTH));
 	}
 
+	@NotNull
 	public static String strPadRightChat(String str, int abslen, char pad) {
 		abslen -= getStringWidth(str);
 		return str + Str.repeat(pad, abslen / getCharWidth(pad, DEF_CHAR_WIDTH));
 	}
 
+	@NotNull
 	public static String strPadRightChat(String str, int abslen) {
 		abslen -= getStringWidth(str);
 		return str + Str.repeat(' ', abslen / getCharWidth(' ', DEF_CHAR_WIDTH));
 	}
 
+	@NotNull
 	public static String strPadRightChat(String str, char pad) {
 		int width = CHAT_WIDTH - getStringWidth(str);
 		return str + Str.repeat(pad, width / getCharWidth(pad, DEF_CHAR_WIDTH));
 	}
 
+	@NotNull
 	public static String strPadRightChat(String str) {
 		int width = CHAT_WIDTH - getStringWidth(str);
 		return str + Str.repeat(' ', width / getCharWidth(' ', DEF_CHAR_WIDTH));
@@ -117,6 +126,7 @@ public class MinecraftChatStr {
 	 * @param pad character to use when padding
 	 * @return str with padding prepended
 	 */
+	@NotNull
 	public static String strPadLeft(String str, int len, char pad) {
 		// for purposes of this function, assuming a normal char to be 6
 		len *= DEF_CHAR_WIDTH;
@@ -124,22 +134,22 @@ public class MinecraftChatStr {
 		return Str.repeat(pad, len / getCharWidth(pad, DEF_CHAR_WIDTH)) + str;
 	}
 
-	public static String strPadLeftChat(String str, int abslen, char pad) {
+	public static String strPadLeftChat(@NotNull String str, int abslen, char pad) {
 		abslen -= getStringWidth(str);
 		return Str.repeat(pad, abslen / getCharWidth(pad, DEF_CHAR_WIDTH)).concat(str);
 	}
 
-	public static String strPadLeftChat(String str, int abslen) {
+	public static String strPadLeftChat(@NotNull String str, int abslen) {
 		abslen -= getStringWidth(str);
 		return Str.repeat(' ', abslen / getCharWidth(' ', DEF_CHAR_WIDTH)).concat(str);
 	}
 
-	public static String strPadLeftChat(String str, char pad) {
+	public static String strPadLeftChat(@NotNull String str, char pad) {
 		int width = CHAT_WIDTH - getStringWidth(str);
 		return Str.repeat(pad, width / getCharWidth(pad, DEF_CHAR_WIDTH)).concat(str);
 	}
 
-	public static String strPadLeftChat(String str) {
+	public static String strPadLeftChat(@NotNull String str) {
 		int width = CHAT_WIDTH - getStringWidth(str);
 		return Str.repeat(' ', width / getCharWidth(' ', DEF_CHAR_WIDTH)).concat(str);
 	}
@@ -151,6 +161,7 @@ public class MinecraftChatStr {
 	 * @param pad character to use when padding
 	 * @return str centered with pad
 	 */
+	@NotNull
 	public static String strPadCenter(String str, int len, char pad) {
 		// for purposes of this function, assuming a normal char to be 6
 		len *= DEF_CHAR_WIDTH;
@@ -161,6 +172,7 @@ public class MinecraftChatStr {
 		return Str.repeat(pad, prepad) + str + Str.repeat(pad, len / padwid);
 	}
 
+	@NotNull
 	public static String strPadCenterChat(String str, int abslen, char pad) {
 		// int width = 325;
 		abslen -= getStringWidth(str);
@@ -170,6 +182,7 @@ public class MinecraftChatStr {
 		return Str.repeat(pad, prepad) + str + Str.repeat(pad, abslen / padwid);
 	}
 
+	@NotNull
 	public static String strPadCenterChat(String str, char pad) {
 		int width = 325 - getStringWidth(str);
 		int padwid = getCharWidth(pad, DEF_CHAR_WIDTH);
@@ -178,7 +191,7 @@ public class MinecraftChatStr {
 		return Str.repeat(pad, prepad) + str + Str.repeat(pad, width / padwid);
 	}
 
-	public static int strLen(String str) {
+	public static int strLen(@NotNull String str) {
 		if (!str.contains("\u00A7")) {
 			return str.length();
 		}
@@ -186,7 +199,7 @@ public class MinecraftChatStr {
 		return str.replaceAll("\\u00A7.", "").length();
 	}
 
-	public static String strTrim(String str, int length) {
+	public static String strTrim(@NotNull String str, int length) {
 		if (uncoloredStr(str).length() > length) {
 			int width = length;
 			String ret = "";
@@ -213,11 +226,11 @@ public class MinecraftChatStr {
 		return str;
 	}
 
-	public static String strChatTrim(String str) {
+	public static String strChatTrim(@NotNull String str) {
 		return strChatTrim(str, CHAT_WIDTH);
 	}
 
-	public static String strChatTrim(String str, int absLen) {
+	public static String strChatTrim(@NotNull String str, int absLen) {
 		int width = getStringWidth(str);
 		if (width > absLen) {
 			width = absLen;
@@ -246,15 +259,18 @@ public class MinecraftChatStr {
 		return str;
 	}
 
-	public static String strWordWrap(String str) {
+	@NotNull
+	public static String strWordWrap(@NotNull String str) {
 		return strWordWrap(str, 0, ' ');
 	}
 
-	public static String strWordWrap(String str, int tab) {
+	@NotNull
+	public static String strWordWrap(@NotNull String str, int tab) {
 		return strWordWrap(str, tab, ' ');
 	}
 
-	public static String strWordWrap(String str, int tab, char tabChar) {
+	@NotNull
+	public static String strWordWrap(@NotNull String str, int tab, char tabChar) {
 		String ret = "";
 		while (str.length() > 0) {
 			// find last char of first line
@@ -277,18 +293,20 @@ public class MinecraftChatStr {
 		return ret;
 	}
 
-	public static String strWordWrapRight(String str, int tab) {
+	@NotNull
+	public static String strWordWrapRight(@NotNull String str, int tab) {
 		return strWordWrapRight(str, tab, ' ');
 	}
 
 	/**
 	 * right-aligns paragraphs
-	 * @param str
-	 * @param tab
-	 * @param tabChar
+	 * @param str The String to align
+	 * @param tab the tabs to indent
+	 * @param tabChar the char that represents a TAB
 	 * @return right-aligned string (padded to the left)
 	 */
-	public static String strWordWrapRight(String str, int tab, char tabChar) {
+	@NotNull
+	public static String strWordWrapRight(@NotNull String str, int tab, char tabChar) {
 		String ret = "";
 		while (str.length() > 0) {
 			// find last char of first line
@@ -312,13 +330,14 @@ public class MinecraftChatStr {
 
 	/**
 	 * will left-align the start of the string until sepChar, then right-align the remaining paragraph
-	 * @param str
-	 * @param tab
-	 * @param tabChar
-	 * @param sepChar
+	 * @param str The String to align
+	 * @param tab the tabs to indent
+	 * @param tabChar the char that represents a TAB
+	 * @param sepChar the char to use as a seperator
 	 * @return left-aligned string (padded right)
 	 */
-	public static String strWordWrapRight(String str, int tab, char tabChar, char sepChar) {
+	@NotNull
+	public static String strWordWrapRight(@NotNull String str, int tab, char tabChar, char sepChar) {
 		String ret = "";
 		String line1 = strChatTrim(str);
 		// first run the first left & right align
@@ -359,14 +378,15 @@ public class MinecraftChatStr {
 
 	/**
 	 * will left-align the start of the string until sepChar, then right-align the remaining paragraph
-	 * @param str
-	 * @param width
-	 * @param tab
-	 * @param tabChar
-	 * @param sepChar
+	 * @param str The String to align
+	 * @param width   the width of the text
+	 * @param tab the tabs to indent
+	 * @param tabChar the char that represents a TAB
+	 * @param sepChar the char to use as a seperator
 	 * @return right-aligned string (padded left)
 	 */
-	public static String strWordWrapRight(String str, int width, int tab, char tabChar, char sepChar) {
+	@NotNull
+	public static String strWordWrapRight(@NotNull String str, int width, int tab, char tabChar, char sepChar) {
 		String ret = "";
 		String line1 = strTrim(str, width);
 		// first run the first left & right align
@@ -405,7 +425,7 @@ public class MinecraftChatStr {
 		return ret;
 	}
 
-	public static String lastStrColor(String str) {
+	public static String lastStrColor(@NotNull String str) {
 		int i = str.lastIndexOf('\u00A7');
 		if (i >= 0 && i + 1 < str.length()) {
 			return str.substring(i, i + 2);
@@ -413,7 +433,7 @@ public class MinecraftChatStr {
 		return "\u00A7F";//white
 	}
 
-	private static boolean containsAlignTag(String str, String tag) {
+	private static boolean containsAlignTag(@NotNull String str, String tag) {
 		int pos = str.indexOf("<" + tag);
 		if (pos >= 0) {
 			return str.length() > pos + ("<" + tag).length()
@@ -423,7 +443,7 @@ public class MinecraftChatStr {
 		return false;
 	}
 
-	private static boolean containsAlignTag(LinkedList<String> input, String tag) {
+	private static boolean containsAlignTag(@NotNull LinkedList<String> input, String tag) {
 		for (String l : input) {
 			if (containsAlignTag(l, tag)) {
 				return true;
@@ -434,8 +454,13 @@ public class MinecraftChatStr {
 
 	/**
 	 * UNTESTED: DON'T USE YET
+	 * @param input the String
+	 * @param minecraftChatFormat boolena the Chat format
+	 * @return A string
 	 */
-	public static String alignTags(String input, boolean minecraftChatFormat) {
+	@NotNull
+	@Deprecated
+	public static String alignTags(@NotNull String input, boolean minecraftChatFormat) {
 		for (String fm : new String[]{"l", "r", "c"}) {
 			while (containsAlignTag(input, fm)) {
 				char repl = ' ';
@@ -468,7 +493,8 @@ public class MinecraftChatStr {
 		return input;
 	}
 
-	public static LinkedList<String> alignTags(LinkedList<String> input, boolean minecraftChatFormat) {
+	@Nullable
+	public static LinkedList<String> alignTags(@Nullable LinkedList<String> input, boolean minecraftChatFormat) {
 		if (input == null || input.size() == 0) {
 			return input;
 		}
@@ -490,7 +516,7 @@ public class MinecraftChatStr {
 					}
 				}
 
-				LinkedList<String> newinput = new LinkedList<String>();
+				LinkedList<String> newinput = new LinkedList<>();
 				for (int i = 0; i < input.size(); ++i) {
 					String line = input.get(i);
 
@@ -524,7 +550,7 @@ public class MinecraftChatStr {
 		return input;
 	}
 
-	public static String getChatColor(String col) {
+	public static String getChatColor(@Nullable String col) {
 		String def = ChatColor.WHITE.toString();//"\u00A70";
 		if (col == null || col.length() == 0) {
 			return def;

@@ -1,5 +1,7 @@
 package me.desht.dhutils;
 
+import org.jetbrains.annotations.Nullable;
+
 public class DHValidate {
 	public static void isTrue(boolean cond, String message) {
 		if (!cond) {
@@ -13,7 +15,7 @@ public class DHValidate {
 		}
 	}
 
-	public static void notNull(Object o, String message) {
+	public static void notNull(@Nullable Object o, String message) {
 		if (o == null) {
 			throw new DHUtilsException(message);
 		}

@@ -6,6 +6,7 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -27,7 +28,8 @@ public abstract class Cost {
 	 * @return the new Cost object
 	 * @throws IllegalArgumentException if the specification is not valid
 	 */
-	public static Cost parse(String costSpec) {
+	@NotNull
+	public static Cost parse(@NotNull String costSpec) {
 		String[] itemAndQuantity = costSpec.split(",");
 		double q = itemAndQuantity.length < 2 ? 1.0 : Double.parseDouble(itemAndQuantity[1]);
 
@@ -83,7 +85,7 @@ public abstract class Cost {
 	 * @param player the player to apply the costs to
 	 * @param costs	a list of costs
 	 */
-	public static void apply(Player player, List<Cost> costs) {
+	public static void apply(Player player, @NotNull List<Cost> costs) {
 		for (Cost c : costs) {
 			c.apply(player);
 		}
@@ -95,7 +97,7 @@ public abstract class Cost {
 	 * @param costs a list of costs
 	 * @return true if the costs are applicable, false otherwise
 	 */
-	public static boolean isApplicable(Player player, List<Cost> costs) {
+	public static boolean isApplicable(Player player, @NotNull List<Cost> costs) {
 		for (Cost c : costs) {
 			if (!c.isApplicable(player))
 				return false;
@@ -110,7 +112,7 @@ public abstract class Cost {
 	 * @param costs a list of costs
 	 * @return true if the costs are affordable, false otherwise
 	 */
-	public static boolean isAffordable(Player player, List<Cost> costs) {
+	public static boolean isAffordable(Player player, @NotNull List<Cost> costs) {
 		for (Cost c : costs) {
 			if (!c.isAffordable(player))
 				return false;

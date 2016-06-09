@@ -5,6 +5,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Nullable;
 
 public class AttributeCollection extends ConfigurationManager {
 	public AttributeCollection() {
@@ -20,7 +21,7 @@ public class AttributeCollection extends ConfigurationManager {
 		registerAttribute(attrName, def, null);
 	}
 
-	public void registerAttribute(String attrName, Object def, String description) {
+	public void registerAttribute(String attrName, Object def, @Nullable String description) {
 		getConfig().addDefault(attrName, def);
 		if (description != null) {
 			setDescription(attrName, description);
@@ -33,7 +34,7 @@ public class AttributeCollection extends ConfigurationManager {
 
 	public Set<String> listAttributeKeys(boolean isSorted) {
 		if (isSorted) {
-			SortedSet<String> sorted = new TreeSet<String>(getConfig().getDefaults().getKeys(false));
+			SortedSet<String> sorted = new TreeSet<>(getConfig().getDefaults().getKeys(false));
 			return sorted;
 		} else {
 			return getConfig().getDefaults().getKeys(false);
