@@ -1,4 +1,4 @@
-package v1_10_R1;
+package me.desht.dhutils.nms.v1_10_R1;
 
 import me.desht.dhutils.nms.api.NMSAbstraction;
 import net.minecraft.server.v1_10_R1.*;

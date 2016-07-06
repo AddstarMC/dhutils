@@ -104,6 +104,12 @@
         </dependency>
         <dependency>
             <groupId>me.desht</groupId>
+            <artifactId>dhutils-v1_10_R1</artifactId>
+            <version>${project.parent.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>me.desht</groupId>
             <artifactId>dhutils-fallback</artifactId>
             <version>${project.parent.version}</version>
             <type>jar</type>
