@@ -110,6 +110,7 @@ public class BlockUtil {
 
 	@NotNull
 	@Deprecated
+	@SuppressWarnings("deprecation")
 	public static BlockAndPosition getTargetPoint(@NotNull Player player, HashSet<Byte> transparent, int maxDistance) {
 		List<Block> lastBlocks = player.getLastTwoTargetBlocks(transparent, maxDistance);
 		Block block = lastBlocks.get(1);
