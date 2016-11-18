@@ -18,8 +18,8 @@ public class NMSHelper {
 	private static final Class<?>[] classes = new Class<?>[] {
 			me.desht.dhutils.nms.fallback.NMSHandler.class,
 			me.desht.dhutils.nms.pre.NMSHandler.class,
-			me.desht.dhutils.nms.v1_10_R1.NMSHandler.class
-	};
+            me.desht.dhutils.nms.v1_11_R1.NMSHandler.class
+    };
 
 	@Nullable
 	public static NMSAbstraction init(@NotNull Plugin plugin) throws ClassNotFoundException, IllegalArgumentException,
