@@ -72,8 +72,6 @@
         <module>v1_12_R1</module>
         <module>Fallback</module>
         <module>Lib</module>
-
-
     </modules>
     <repositories>
         <repository>

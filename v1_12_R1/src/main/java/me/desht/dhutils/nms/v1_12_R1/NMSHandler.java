@@ -60,7 +60,7 @@ public class NMSHandler implements NMSAbstraction {
         net.minecraft.server.v1_12_R1.World w = ((CraftWorld) block.getWorld()).getHandle();
         BlockPosition pos = new BlockPosition(block.getX(), block.getY(), block.getZ());
         IBlockData b = w.getType(pos);
-        AxisAlignedBB bounds = b.c(w, pos);
+        AxisAlignedBB bounds = b.d(w, pos); //avoid the @Nullable version.
         return new Vector[]{
                 new Vector(bounds.a, bounds.b, bounds.c),
                 new Vector(bounds.d, bounds.e, bounds.f)
