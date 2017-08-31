@@ -19,15 +19,12 @@
 
 package me.desht.dhutils.block;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import me.desht.dhutils.StringUtil;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
 
 //import com.sk89q.util.StringUtil;
 
@@ -37,46 +34,46 @@ import org.jetbrains.annotations.Nullable;
  * @author sk89q
  */
 public enum BlockType {
-    AIR(BlockID.AIR, "Air", "air"),
-    STONE(BlockID.STONE, "Stone", "stone", "rock"),
-    GRASS(BlockID.GRASS, "Grass", "grass"),
-    DIRT(BlockID.DIRT, "Dirt", "dirt"),
-    COBBLESTONE(BlockID.COBBLESTONE, "Cobblestone", "cobblestone", "cobble"),
-    WOOD(BlockID.WOOD, "Wood", "wood", "woodplank", "plank", "woodplanks", "planks"),
-    SAPLING(BlockID.SAPLING, "Sapling", "sapling", "seedling"),
-    BEDROCK(BlockID.BEDROCK, "Bedrock", "adminium", "bedrock"),
-    WATER(BlockID.WATER, "Water", "watermoving", "movingwater", "flowingwater", "waterflowing"),
-    STATIONARY_WATER(BlockID.STATIONARY_WATER, "Water (stationary)", "water", "waterstationary", "stationarywater", "stillwater"),
-    LAVA(BlockID.LAVA, "Lava", "lavamoving", "movinglava", "flowinglava", "lavaflowing"),
-    STATIONARY_LAVA(BlockID.STATIONARY_LAVA, "Lava (stationary)", "lava", "lavastationary", "stationarylava", "stilllava"),
-    SAND(BlockID.SAND, "Sand", "sand"),
-    GRAVEL(BlockID.GRAVEL, "Gravel", "gravel"),
-    GOLD_ORE(BlockID.GOLD_ORE, "Gold ore", "goldore"),
-    IRON_ORE(BlockID.IRON_ORE, "Iron ore", "ironore"),
-    COAL_ORE(BlockID.COAL_ORE, "Coal ore", "coalore"),
-    LOG(BlockID.LOG, "Log", "log", "tree", "pine", "oak", "birch", "redwood"),
-    LEAVES(BlockID.LEAVES, "Leaves", "leaves", "leaf"),
-    SPONGE(BlockID.SPONGE, "Sponge", "sponge"),
-    GLASS(BlockID.GLASS, "Glass", "glass"),
-    LAPIS_LAZULI_ORE(BlockID.LAPIS_LAZULI_ORE, "Lapis lazuli ore", "lapislazuliore", "blueore", "lapisore"),
-    LAPIS_LAZULI(BlockID.LAPIS_LAZULI_BLOCK, "Lapis lazuli", "lapislazuli", "lapislazuliblock", "bluerock"),
-    DISPENSER(BlockID.DISPENSER, "Dispenser", "dispenser"),
-    SANDSTONE(BlockID.SANDSTONE, "Sandstone", "sandstone"),
-    NOTE_BLOCK(BlockID.NOTE_BLOCK, "Note block", "musicblock", "noteblock", "note", "music", "instrument"),
-    BED(BlockID.BED, "Bed", "bed"),
-    POWERED_RAIL(BlockID.POWERED_RAIL, "Powered Rail", "poweredrail", "boosterrail", "poweredtrack", "boostertrack", "booster"),
-    DETECTOR_RAIL(BlockID.DETECTOR_RAIL, "Detector Rail", "detectorrail", "detector"),
-    PISTON_STICKY_BASE(BlockID.PISTON_STICKY_BASE, "Sticky Piston", "stickypiston"),
-    WEB(BlockID.WEB, "Web", "web", "spiderweb"),
-    LONG_GRASS(BlockID.LONG_GRASS, "Long grass", "longgrass", "tallgrass"),
-    DEAD_BUSH(BlockID.DEAD_BUSH, "Shrub", "deadbush", "shrub", "deadshrub", "tumbleweed"),
-    PISTON_BASE(BlockID.PISTON_BASE, "Piston", "piston"),
-    PISTON_EXTENSION(BlockID.PISTON_EXTENSION, "Piston extension", "pistonextendsion", "pistonhead"),
-    CLOTH(BlockID.CLOTH, "Wool", "cloth", "wool"),
-    PISTON_MOVING_PIECE(BlockID.PISTON_MOVING_PIECE, "Piston moving piece", "movingpiston"),
-    YELLOW_FLOWER(BlockID.YELLOW_FLOWER, "Yellow flower", "yellowflower", "flower"),
-    RED_FLOWER(BlockID.RED_FLOWER, "Red rose", "redflower", "redrose", "rose"),
-    BROWN_MUSHROOM(BlockID.BROWN_MUSHROOM, "Brown mushroom", "brownmushroom", "mushroom"),
+    AIR(BlockID.AIR, Material.AIR, "Air", "air"),
+    STONE(BlockID.STONE, Material.STONE, "Stone", "stone", "rock"),
+    GRASS(BlockID.GRASS, Material.GRASS, "Grass", "grass"),
+    DIRT(BlockID.DIRT, Material.DIRT, "Dirt", "dirt"),
+    COBBLESTONE(BlockID.COBBLESTONE, Material.COBBLESTONE, "Cobblestone", "cobblestone", "cobble"),
+    WOOD(BlockID.WOOD, Material.WOOD, "Wood", "wood", "woodplank", "plank", "woodplanks", "planks"),
+    SAPLING(BlockID.SAPLING, Material.SAPLING, "Sapling", "sapling", "seedling"),
+    BEDROCK(BlockID.BEDROCK, Material.BEDROCK, "Bedrock", "adminium", "bedrock"),
+    WATER(BlockID.WATER, Material.WATER, "Water", "watermoving", "movingwater", "flowingwater", "waterflowing"),
+    STATIONARY_WATER(BlockID.STATIONARY_WATER, Material.STATIONARY_WATER, "Water (stationary)", "water", "waterstationary", "stationarywater", "stillwater"),
+    LAVA(BlockID.LAVA, Material.LAVA, "Lava", "lavamoving", "movinglava", "flowinglava", "lavaflowing"),
+    STATIONARY_LAVA(BlockID.STATIONARY_LAVA, Material.STATIONARY_LAVA, "Lava (stationary)", "lava", "lavastationary", "stationarylava", "stilllava"),
+    SAND(BlockID.SAND, Material.SAND, "Sand", "sand"),
+    GRAVEL(BlockID.GRAVEL, Material.GRAVEL, "Gravel", "gravel"),
+    GOLD_ORE(BlockID.GOLD_ORE, Material.GOLD_ORE, "Gold ore", "goldore"),
+    IRON_ORE(BlockID.IRON_ORE, Material.IRON_ORE, "Iron ore", "ironore"),
+    COAL_ORE(BlockID.COAL_ORE, Material.COAL_ORE, "Coal ore", "coalore"),
+    LOG(BlockID.LOG, Material.LOG, "Log", "log", "tree", "pine", "oak", "birch", "redwood"),
+    LEAVES(BlockID.LEAVES, Material.LEAVES, "Leaves", "leaves", "leaf"),
+    SPONGE(BlockID.SPONGE, Material.SPONGE, "Sponge", "sponge"),
+    GLASS(BlockID.GLASS, Material.GLASS, "Glass", "glass"),
+    LAPIS_LAZULI_ORE(BlockID.LAPIS_LAZULI_ORE, Material.LAPIS_ORE, "Lapis lazuli ore", "lapislazuliore", "blueore", "lapisore"),
+    LAPIS_LAZULI(BlockID.LAPIS_LAZULI_BLOCK, Material.LAPIS_BLOCK, "Lapis lazuli", "lapislazuli", "lapislazuliblock", "bluerock"),
+    DISPENSER(BlockID.DISPENSER, Material.DISPENSER, "Dispenser", "dispenser"),
+    SANDSTONE(BlockID.SANDSTONE, Material.SANDSTONE, "Sandstone", "sandstone"),
+    NOTE_BLOCK(BlockID.NOTE_BLOCK, Material.NOTE_BLOCK"Note block", "musicblock", "noteblock", "note", "music", "instrument"),
+    BED(BlockID.BED, Material.BED, "Bed", "bed"),
+    POWERED_RAIL(BlockID.POWERED_RAIL, Material.POWERED_RAIL, "Powered Rail", "poweredrail", "boosterrail", "poweredtrack", "boostertrack", "booster"),
+    DETECTOR_RAIL(BlockID.DETECTOR_RAIL, Material.DETECTOR_RAIL, "Detector Rail", "detectorrail", "detector"),
+    PISTON_STICKY_BASE(BlockID.PISTON_STICKY_BASE, Material.PISTON_STICKY_BASE, "Sticky Piston", "stickypiston"),
+    WEB(BlockID.WEB, Material.WEB, "Web", "web", "spiderweb"),
+    LONG_GRASS(BlockID.LONG_GRASS, Material.LONG_GRASS, "Long grass", "longgrass", "tallgrass"),
+    DEAD_BUSH(BlockID.DEAD_BUSH, Material.DEAD_BUSH, "Shrub", "deadbush", "shrub", "deadshrub", "tumbleweed"),
+    PISTON_BASE(BlockID.PISTON_BASE, Material.PISTON_BASE"Piston", "piston"),
+    PISTON_EXTENSION(BlockID.PISTON_EXTENSION, Material.PISTON_EXTENSION, "Piston extension", "pistonextendsion", "pistonhead"),
+    CLOTH(BlockID.CLOTH, Material.WOOL, "Wool", "cloth", "wool"),
+    PISTON_MOVING_PIECE(BlockID.PISTON_MOVING_PIECE, Material.PISTON_MOVING_PIECE, "Piston moving piece", "movingpiston"),
+    YELLOW_FLOWER(BlockID.YELLOW_FLOWER, Material.YELLOW_FLOWER, "Yellow flower", "yellowflower", "flower"),
+    RED_FLOWER(BlockID.RED_FLOWER, Material.RED_ROSE, "Red rose", "redflower", "redrose", "rose"),
+    BROWN_MUSHROOM(BlockID.BROWN_MUSHROOM, Material.BROWN_MUSHROOM, "Brown mushroom", "brownmushroom", "mushroom"),
     RED_MUSHROOM(BlockID.RED_MUSHROOM, "Red mushroom", "redmushroom"),
     GOLD_BLOCK(BlockID.GOLD_BLOCK, "Gold block", "gold", "goldblock"),
     IRON_BLOCK(BlockID.IRON_BLOCK, "Iron block", "iron", "ironblock"),
@@ -206,9 +203,12 @@ public enum BlockType {
      */
     private static final Map<String, BlockType> lookup = new HashMap<>();
 
+    private static final Map<Material, BlockType> materialMap = new HashMap<>();
+
     private final int id;
     private final String name;
     private final String[] lookupKeys;
+    private final Material material;
 
     static {
         for (BlockType type : EnumSet.allOf(BlockType.class)) {
@@ -226,10 +226,11 @@ public enum BlockType {
      * @param id the Blocktype to construct
      * @param name The name
      */
-    BlockType(int id, String name, String lookupKey) {
+    BlockType(int id, Material mat, String name, String lookupKey) {
         this.id = id;
         this.name = name;
         this.lookupKeys = new String[] { lookupKey };
+        this.material = mat;
     }
 
     /**
@@ -238,10 +239,11 @@ public enum BlockType {
      * @param id the Blocktype to construct
      * @param name the name of the block
      */
-    BlockType(int id, String name, String... lookupKeys) {
+    BlockType(int id, Material mat, String name, String... lookupKeys) {
         this.id = id;
         this.name = name;
         this.lookupKeys = lookupKeys;
+        material = mat;
     }
 
     /**
@@ -404,57 +406,67 @@ public enum BlockType {
     /**
      * HashSet for canPassThrough.
      */
-    private static final Set<Integer> canPassThrough = new HashSet<>();
+    private static final Set<Material> canPassThrough = new HashSet<>();
     static {
-        canPassThrough.add(BlockID.AIR);
-        canPassThrough.add(BlockID.WATER);
-        canPassThrough.add(BlockID.STATIONARY_WATER);
-        canPassThrough.add(BlockID.SAPLING);
-        canPassThrough.add(BlockID.POWERED_RAIL);
-        canPassThrough.add(BlockID.DETECTOR_RAIL);
-        canPassThrough.add(BlockID.WEB);
-        canPassThrough.add(BlockID.LONG_GRASS);
-        canPassThrough.add(BlockID.DEAD_BUSH);
-        canPassThrough.add(BlockID.YELLOW_FLOWER);
-        canPassThrough.add(BlockID.RED_FLOWER);
-        canPassThrough.add(BlockID.BROWN_MUSHROOM);
-        canPassThrough.add(BlockID.RED_MUSHROOM);
-        canPassThrough.add(BlockID.TORCH);
-        canPassThrough.add(BlockID.FIRE);
-        canPassThrough.add(BlockID.REDSTONE_WIRE);
-        canPassThrough.add(BlockID.CROPS);
-        canPassThrough.add(BlockID.SIGN_POST);
-        canPassThrough.add(BlockID.LADDER);
-        canPassThrough.add(BlockID.MINECART_TRACKS);
-        canPassThrough.add(BlockID.WALL_SIGN);
-        canPassThrough.add(BlockID.LEVER);
-        canPassThrough.add(BlockID.STONE_PRESSURE_PLATE);
-        canPassThrough.add(BlockID.WOODEN_PRESSURE_PLATE);
-        canPassThrough.add(BlockID.REDSTONE_TORCH_OFF);
-        canPassThrough.add(BlockID.REDSTONE_TORCH_ON);
-        canPassThrough.add(BlockID.STONE_BUTTON);
-        canPassThrough.add(BlockID.SNOW);
-        canPassThrough.add(BlockID.REED);
-        canPassThrough.add(BlockID.PORTAL);
-        canPassThrough.add(BlockID.REDSTONE_REPEATER_OFF);
-        canPassThrough.add(BlockID.REDSTONE_REPEATER_ON);
-        canPassThrough.add(BlockID.PUMPKIN_STEM);
-        canPassThrough.add(BlockID.MELON_STEM);
-        canPassThrough.add(BlockID.VINE);
-        canPassThrough.add(BlockID.NETHER_WART);
-        canPassThrough.add(BlockID.END_PORTAL);
-        canPassThrough.add(BlockID.TRIPWIRE_HOOK);
-        canPassThrough.add(BlockID.TRIPWIRE);
-        canPassThrough.add(BlockID.FLOWER_POT);
-        canPassThrough.add(BlockID.CARROTS);
-        canPassThrough.add(BlockID.POTATOES);
-        canPassThrough.add(BlockID.WOODEN_BUTTON);
-        canPassThrough.add(BlockID.HEAD);
-        canPassThrough.add(BlockID.PRESSURE_PLATE_LIGHT);
-        canPassThrough.add(BlockID.PRESSURE_PLATE_HEAVY);
-        canPassThrough.add(BlockID.COMPARATOR_OFF);
-        canPassThrough.add(BlockID.COMPARATOR_ON);
-        canPassThrough.add(BlockID.ACTIVATOR_RAIL);
+        canPassThrough.add(Material.AIR);
+        canPassThrough.add(Material.WATER);
+        canPassThrough.add(Material.STATIONARY_WATER);
+        canPassThrough.add(Material.SAPLING);
+        canPassThrough.add(Material.POWERED_RAIL);
+        canPassThrough.add(Material.DETECTOR_RAIL);
+        canPassThrough.add(Material.WEB);
+        canPassThrough.add(Material.LONG_GRASS);
+        canPassThrough.add(Material.DEAD_BUSH);
+        canPassThrough.add(Material.YELLOW_FLOWER);
+        canPassThrough.add(Material.RED_ROSE);
+        canPassThrough.add(Material.BROWN_MUSHROOM);
+        canPassThrough.add(Material.RED_MUSHROOM);
+        canPassThrough.add(Material.TORCH);
+        canPassThrough.add(Material.FIRE);
+        canPassThrough.add(Material.REDSTONE_WIRE);
+        canPassThrough.add(Material.CROPS);
+        canPassThrough.add(Material.SIGN_POST);
+        canPassThrough.add(Material.LADDER);
+        canPassThrough.add(Material.RAILS);
+        canPassThrough.add(Material.WALL_SIGN);
+        canPassThrough.add(Material.LEVER);
+        canPassThrough.add(Material.STONE_PLATE);
+        canPassThrough.add(Material.WOOD_PLATE);
+        canPassThrough.add(Material.REDSTONE_TORCH_OFF);
+        canPassThrough.add(Material.REDSTONE_TORCH_ON);
+        canPassThrough.add(Material.STONE_BUTTON);
+        canPassThrough.add(Material.SNOW);
+        canPassThrough.add(Material.SUGAR_CANE_BLOCK);
+        canPassThrough.add(Material.PORTAL);
+        canPassThrough.add(Material.DIODE_BLOCK_OFF);
+        canPassThrough.add(Material.DIODE_BLOCK_ON);
+        canPassThrough.add(Material.PUMPKIN_STEM);
+        canPassThrough.add(Material.MELON_STEM);
+        canPassThrough.add(Material.VINE);
+        canPassThrough.add(Material.NETHER_WARTS);
+        canPassThrough.add(Material.END_GATEWAY);
+        canPassThrough.add(Material.TRIPWIRE_HOOK);
+        canPassThrough.add(Material.TRIPWIRE);
+        canPassThrough.add(Material.FLOWER_POT);
+        canPassThrough.add(Material.CARROT);
+        canPassThrough.add(Material.POTATO);
+        canPassThrough.add(Material.WOOD_BUTTON);
+        canPassThrough.add(Material.SKULL);
+        canPassThrough.add(Material.IRON_PLATE);
+        canPassThrough.add(Material.GOLD_PLATE);
+        canPassThrough.add(Material.REDSTONE_COMPARATOR_ON);
+        canPassThrough.add(Material.REDSTONE_COMPARATOR_OFF);
+        canPassThrough.add(Material.ACTIVATOR_RAIL);
+    }
+
+    /**
+     * Checks whether a block can be passed through.
+     *
+     * @param mat the material to check
+     * @return {@code True} if the block can be passed through
+     */
+    public static boolean canPassThrough(Material mat) {
+        return canPassThrough.contains(mat);
     }
 
     /**
@@ -463,7 +475,9 @@ public enum BlockType {
      * @param id the ID to check
      * @return {@code True} if the block can be passed through
      */
+    @Deprecated
     public static boolean canPassThrough(int id) {
+
         return canPassThrough.contains(id);
     }
 
@@ -472,6 +486,7 @@ public enum BlockType {
      *
      * @return {@code True} if the block can be passed through
      */
+    @Deprecated
     public boolean canPassThrough() {
         return canPassThrough.contains(id);
     }
