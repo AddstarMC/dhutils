@@ -13,6 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.sk89q.worldedit.blocks.BlockType;
+import com.sk89q.worldedit.blocks.BlockData;
+import com.sk89q.worldedit.blocks.ClothColor;
+
 
 import java.util.HashMap;
 import java.util.Map;
