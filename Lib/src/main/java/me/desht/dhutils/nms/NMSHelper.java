@@ -17,8 +17,6 @@ public class NMSHelper {
 	@SuppressWarnings({"unused", "MismatchedReadAndWriteOfArray"})
 	private static final Class<?>[] classes = new Class<?>[] {
 			me.desht.dhutils.nms.fallback.NMSHandler.class,
-			me.desht.dhutils.nms.pre.NMSHandler.class,
-			me.desht.dhutils.nms.v1_11_R1.NMSHandler.class,
 			me.desht.dhutils.nms.v1_12_R1.NMSHandler.class
 	};
 

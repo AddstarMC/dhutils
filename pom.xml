@@ -3,12 +3,10 @@
     <groupId>me.desht</groupId>
     <artifactId>dhutils-parent</artifactId>
     <packaging>pom</packaging>
-    <version>2.20.1-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
     <name>DH Utils</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <plugin.version>${project.version}-${build.number}</plugin.version>
-        <build.number />
     </properties>
     <description>Collection of useful classes I use in my plugins</description>
     <scm>
@@ -64,11 +62,6 @@
     </distributionManagement>
     <modules>
         <module>API</module>
-        <module>PreRefactor</module>
-		<module>v1_9_R1</module>
-        <module>v1_9_R2</module>
-        <module>v1_10_R1</module>
-        <module>v1_11_R1</module>
         <module>v1_12_R1</module>
         <module>Fallback</module>
         <module>Lib</module>
@@ -92,6 +85,13 @@
             </releases>
         </repository>
     </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>15.0</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>

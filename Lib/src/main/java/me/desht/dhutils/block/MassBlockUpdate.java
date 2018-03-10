@@ -47,6 +47,7 @@ public interface MassBlockUpdate {
 	 * @param materialId the new material ID for the block
 	 * @return whether the block was actually changed
 	 */
+    @Deprecated
 	boolean setBlock(int x, int y, int z, int materialId);
 
 	/**
@@ -60,6 +61,7 @@ public interface MassBlockUpdate {
 	 * @param data the new block data
 	 * @return whether the block was actually changed
 	 */
+    @Deprecated
 	boolean setBlock(int x, int y, int z, int materialId, int data);
 
 	/**

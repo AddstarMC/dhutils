@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.material.MaterialData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -580,7 +581,6 @@ public class ItemNames {
             .put("2266", "Music Disk (11)")
             .put("2267", "Music Disk (wait)")
             .build();
-
     /**
      * Given an item stack, return a friendly printable name for the item, as
      * the (English-language) vanilla Minecraft client would display it.
@@ -599,7 +599,7 @@ public class ItemNames {
         }
 
         String result;
-        String key = Integer.toString(stack.getTypeId());
+		String key = stack.getType().getDeclaringClass().getSimpleName();
         Material mat = stack.getType();
         if ((mat == Material.WOOL || mat == Material.CARPET) && stack.getDurability() == 0) {
             // special case: white wool/carpet is just called "Wool" or "Carpet"
