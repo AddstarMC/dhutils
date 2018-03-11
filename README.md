@@ -14,7 +14,6 @@ You will need Maven.
 
 DHUtils is intended to be used with Maven, and to be shaded into your plugin.  To add it as a Maven dependency:
 
-     
 
      <dependencies>
        <dependency>
