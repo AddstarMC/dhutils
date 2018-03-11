@@ -1,4 +1,7 @@
 language: java
 before_install: ./prepareEnvironment.sh
-
+cache:
+  directories:
+    - builder
+    - $HOME/.m2
 
