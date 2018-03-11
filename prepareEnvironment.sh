@@ -1,5 +1,6 @@
 #!/bin/sh
-if [ -f builder/Spigot.jar]; then
+if [ -f builder/Spigot.jar ]
+then
     wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar --rev 1.12.2
     java -jar BuildTools.jar
     mv Spigot.jar builder/Spigot.jar
