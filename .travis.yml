@@ -1,5 +1,8 @@
 language: java
-before_install: ./prepareEnvironment.sh
+env:
+  - Spigot.version = 1.12.2
+before_install:
+  - ./prepareEnvironment.sh
 cache:
   directories:
     - builder
